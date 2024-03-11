@@ -1,0 +1,139 @@
+<script setup>
+import AppLayout from "@/Layouts/AppLayout.vue";
+import { Link, Head } from "@inertiajs/vue3";
+import Icon from "../../Components/Icon.vue";
+
+defineProps({
+    docentes: Array,
+});
+</script>
+
+<template>
+    <AppLayout>
+        <Head title="Docentes" />
+
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800">
+                Usuarios / Docentes
+            </h2>
+        </template>
+        <!-- -->
+        <div class="py-12 px-4 lg:px-8 max-w-7xl">
+            <div class="flex items-center justify-between mb-6">
+                
+                <!-- <search-filter
+                v-model="form.search"
+                class="mr-4 w-full max-w-md"
+                @reset="reset"
+            >
+                <label class="block text-gray-700">Trashed:</label>
+                <select v-model="form.trashed" class="form-select mt-1 w-full">
+                    <option :value="null" />
+                    <option value="with">With Trashed</option>
+                    <option value="only">Only Trashed</option>
+                </select>
+            </search-filter>  -->
+                <Link class="btn-indigo" href="/docentes/create">
+                    <span>Crear</span>
+                    <span class="hidden md:inline">&nbsp;Docente</span>
+                </Link>
+            </div>
+            <div class="w-full bg-white overflow-x-auto rounded-md shadow">
+                <table
+                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md"
+                >
+                    <thead>
+                        <tr class="text-left font-bold">
+                            <th class="pb-4 pt-6 px-6">Nombre</th>
+                            <th class="pb-4 pt-6 px-6">CI</th>
+                            <th class="pb-4 pt-6 px-6">Teléfono</th>
+                            <th class="pb-4 pt-6 px-6">Dirección</th>
+                            <th class="pb-4 pt-6 px-6">Correo</th>
+                            <th class="pb-4 pt-6 px-6">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="docente in docentes"
+                            :key="docente.id"
+                            class="hover:bg-gray-100 focus-within:bg-gray-100"
+                        >
+                            <td class="border-t">
+                                <Link
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    :href="route('docentes.edit', docente.id)"
+                                >
+                                    {{ docente.persona.nombre }}
+                                </Link>
+                            </td>
+                            <td class="border-t">
+                                <Link
+                                    class="flex items-center px-6 py-4"
+                                    tabindex="-1"
+                                    :href="route('docentes.edit', docente.id)"
+                                >
+                                    <div>{{ docente.persona.ci_numero }}</div>
+                                </Link>
+                            </td>
+                            <td class="border-t">
+                                <Link
+                                    class="flex items-center px-6 py-4"
+                                    tabindex="-1"
+                                    :href="route('docentes.edit', docente.id)"
+                                >
+                                    <div>{{ docente.persona.telefono }}</div>
+                                </Link>
+                            </td>
+                            <td class="border-t max-w-80">
+                                <Link
+                                    class="flex items-center px-6 py-4 whitespace-normal"
+                                    tabindex="-1"
+                                    :href="route('docentes.edit', docente.id)"
+                                >
+                                    <div>{{ docente.persona.direccion }}</div>
+                                </Link>
+                            </td>
+                            <td class="border-t">
+                                <Link
+                                    class="flex items-center px-6 py-4"
+                                    tabindex="-1"
+                                    :href="route('docentes.edit', docente.id)"
+                                >
+                                    <div>{{ docente.user.email }}</div>
+                                </Link>
+                            </td>
+                            <td class="border-t">
+                                <Link
+                                    class="flex items-center px-6 py-4"
+                                    tabindex="-1"
+                                    :href="route('docentes.edit', docente.id)"
+                                >
+                                    <div>{{ docente.estado.estado }}</div>
+                                </Link>
+                            </td>
+                            <td class="w-px border-t">
+                                <Link
+                                    class="flex items-center px-4"
+                                    tabindex="-1"
+                                    :href="route('docentes.edit', docente.id)"
+                                >
+                                    <icon
+                                        name="cheveron-right"
+                                        class="block w-6 h-6 fill-gray-400"
+                                    />
+                                </Link>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- <table
+                class="w-full whitespace-nowrap text-sm rounded-md  shadow-md"
+            >
+                
+                
+            </table> -->
+        </div>
+    </AppLayout>
+</template>

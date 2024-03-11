@@ -26,9 +26,31 @@ defineProps({
             />
         </svg>
 
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" v-else-if="name == 'minus'">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+            v-else-if="name == 'minus'"
+        >
             <path
                 d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"
+            />
+        </svg>
+        <svg
+            v-else-if="name === 'trash'"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+        >
+            <path
+                d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"
+            />
+        </svg>
+        <svg
+            v-else-if="name === 'cheveron-right'"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+        >
+            <polygon
+                points="12.95 10.707 13.657 10 8 4.343 6.586 5.757 10.828 10 6.586 14.243 8 15.657 12.95 10.707"
             />
         </svg>
     </div>

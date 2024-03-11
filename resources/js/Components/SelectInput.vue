@@ -5,34 +5,36 @@ defineProps({
     modelValue: String,
     label: String,
     id: String,
-    type: String,
+    disabled: Boolean,
     error: String
 });
 
 defineEmits(["update:modelValue"]);
 
-const input = ref(null);
+const inputSelect = ref(null);
 
 onMounted(() => {
-    if (input.value.hasAttribute("autofocus")) {
-        input.value.focus();
+    if (inputSelect.value.hasAttribute("autofocus")) {
+        inputSelect.value.focus();
     }
 });
 
-defineExpose({ focus: () => input.value.focus() });
+defineExpose({ focus: () => inputSelect.value.focus() });
 </script>
-
 <template>
-    <div class="">
+    <div>
         <label :for="id">{{ label }}</label>
-        <input
-            :type="type"
-            ref="input"
-            class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm"
+        <select
+            class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm cursor-pointer"
+            :name="id"
             :id="id"
+            ref="inputSelect"
             :value="modelValue"
             @input="$emit('update:modelValue', $event.target.value)"
-        />
+            :disabled="disabled"
+        >
+            <slot />
+        </select>
         <div v-if="error" class="text-sm text-red-500">{{ error }}</div>
     </div>
 </template>

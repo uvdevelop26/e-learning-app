@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocenteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,12 +35,15 @@ Route::middleware([
     })->name('dashboard');
 });
 
-/* Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/users', function () {
-        return Inertia::render('Dashboard');
-    })->name('users');
-}); */
+
+
+Route::controller(DocenteController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('docentes', 'index')->name('docentes.index');
+    Route::get('docentes/create', 'create')->name('docentes.create');
+    Route::post('docentes', 'store')->name('docentes.store');
+    Route::get('docentes/{docente}/edit', 'edit')->name('docentes.edit');
+    Route::put('docentes/{docente}', 'update')->name('docentes.update');
+    Route::delete('docentes/{docente}', 'destroy')->name('docentes.destroy');
+});
+
+//Route::controller()
