@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdministradoreController;
+use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\DocenteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -46,4 +48,15 @@ Route::controller(DocenteController::class)->middleware(['auth:sanctum', 'verifi
     Route::delete('docentes/{docente}', 'destroy')->name('docentes.destroy');
 });
 
-//Route::controller()
+Route::controller(AdministradoreController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('administradores', 'index')->name('administradores.index');
+    Route::get('administradores/create', 'create')->name('administradores.create');
+    Route::post('administradores', 'store')->name('administradores.store');
+    Route::get('administradores/{administradore}/edit', 'edit')->name('administradores.edit');
+    Route::put('administradores/{administradore}', 'update')->name('administradores.update');
+    Route::delete('administradores/{administradore}', 'destroy')->name('administradores.destroy');
+});
+
+Route::controller(CarreraController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('carreras', 'index')->name('carreras.index');
+});

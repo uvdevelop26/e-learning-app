@@ -35,4 +35,9 @@ class Persona extends Model
     {
         return $this->hasMany(Docente::class);
     }
+
+    public function administradores()
+    {
+        return $this->hasMany(Docente::class);
+    }
 }

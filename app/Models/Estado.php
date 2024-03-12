@@ -13,8 +13,13 @@ class Estado extends Model
 
     protected $fillable = ['estado'];
 
-    public function users()
+    public function docentes()
     {
         return $this->hasMany(Docente::class);
+    }
+
+    public function administradores()
+    {
+        return $this->hasMany(Administradore::class);
     }
 }

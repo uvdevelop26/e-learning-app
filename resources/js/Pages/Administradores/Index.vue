@@ -4,17 +4,17 @@ import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
 
 defineProps({
-    docentes: Array,
+    administradores: Array,
 });
 </script>
 
 <template>
     <AppLayout>
-        <Head title="Docentes" />
+        <Head title="Administradores" />
 
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800">
-                Usuarios / Docentes
+                Usuarios / Administradores
             </h2>
         </template>
         <!-- -->
@@ -33,9 +33,9 @@ defineProps({
                     <option value="only">Only Trashed</option>
                 </select>
             </search-filter>  -->
-                <Link class="btn-indigo" href="/docentes/create">
+                <Link class="btn-indigo" href="/administradores/create">
                     <span>Crear</span>
-                    <span class="hidden md:inline">&nbsp;Docente</span>
+                    <span class="hidden md:inline">&nbsp;Administrador</span>
                 </Link>
             </div>
             <div class="w-full bg-white overflow-x-auto rounded-md shadow">
@@ -54,68 +54,68 @@ defineProps({
                     </thead>
                     <tbody>
                         <tr
-                            v-for="docente in docentes"
-                            :key="docente.id"
+                            v-for="administradore in administradores"
+                            :key="administradore.id"
                             class="hover:bg-gray-100 focus-within:bg-gray-100"
                         >
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="route('docentes.edit', docente.id)"
+                                    :href="route('administradores.edit', administradore.id)"
                                 >
-                                    {{ docente.persona.nombre }}
+                                    {{ administradore.persona.nombre }}
                                 </Link>
                             </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
+                                    :href="route('administradores.edit', administradore.id)"
                                 >
-                                    <div>{{ docente.persona.ci_numero }}</div>
+                                    <div>{{ administradore.persona.ci_numero }}</div>
                                 </Link>
                             </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
+                                    :href="route('administradores.edit', administradore.id)"
                                 >
-                                    <div>{{ docente.persona.telefono }}</div>
+                                    <div>{{ administradore.persona.telefono }}</div>
                                 </Link>
                             </td>
                             <td class="border-t max-w-80">
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
+                                    :href="route('administradores.edit', administradore.id)"
                                 >
-                                    <div>{{ docente.persona.direccion }}</div>
+                                    <div>{{ administradore.persona.direccion }}</div>
                                 </Link>
                             </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
+                                    :href="route('administradores.edit', administradore.id)"
                                 >
-                                    <div>{{ docente.user.email }}</div>
+                                    <div>{{ administradore.user.email }}</div>
                                 </Link>
                             </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
+                                    :href="route('administradores.edit', administradore.id)"
                                 >
-                                    <div>{{ docente.estado.estado }}</div>
+                                    <div>{{ administradore.estado.estado }}</div>
                                 </Link>
                             </td>
                             <td class="w-px border-t">
                                 <Link
                                     class="flex items-center px-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
+                                    :href="route('administradores.edit', administradore.id)"
                                 >
                                     <icon
                                         name="cheveron-right"
