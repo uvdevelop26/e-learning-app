@@ -8,66 +8,53 @@ import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
 
+
 const props = defineProps({
-    docente: Object,
+    errors: Object,
     departamentos: Array,
-    currentDpto: Number,
     ciudades: Array,
     estados: Array,
-    roles: Array,
-    currentRole: Number,
-    errors: Object
-});
+    rol: Array,
+    carreras: Array
+})
 
 const form = useForm({
-    _method: "PUT",
-    id: props.docente.id,
-    profesion: props.docente.profesion,
-    estado_id: props.docente.estado_id,
-
-    nombre: props.docente.persona[0].nombre,
-    apellido: props.docente.persona[0].apellido,
-    ci_numero: props.docente.persona[0].ci_numero,
-    sexo: props.docente.persona[0].sexo,
-    telefono: props.docente.persona[0].telefono,
-    direccion: props.docente.persona[0].direccion,
-    ciudade_id: props.docente.persona[0].ciudade_id,
-    departamento_id: props.currentDpto,
-    email: props.docente.user[0].email,
-    password: props.docente.user[0].password,
-    password_confirmation: props.docente.user[0].password,
-    role_id: props.currentRole
+    carrera_id: "",
+    estado_id: "",
+    nombre:"",
+    apellido: "",
+    ci_numero: "",
+    sexo: "",
+    telefono: "",
+    direccion: "",
+    ciudade_id: "",
+    departamento_id: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+    role_id: props.rol[0].id
 });
 
-const update = () => {
-    form.post(route("docentes.update", form),{
+const submit = ()=>{
+    form.post(route("alumnos.store"), {
         preserveScroll: true
     });
-};
-
-const deleteUser = ()=>{
-
-    form.delete(route("docentes.destroy", form.id),{
-        preserveScroll: true
-    })
 }
-
 
 </script>
 <template>
     <div>
-        <AppLayout title="docente">
-            <Head title="Docentes" />
+        <AppLayout title="Alumnos/create">
+            <Head title="Alumnos/create" />
 
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Docentes / {{ props.docente.persona[0].nombre }}
+                    Usuarios / Alumnos / Crear
                 </h2>
             </template>
-
             <div class="py-12 px-4 lg:px-8 max-w-7xl">
                 <div class="w-full overflow-hidden">
-                    <form @submit.prevent="update">
+                    <form @submit.prevent="submit">
                         <div
                             class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
                         >
@@ -166,13 +153,24 @@ const deleteUser = ()=>{
                                 id="email"
                                 :error="errors.email"
                             />
-                            <text-input
+                            <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
-                                label="Profesión"
-                                v-model="form.profesion"
-                                id="profesion"
-                                :error="errors.profesion"
-                            />
+                                label="Carrera"
+                                v-model="form.carrera_id"
+                                id="carrera_id"
+                                :error="errors.carrera_id"
+                            >
+                                <option :value="null" />
+                                <option
+                                    v-for="carrera in carreras"
+                                    :key="carrera.id"
+                                    :value="carrera.id"
+                                    class="capitalize"
+                                >
+                                    {{ carrera.nombre }}
+                                </option>
+                            </select-input>
+                            
                             <text-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Contraseña"
@@ -210,46 +208,40 @@ const deleteUser = ()=>{
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Rol"
                                 v-model="form.role_id"
-                                id="ciudade_id"
+                                id="role_id"
                                 disabled
                             >
                                 <option :value="null" />
                                 <option
-                                    v-for="role in roles"
-                                    :key="role.id"
-                                    :value="role.id"
+                                    v-for="ro in rol"
+                                    :key="ro.id"
+                                    :value="ro.id"
                                     class="capitalize"
+                                   
                                 >
-                                    {{ role.rol }}
+                                    {{ ro.rol }}
                                 </option>
                             </select-input>
                         </div>
                         <div
                             class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
                         >
-                            <button
-                                class="text-red-600 hover:underline"
-                                tabindex="-1"
-                                type="button"
-                                @click="deleteUser"
-                            >
-                                Eliminar Usuario
-                            </button>
+                           
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
                                 type="submit"
-                                >Actualizar Usuario
+                                >Crear Usuario
                             </loading-button>
                         </div>
                     </form>
                 </div>
             </div>
+            
         </AppLayout>
+
     </div>
 </template>
 
-<!--        
-                       
 
-                    -->
+

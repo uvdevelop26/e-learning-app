@@ -9,62 +9,58 @@ import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
 
 const props = defineProps({
-    docente: Object,
+    errors: Object,
+    alumno: Object,
     departamentos: Array,
     currentDpto: Number,
     ciudades: Array,
     estados: Array,
-    roles: Array,
     currentRole: Number,
-    errors: Object
+    roles: Array,
+    carreras: Array,
 });
 
 const form = useForm({
     _method: "PUT",
-    id: props.docente.id,
-    profesion: props.docente.profesion,
-    estado_id: props.docente.estado_id,
-
-    nombre: props.docente.persona[0].nombre,
-    apellido: props.docente.persona[0].apellido,
-    ci_numero: props.docente.persona[0].ci_numero,
-    sexo: props.docente.persona[0].sexo,
-    telefono: props.docente.persona[0].telefono,
-    direccion: props.docente.persona[0].direccion,
-    ciudade_id: props.docente.persona[0].ciudade_id,
+    id: props.alumno.id,
+    carrera_id: props.alumno.carrera_id,
+    estado_id: props.alumno.estado_id,
+    nombre: props.alumno.persona[0].nombre,
+    apellido: props.alumno.persona[0].apellido,
+    ci_numero: props.alumno.persona[0].ci_numero,
+    sexo: props.alumno.persona[0].sexo,
+    telefono: props.alumno.persona[0].telefono,
+    direccion: props.alumno.persona[0].direccion,
+    ciudade_id: props.alumno.persona[0].ciudade_id,
     departamento_id: props.currentDpto,
-    email: props.docente.user[0].email,
-    password: props.docente.user[0].password,
-    password_confirmation: props.docente.user[0].password,
-    role_id: props.currentRole
+    email: props.alumno.user[0].email,
+    password: props.alumno.user[0].password,
+    password_confirmation: props.alumno.user[0].password,
+    role_id: props.currentRole,
 });
 
 const update = () => {
-    form.post(route("docentes.update", form),{
-        preserveScroll: true
+    form.post(route("alumnos.update", form), {
+        preserveScroll: true,
     });
 };
 
-const deleteUser = ()=>{
-
-    form.delete(route("docentes.destroy", form.id),{
-        preserveScroll: true
-    })
-}
-
-
+const deleteUser = () => {
+    form.delete(route("alumnos.destroy", form.id), {
+        preserveScroll: true,
+    });
+};
 </script>
 <template>
     <div>
-        <AppLayout title="docente">
-            <Head title="Docentes" />
+        <AppLayout title="Alumnos/edit">
+            <Head title="Alumnos/edit" />
 
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Docentes / {{ props.docente.persona[0].nombre }}
+                    Usuarios / Alumnos / {{ props.alumno.persona[0].nombre }}
                 </h2>
             </template>
-
             <div class="py-12 px-4 lg:px-8 max-w-7xl">
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="update">
@@ -166,13 +162,24 @@ const deleteUser = ()=>{
                                 id="email"
                                 :error="errors.email"
                             />
-                            <text-input
+                            <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
-                                label="Profesión"
-                                v-model="form.profesion"
-                                id="profesion"
-                                :error="errors.profesion"
-                            />
+                                label="Carrera"
+                                v-model="form.carrera_id"
+                                id="carrera_id"
+                                :error="errors.carrera_id"
+                            >
+                                <option :value="null" />
+                                <option
+                                    v-for="carrera in carreras"
+                                    :key="carrera.id"
+                                    :value="carrera.id"
+                                    class="capitalize"
+                                >
+                                    {{ carrera.nombre }}
+                                </option>
+                            </select-input>
+
                             <text-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Contraseña"
@@ -210,17 +217,17 @@ const deleteUser = ()=>{
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Rol"
                                 v-model="form.role_id"
-                                id="ciudade_id"
+                                id="role_id"
                                 disabled
                             >
                                 <option :value="null" />
                                 <option
-                                    v-for="role in roles"
-                                    :key="role.id"
-                                    :value="role.id"
+                                    v-for="rol in roles"
+                                    :key="rol.id"
+                                    :value="rol.id"
                                     class="capitalize"
                                 >
-                                    {{ role.rol }}
+                                    {{ rol.rol }}
                                 </option>
                             </select-input>
                         </div>
@@ -239,7 +246,7 @@ const deleteUser = ()=>{
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
                                 type="submit"
-                                >Actualizar Usuario
+                                >Crear Usuario
                             </loading-button>
                         </div>
                     </form>
@@ -248,8 +255,3 @@ const deleteUser = ()=>{
         </AppLayout>
     </div>
 </template>
-
-<!--        
-                       
-
-                    -->

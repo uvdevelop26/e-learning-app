@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->hasMany(Docente::class);
     }
 
+    public function alumnos()
+    {
+        return $this->hasMany(User::class);
+    }
+
     public function administradores()
     {
         return $this->hasMany(Docente::class);

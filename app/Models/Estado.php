@@ -22,4 +22,9 @@ class Estado extends Model
     {
         return $this->hasMany(Administradore::class);
     }
+
+    public function alumnos()
+    {
+        return $this->hasMany(Alumno::class);
+    }
 }

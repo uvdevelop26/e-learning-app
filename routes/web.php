@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdministradoreController;
+use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\SemestreController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,7 +40,7 @@ Route::middleware([
 });
 
 
-
+//docentes
 Route::controller(DocenteController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('docentes', 'index')->name('docentes.index');
     Route::get('docentes/create', 'create')->name('docentes.create');
@@ -48,6 +50,17 @@ Route::controller(DocenteController::class)->middleware(['auth:sanctum', 'verifi
     Route::delete('docentes/{docente}', 'destroy')->name('docentes.destroy');
 });
 
+//alumnos
+Route::controller(AlumnoController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('alumnos', 'index')->name('alumnos.index');
+    Route::get('alumnos/create', 'create')->name('alumnos.create');
+    Route::post('alumnos', 'store')->name('alumnos.store');
+    Route::get('alumnos/{alumno}/edit', 'edit')->name('alumnos.edit');
+    Route::put('alumnos/{alumno}', 'update')->name('alumnos.update');
+    Route::delete('alumnos/{alumno}', 'destroy')->name('alumnos.destroy');
+});
+
+//Administradores
 Route::controller(AdministradoreController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('administradores', 'index')->name('administradores.index');
     Route::get('administradores/create', 'create')->name('administradores.create');
@@ -57,6 +70,22 @@ Route::controller(AdministradoreController::class)->middleware(['auth:sanctum', 
     Route::delete('administradores/{administradore}', 'destroy')->name('administradores.destroy');
 });
 
+//Carreras
 Route::controller(CarreraController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('carreras', 'index')->name('carreras.index');
+    Route::get('carreras/create', 'create')->name('carreras.create');
+    Route::post('carreras', 'store')->name('carreras.store');
+    Route::get('carreras/{carrera}/edit', 'edit')->name('carreras.edit');
+    Route::put('carreras/{carrera}', 'update')->name('carreras.update');
+    Route::delete('carreras/{carrera}', 'destroy')->name('carreras.destroy');
+});
+
+//semestres
+Route::controller(SemestreController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('semestres', 'index')->name('semestres.index');
+    Route::get('semestres/create', 'create')->name('semestres.create');
+    Route::post('semestres', 'store')->name('semestres.store');
+    Route::get('semestres/{semestre}/edit', 'edit')->name('semestres.edit');
+    Route::put('semestres/{semestre}', 'update')->name('semestres.update');
+    Route::delete('semestres/{semestre}', 'destroy')->name('semestres.destroy');
 });

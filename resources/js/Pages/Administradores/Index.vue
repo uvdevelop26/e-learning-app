@@ -48,6 +48,7 @@ defineProps({
                             <th class="pb-4 pt-6 px-6">CI</th>
                             <th class="pb-4 pt-6 px-6">Teléfono</th>
                             <th class="pb-4 pt-6 px-6">Dirección</th>
+                            <th class="pb-4 pt-6 px-6">Cargo</th>
                             <th class="pb-4 pt-6 px-6">Correo</th>
                             <th class="pb-4 pt-6 px-6">Estado</th>
                         </tr>
@@ -91,6 +92,15 @@ defineProps({
                                     :href="route('administradores.edit', administradore.id)"
                                 >
                                     <div>{{ administradore.persona.direccion }}</div>
+                                </Link>
+                            </td>
+                            <td class="border-t max-w-80">
+                                <Link
+                                    class="flex items-center px-6 py-4 whitespace-normal"
+                                    tabindex="-1"
+                                    :href="route('administradores.edit', administradore.id)"
+                                >
+                                    <div>{{ administradore.cargo }}</div>
                                 </Link>
                             </td>
                             <td class="border-t">
