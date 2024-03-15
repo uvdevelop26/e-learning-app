@@ -7,6 +7,7 @@ import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
+import { watchEffect, ref } from "vue";
 
 const props = defineProps({
     docente: Object,
@@ -24,7 +25,6 @@ const form = useForm({
     id: props.docente.id,
     profesion: props.docente.profesion,
     estado_id: props.docente.estado_id,
-
     nombre: props.docente.persona[0].nombre,
     apellido: props.docente.persona[0].apellido,
     ci_numero: props.docente.persona[0].ci_numero,
@@ -37,6 +37,22 @@ const form = useForm({
     password: props.docente.user[0].password,
     password_confirmation: props.docente.user[0].password,
     role_id: props.currentRole
+});
+
+const cities = props.ciudades;
+
+const filteredCities = ref(null);
+
+watchEffect(() => {
+    const departamentoId = parseInt(form.departamento_id);
+
+    if (isNaN(departamentoId)) {
+        filteredCities.value = null;
+    } else {
+        filteredCities.value = cities.filter(
+            (city) => city.departamento_id === departamentoId 
+        );
+    }
 });
 
 const update = () => {
@@ -146,7 +162,7 @@ const deleteUser = ()=>{
                             >
                                 <option :value="null" />
                                 <option
-                                    v-for="ciudade in ciudades"
+                                    v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
                                     class="capitalize"

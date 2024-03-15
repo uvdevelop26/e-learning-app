@@ -13,6 +13,7 @@ class Semestre extends Model
 
     protected $fillable = [
         'nombre',
+        'codigo',
         'descripcion',
         'carrera_id'
     ];

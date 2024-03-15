@@ -16,6 +16,7 @@ class CarreraFactory extends Factory
 
         return [
             'nombre' => $this->faker->randomElement($carreras),
+            'codigo' => $this->faker->word(),
             'duracion' => $this->faker->word(),
             'descripcion' => $this->faker->sentence()
         ];

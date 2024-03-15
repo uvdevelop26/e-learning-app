@@ -7,6 +7,7 @@ import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
+import { watchEffect } from "vue";
 
 const props = defineProps({
     errors: Object,
@@ -15,9 +16,12 @@ const props = defineProps({
 
 const form = useForm({
     nombre: "",
+    codigo: "",
     descripcion: "",
     carrera_id: "",
 });
+
+const carrers = props.carreras;
 
 const nameSemestres = [
     "I",
@@ -33,6 +37,20 @@ const nameSemestres = [
     "XI",
     "XII",
 ];
+
+watchEffect(() => {
+    const carreraId = parseInt(form.carrera_id);
+    const nombreSemestre = form.nombre;
+    let filteredCarrer = null;
+
+    if (isNaN(carreraId) && nombreSemestre == "") {
+        filteredCarrer = null;
+        form.codigo = null;
+    } else {
+        filteredCarrer = carrers.filter((carrera) => carrera.id == carreraId);
+        form.codigo = filteredCarrer[0].codigo + "-" + nombreSemestre;
+    }
+});
 
 const submit = () => {
     form.post(route("semestres.store"), {
@@ -59,31 +77,6 @@ const submit = () => {
                         >
                             <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
-                                label="Nombre"
-                                v-model="form.nombre"
-                                id="nombre"
-                                :error="errors.nombre"
-                            >
-                                <option :value="null" />
-                                <option
-                                    v-for="name in nameSemestres"
-                                    :key="name"
-                                    :value="name"
-                                    class="capitalize"
-                                >
-                                    {{ name }}
-                                </option>
-                            </select-input>
-                            <text-area
-                                id="descripcion"
-                                class="pb-8 pr-6 w-full lg:w-1/2"
-                                label="Descripción"
-                                v-model="form.descripcion"
-                                :error="errors.descripcion"
-                            >
-                            </text-area>
-                            <select-input
-                                class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Carrera"
                                 v-model="form.carrera_id"
                                 id="carrera_id"
@@ -99,6 +92,40 @@ const submit = () => {
                                     {{ carrera.nombre }}
                                 </option>
                             </select-input>
+                            <select-input
+                                class="pb-8 pr-6 w-full lg:w-1/2"
+                                label="Semestre"
+                                v-model="form.nombre"
+                                id="nombre"
+                                :error="errors.nombre"
+                            >
+                                <option :value="null" />
+                                <option
+                                    v-for="name in nameSemestres"
+                                    :key="name"
+                                    :value="name"
+                                    class="capitalize"
+                                >
+                                    {{ name }}
+                                </option>
+                            </select-input>
+                            <text-input
+                                type="text"
+                                class="pb-8 pr-6 w-full lg:w-1/2"
+                                label="Código"
+                                v-model="form.codigo"
+                                id="nombre"
+                                disabled
+                                :error="errors.codigo"
+                            />
+                            <text-area
+                                id="descripcion"
+                                class="pb-8 pr-6 w-full lg:w-1/2"
+                                label="Descripción"
+                                v-model="form.descripcion"
+                                :error="errors.descripcion"
+                            >
+                            </text-area>
                         </div>
 
                         <div

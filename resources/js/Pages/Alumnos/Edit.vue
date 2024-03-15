@@ -7,6 +7,7 @@ import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
+import { watchEffect, ref } from "vue";
 
 const props = defineProps({
     errors: Object,
@@ -37,6 +38,22 @@ const form = useForm({
     password: props.alumno.user[0].password,
     password_confirmation: props.alumno.user[0].password,
     role_id: props.currentRole,
+});
+
+const cities = props.ciudades;
+
+const filteredCities = ref(null);
+
+watchEffect(() => {
+    const departamentoId = parseInt(form.departamento_id);
+
+    if (isNaN(departamentoId)) {
+        filteredCities.value = null;
+    } else {
+        filteredCities.value = cities.filter(
+            (city) => city.departamento_id === departamentoId
+        );
+    }
 });
 
 const update = () => {
@@ -121,7 +138,7 @@ const deleteUser = () => {
                                 label="Departamento"
                                 id="departamento"
                                 v-model="form.departamento_id"
-                                :error="errors.departamento"
+                                :error="errors.departamento_id"
                             >
                                 <option :value="null" />
                                 <option
@@ -142,7 +159,7 @@ const deleteUser = () => {
                             >
                                 <option :value="null" />
                                 <option
-                                    v-for="ciudade in ciudades"
+                                    v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
                                     class="capitalize"

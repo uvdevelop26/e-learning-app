@@ -64,6 +64,7 @@ defineProps({
                                     :href="route('alumnos.edit', alumno.id)"
                                 >
                                     {{ alumno.persona.nombre }}
+                                    {{ alumno.persona.apellido }}
                                 </Link>
                             </td>
                             <td class="border-t">

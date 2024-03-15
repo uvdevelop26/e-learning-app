@@ -43,6 +43,7 @@ defineProps({
                 >
                     <thead>
                         <tr class="text-left font-bold">
+                            <th class="pb-4 pt-6 px-6">Código</th>
                             <th class="pb-4 pt-6 px-6">Nombre</th>
                             <th class="pb-4 pt-6 px-6">Duracion</th>
                             <th class="pb-4 pt-6 px-6">Descripcion</th>
@@ -54,6 +55,14 @@ defineProps({
                             :key="carrera.id"
                             class="hover:bg-gray-100 focus-within:bg-gray-100"
                         >
+                        <td class="border-t">
+                                <Link
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    :href="route('carreras.edit', carrera.id)"
+                                >
+                                    {{ carrera.codigo }}
+                                </Link>
+                            </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"

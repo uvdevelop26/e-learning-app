@@ -33,12 +33,14 @@ class SemestreController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
+            'codigo' => 'required',
             'descripcion' => 'required',
             'carrera_id' => 'required'
         ]);
 
         Semestre::create([
             'nombre' => $request->nombre,
+            'codigo' => $request->codigo,
             'descripcion' => $request->descripcion,
             'carrera_id' => $request->carrera_id
         ]);
@@ -60,6 +62,7 @@ class SemestreController extends Controller
             'semestre' => [
                 'id' => $semestre->id,
                 'nombre' => $semestre->nombre,
+                'codigo' => $semestre->codigo,
                 'descripcion' => $semestre->descripcion,
                 'carrera_id' => $semestre->carrera_id
             ],
@@ -73,12 +76,14 @@ class SemestreController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
-            'descripcion' => 'required',
+            'codigo' => 'required',
+            'descripcion' => 'required',      
             'carrera_id' => 'required'
         ]);
 
         $semestre->update([
             'nombre' => $request->nombre,
+            'codigo' => $request->codigo,
             'descripcion' => $request->descripcion,
             'carrera_id' => $request->carrera_id
         ]);

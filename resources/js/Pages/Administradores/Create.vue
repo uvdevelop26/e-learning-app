@@ -7,20 +7,20 @@ import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
-
+import { watchEffect, ref } from "vue";
 
 const props = defineProps({
     errors: Object,
     departamentos: Array,
     ciudades: Array,
     estados: Array,
-    rol: Array
-})
+    rol: Array,
+});
 
 const form = useForm({
     cargo: "",
     estado_id: "",
-    nombre:"",
+    nombre: "",
     apellido: "",
     ci_numero: "",
     sexo: "",
@@ -31,15 +31,30 @@ const form = useForm({
     email: "",
     password: "",
     password_confirmation: "",
-    role_id: props.rol[0].id
+    role_id: props.rol[0].id,
 });
 
-const submit = ()=>{
-    form.post(route("administradores.store"), {
-        preserveScroll: true
-    });
-}
+const cities = props.ciudades;
 
+const filteredCities = ref(null);
+
+watchEffect(() => {
+    const departamentoId = parseInt(form.departamento_id);
+
+    if (isNaN(departamentoId)) {
+        filteredCities.value = null;
+    } else {
+        filteredCities.value = cities.filter(
+            (city) => city.departamento_id === departamentoId 
+        );
+    }
+});
+
+const submit = () => {
+    form.post(route("administradores.store"), {
+        preserveScroll: true,
+    });
+};
 </script>
 <template>
     <div>
@@ -111,7 +126,7 @@ const submit = ()=>{
                                 label="Departamento"
                                 id="departamento"
                                 v-model="form.departamento_id"
-                                :error="errors.departamento"
+                                :error="errors.departamento_id"
                             >
                                 <option :value="null" />
                                 <option
@@ -132,7 +147,7 @@ const submit = ()=>{
                             >
                                 <option :value="null" />
                                 <option
-                                    v-for="ciudade in ciudades"
+                                    v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
                                     class="capitalize"
@@ -205,7 +220,6 @@ const submit = ()=>{
                                     :key="ro.id"
                                     :value="ro.id"
                                     class="capitalize"
-                                   
                                 >
                                     {{ ro.rol }}
                                 </option>
@@ -214,7 +228,6 @@ const submit = ()=>{
                         <div
                             class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
                         >
-                           
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
@@ -225,11 +238,6 @@ const submit = ()=>{
                     </form>
                 </div>
             </div>
-            
         </AppLayout>
-
     </div>
 </template>
-
-
-

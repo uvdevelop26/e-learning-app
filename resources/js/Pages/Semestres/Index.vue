@@ -44,6 +44,7 @@ defineProps({
                     <thead>
                         <tr class="text-left font-bold">
                             <th class="pb-4 pt-6 px-6">Semestre</th>
+                            <th class="pb-4 pt-6 px-6">Código</th>
                             <th class="pb-4 pt-6 px-6">Descripcion</th>
                             <th class="pb-4 pt-6 px-6">Carrera</th>
                         </tr>
@@ -62,6 +63,14 @@ defineProps({
                                     {{ semestre.nombre }}
                                 </Link>
                             </td> 
+                            <td class="border-t">
+                                <Link
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    :href="route('semestres.edit', semestre.id)"
+                                >
+                                    {{ semestre.codigo }}
+                                </Link>
+                            </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 max-w-80 whitespace-normal"

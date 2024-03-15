@@ -12,9 +12,9 @@ return new class extends Migration
         Schema::create('semestres', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('codigo')->nullable();
             $table->string('descripcion');
             $table->unsignedBigInteger('carrera_id');
-
             $table->foreign('carrera_id')
                 ->references('id')
                 ->on('carreras')

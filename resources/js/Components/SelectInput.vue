@@ -6,7 +6,7 @@ defineProps({
     label: String,
     id: String,
     disabled: Boolean,
-    error: String
+    error: String,
 });
 
 defineEmits(["update:modelValue"]);
@@ -19,7 +19,7 @@ onMounted(() => {
     }
 });
 
-defineExpose({ focus: () => inputSelect.value.focus() });
+defineExpose({ focus: () => inputSelect.value.focus(), inputSelect });
 </script>
 <template>
     <div>

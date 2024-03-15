@@ -18,9 +18,9 @@ class SemestreFactory extends Factory
 
         return [
             'nombre' => $this->faker->randomElement($nombres),
+            'codigo' => $this->faker->word(),
             'descripcion' => $this->faker->sentence(5),
             'carrera_id' => $carrera_id
-
         ];
     }
 }

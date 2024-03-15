@@ -23,6 +23,7 @@ class DocenteRequest extends FormRequest
             'telefono' => 'required',
             'direccion' => 'required',
             'ciudade_id' => 'required',
+            'departamento_id' => 'required',
             'profesion' => 'required',
             'estado_id' => 'required',
             'email' => 'required',

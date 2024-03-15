@@ -6,7 +6,8 @@ defineProps({
     label: String,
     id: String,
     type: String,
-    error: String
+    error: String,
+    disabled: Boolean
 });
 
 defineEmits(["update:modelValue"]);
@@ -31,6 +32,7 @@ defineExpose({ focus: () => input.value.focus() });
             class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm"
             :id="id"
             :value="modelValue"
+            :disabled="disabled"
             @input="$emit('update:modelValue', $event.target.value)"
         />
         <div v-if="error" class="text-sm text-red-500">{{ error }}</div>

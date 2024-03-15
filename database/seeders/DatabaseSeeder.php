@@ -8,6 +8,7 @@ use App\Models\Administradore;
 use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Docente;
+use App\Models\Materia;
 use App\Models\Persona;
 use App\Models\Semestre;
 use App\Models\User;
@@ -29,5 +30,6 @@ class DatabaseSeeder extends Seeder
         Carrera::factory(4)->create();
         Alumno::factory(20)->create();
         Semestre::factory(8)->create();
+        Materia::factory(10)->create();
     }
 }

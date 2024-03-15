@@ -7,7 +7,7 @@ import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
-
+import { watchEffect, ref } from "vue";
 
 const props = defineProps({
     errors: Object,
@@ -15,31 +15,48 @@ const props = defineProps({
     ciudades: Array,
     estados: Array,
     rol: Array,
-    carreras: Array
-})
+    carreras: Array,
+});
 
 const form = useForm({
     carrera_id: "",
     estado_id: "",
-    nombre:"",
+    nombre: "",
     apellido: "",
     ci_numero: "",
     sexo: "",
     telefono: "",
     direccion: "",
     ciudade_id: "",
-    departamento_id: "",
+    departamento_id: null,
     email: "",
     password: "",
     password_confirmation: "",
-    role_id: props.rol[0].id
+    role_id: props.rol[0].id,
 });
 
-const submit = ()=>{
+const cities = props.ciudades;
+
+const filteredCities = ref(null);
+
+watchEffect(() => {
+    const departamentoId = parseInt(form.departamento_id);
+
+    if (isNaN(departamentoId)) {
+        filteredCities.value = null;
+    } else {
+        filteredCities.value = cities.filter(
+            (city) => city.departamento_id === departamentoId 
+        );
+    }
+});
+
+const submit = () => {
     form.post(route("alumnos.store"), {
-        preserveScroll: true
+        preserveScroll: true,
     });
-}
+};
+
 
 </script>
 <template>
@@ -112,7 +129,7 @@ const submit = ()=>{
                                 label="Departamento"
                                 id="departamento"
                                 v-model="form.departamento_id"
-                                :error="errors.departamento"
+                                :error="errors.departamento_id"
                             >
                                 <option :value="null" />
                                 <option
@@ -130,10 +147,11 @@ const submit = ()=>{
                                 v-model="form.ciudade_id"
                                 id="ciudade_id"
                                 :error="errors.ciudade_id"
+                                ref="selectInputChild"
                             >
                                 <option :value="null" />
                                 <option
-                                    v-for="ciudade in ciudades"
+                                    v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
                                     class="capitalize"
@@ -170,7 +188,7 @@ const submit = ()=>{
                                     {{ carrera.nombre }}
                                 </option>
                             </select-input>
-                            
+
                             <text-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Contraseña"
@@ -217,7 +235,6 @@ const submit = ()=>{
                                     :key="ro.id"
                                     :value="ro.id"
                                     class="capitalize"
-                                   
                                 >
                                     {{ ro.rol }}
                                 </option>
@@ -226,7 +243,6 @@ const submit = ()=>{
                         <div
                             class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
                         >
-                           
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
@@ -237,11 +253,6 @@ const submit = ()=>{
                     </form>
                 </div>
             </div>
-            
         </AppLayout>
-
     </div>
 </template>
-
-
-

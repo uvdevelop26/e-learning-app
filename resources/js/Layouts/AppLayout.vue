@@ -55,7 +55,7 @@ onMounted(() => {
 
     mql.addEventListener("change", handleMqlChange);
 
-    console.log(mql);
+  
 });
 
 onUnmounted(() => {

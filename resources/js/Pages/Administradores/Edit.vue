@@ -7,6 +7,7 @@ import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
+import { watchEffect, ref } from "vue";
 
 const props = defineProps({
     administradore: Object,
@@ -16,7 +17,7 @@ const props = defineProps({
     estados: Array,
     roles: Array,
     currentRole: Number,
-    errors: Object
+    errors: Object,
 });
 
 const form = useForm({
@@ -35,23 +36,36 @@ const form = useForm({
     email: props.administradore.user[0].email,
     password: props.administradore.user[0].password,
     password_confirmation: props.administradore.user.password,
-    role_id: props.currentRole
+    role_id: props.currentRole,
+});
+
+const cities = props.ciudades;
+
+const filteredCities = ref(null);
+
+watchEffect(() => {
+    const departamentoId = parseInt(form.departamento_id);
+
+    if (isNaN(departamentoId)) {
+        filteredCities.value = null;
+    } else {
+        filteredCities.value = cities.filter(
+            (city) => city.departamento_id === departamentoId
+        );
+    }
 });
 
 const update = () => {
-    form.post(route("administradores.update", form),{
-        preserveScroll: true
+    form.post(route("administradores.update", form), {
+        preserveScroll: true,
     });
 };
 
-const deleteUser = ()=>{
-
-    form.delete(route("administradores.destroy", form.id),{
-        preserveScroll: true
-    })
-}
-
-
+const deleteUser = () => {
+    form.delete(route("administradores.destroy", form.id), {
+        preserveScroll: true,
+    });
+};
 </script>
 <template>
     <div>
@@ -60,7 +74,8 @@ const deleteUser = ()=>{
 
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Administrador / {{ props.administradore.persona[0].nombre }}
+                    Usuarios / Administrador /
+                    {{ props.administradore.persona[0].nombre }}
                 </h2>
             </template>
 
@@ -145,7 +160,7 @@ const deleteUser = ()=>{
                             >
                                 <option :value="null" />
                                 <option
-                                    v-for="ciudade in ciudades"
+                                    v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
                                     class="capitalize"

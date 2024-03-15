@@ -23,6 +23,7 @@ class AdministradoreRequest extends FormRequest
             'telefono' => 'required',
             'direccion' => 'required',
             'ciudade_id' => 'required',
+            'departamento_id' => 'required',
             'cargo' => 'required',
             'estado_id' => 'required',
             'email' => 'required',

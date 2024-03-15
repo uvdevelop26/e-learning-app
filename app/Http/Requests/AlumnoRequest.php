@@ -23,6 +23,7 @@ class AlumnoRequest extends FormRequest
             'telefono' => 'required',
             'direccion' => 'required',
             'ciudade_id' => 'required',
+            'departamento_id' => 'required',
             'carrera_id' => 'required',
             'estado_id' => 'required',
             'email' => 'required',

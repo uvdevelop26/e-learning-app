@@ -14,9 +14,23 @@ const props = defineProps({
 
 const form = useForm({
     nombre: "",
+    codigo: "",
     duracion: "",
     descripcion: "",
 });
+
+const generateCode = (name) => {
+    const array = name.split(" ");
+    let newArray = [];
+    for (let i = 0; i < array.length; i++) {
+        let test = array[i].split("")[0];
+        newArray.push(test);
+    }
+
+    let result = newArray.join("").toUpperCase();
+
+    form.codigo = result;
+};
 
 const submit = () => {
     form.post(route("carreras.store"), {
@@ -48,6 +62,17 @@ const submit = () => {
                                 v-model="form.nombre"
                                 id="nombre"
                                 :error="errors.nombre"
+                                @input="generateCode(form.nombre)"
+                            />
+                            
+                            <text-input
+                                type="text"
+                                class="pb-8 pr-6 w-full lg:w-1/2"
+                                label="Código"
+                                v-model="form.codigo"
+                                id="codigo"
+                                :error="errors.codigo"
+                                disabled
                             />
                             <text-input
                                 type="text"
@@ -74,7 +99,7 @@ const submit = () => {
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
                                 type="submit"
-                                >
+                            >
                                 Crear Carrera
                             </loading-button>
                         </div>
@@ -84,4 +109,3 @@ const submit = () => {
         </AppLayout>
     </div>
 </template>
-

@@ -28,11 +28,19 @@ class CarreraController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
+            'codigo' => 'nullable',
             'duracion' => 'required',
             'descripcion' => 'required'
         ]);
-        
-        return $request;
+
+        Carrera::create([
+            'nombre' => $request->nombre,
+            'codigo' => $request->codigo,
+            'duracion' => $request->duracion,
+            'descripcion' => $request->duracion
+        ]);
+
+        return Redirect::route("carreras.index");
     }
 
 
@@ -49,6 +57,7 @@ class CarreraController extends Controller
             'carrera' => [
                 'id' => $carrera->id,
                 'nombre' => $carrera->nombre,
+                'codigo' => $carrera->codigo,
                 'duracion' => $carrera->duracion,
                 'descripcion' => $carrera->descripcion
             ]
@@ -61,12 +70,14 @@ class CarreraController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
+            'codigo' => 'nullable',
             'duracion' => 'required',
             'descripcion' => 'required'
         ]);
 
         $carrera->update([
             'nombre' => $request->nombre,
+            'codigo' => $request->codigo,
             'duracion' => $request->duracion,
             'descripcion' => $request->descripcion
         ]);
@@ -74,7 +85,7 @@ class CarreraController extends Controller
         return Redirect::route("carreras.index");
     }
 
-   
+
     public function destroy($id)
     {
         $carrera = Carrera::find($id);
