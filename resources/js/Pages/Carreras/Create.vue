@@ -64,7 +64,7 @@ const submit = () => {
                                 :error="errors.nombre"
                                 @input="generateCode(form.nombre)"
                             />
-                            
+
                             <text-input
                                 type="text"
                                 class="pb-8 pr-6 w-full lg:w-1/2"

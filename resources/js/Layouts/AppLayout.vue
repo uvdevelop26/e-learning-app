@@ -36,7 +36,8 @@ const linkList = reactive([
         href: "...",
         submenu:[
             {name: "carreras", href: "carreras"},
-            {name: "semestres", href: "semestres"}
+            {name: "semestres", href: "semestres"},
+            {name: "materias", href: "materias"}
         ]
     }
 ]);

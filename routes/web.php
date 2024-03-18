@@ -4,6 +4,7 @@ use App\Http\Controllers\AdministradoreController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\SemestreController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -88,4 +89,15 @@ Route::controller(SemestreController::class)->middleware(['auth:sanctum', 'verif
     Route::get('semestres/{semestre}/edit', 'edit')->name('semestres.edit');
     Route::put('semestres/{semestre}', 'update')->name('semestres.update');
     Route::delete('semestres/{semestre}', 'destroy')->name('semestres.destroy');
+});
+
+//materias
+Route::controller(MateriaController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('materias', 'index')->name('materias.index');
+    Route::get('materias/create', 'create')->name('materias.create');
+    Route::post('materias', 'store')->name('materias.store');
+    Route::get('materias/{materia}/edit', 'edit')->name('materias.edit');
+    Route::put('materias/{materia}', 'update')->name('materias.update');
+    Route::delete('materias/{materia}', 'destroy')->name('materias.destroy');
+    Route::get('download/{id}', 'download')->name('materias.download');
 });

@@ -53,6 +53,8 @@ watchEffect(() => {
         filteredCities.value = cities.filter(
             (city) => city.departamento_id === departamentoId
         );
+
+      //  form.ciudade_id = null;
     }
 });
 
@@ -263,7 +265,7 @@ const deleteUser = () => {
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
                                 type="submit"
-                                >Crear Usuario
+                                >Actualizar Usuario
                             </loading-button>
                         </div>
                     </form>

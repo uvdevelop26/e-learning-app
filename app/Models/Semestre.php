@@ -27,4 +27,5 @@ class Semestre extends Model
     {
         return $this->hasMany(Materia::class);
     }
+    
 }

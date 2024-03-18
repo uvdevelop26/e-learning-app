@@ -48,6 +48,8 @@ watchEffect(() => {
         filteredCities.value = cities.filter(
             (city) => city.departamento_id === departamentoId 
         );
+
+        form.ciudade_id = null
     }
 });
 

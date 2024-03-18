@@ -47,6 +47,8 @@ watchEffect(() => {
         filteredCities.value = cities.filter(
             (city) => city.departamento_id === departamentoId 
         );
+
+        form.ciudade_id = null
     }
 });
 
@@ -169,9 +171,9 @@ const submit = () => {
                             />
                             <text-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
-                                label="Profesión"
+                                label="Cargo"
                                 v-model="form.cargo"
-                                id="profesion"
+                                id="Cargo"
                                 :error="errors.cargo"
                             />
                             <text-input
