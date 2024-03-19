@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdministradoreController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\CarreraController;
+use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\SemestreController;
@@ -100,4 +101,15 @@ Route::controller(MateriaController::class)->middleware(['auth:sanctum', 'verifi
     Route::put('materias/{materia}', 'update')->name('materias.update');
     Route::delete('materias/{materia}', 'destroy')->name('materias.destroy');
     Route::get('download/{id}', 'download')->name('materias.download');
+});
+
+//clases
+Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('clases', 'index')->name('clases.index');
+    Route::get('clases/create', 'create')->name('clases.create');
+    Route::post('clases', 'store')->name('clases.store');
+    Route::get('clases/{clase}/edit', 'edit')->name('clases.edit');
+    Route::put('clases/{clase}', 'update')->name('clases.update');
+    Route::delete('clases/{clase}', 'destroy')->name('clases.destroy');
+    Route::get("clases/{clase}", 'show')->name("clases.show");
 });

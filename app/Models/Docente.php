@@ -33,8 +33,8 @@ class Docente extends Model
         return $this->belongsTo(Estado::class);
     }
 
-    public function materias()
+    public function clases()
     {
-        return $this->hasMany(Materia::class);
+        return $this->hasMany(Clase::class);
     }
 }

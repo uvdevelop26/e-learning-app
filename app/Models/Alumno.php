@@ -37,4 +37,9 @@ class Alumno extends Model
     {
         return $this->belongsTo(Estado::class);
     }
+
+    public function clases()
+    {
+        return $this->belongsToMany(Clase::class);
+    }
 }

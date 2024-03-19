@@ -264,8 +264,3 @@ const deleteUser = ()=>{
         </AppLayout>
     </div>
 </template>
-
-<!--        
-                       
-
-                    -->

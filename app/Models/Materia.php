@@ -24,4 +24,9 @@ class Materia extends Model
     {
         return $this->belongsTo(Semestre::class);
     }
+
+    public function clases()
+    {
+        return $this->hasMany(Clase::class);
+    }
 }

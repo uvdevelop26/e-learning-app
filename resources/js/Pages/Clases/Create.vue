@@ -7,88 +7,103 @@ import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
-import { watchEffect } from "vue";
+import { watchEffect, ref } from "vue";
 
 const props = defineProps({
-    semestre: Object,
-    carreras: Array,
     errors: Object,
+    materias: Array,
+    semestres: Array,
+    carreras: Array,
 });
 
 const form = useForm({
-    _method: "PUT",
-    id: props.semestre.id,
-    codigo: props.semestre.codigo,
-    nombre: props.semestre.nombre,
-    descripcion: props.semestre.descripcion,
-    carrera_id: props.semestre.carrera_id,
+    codigo: "",
+    materia_id: "",
+    carrera_id: "",
+    semestre_id: "",
 });
 
-const carrers = props.carreras;
+const semesters = props.semestres;
 
-const nameSemestres = [
-    "I",
-    "II",
-    "III",
-    "IV",
-    "V",
-    "VI",
-    "VII",
-    "VIII",
-    "IX",
-    "X",
-    "XI",
-    "XII",
-];
+const filteredSemesters = ref(null)
+
+const materias = props.materias;
+
+const filteredMaterias = ref(null);
 
 watchEffect(() => {
     const carreraId = parseInt(form.carrera_id);
-    const nombreSemestre = form.nombre;
-    let filteredCarrer = null;
 
-    if (isNaN(carreraId) && nombreSemestre == "") {
-        filteredCarrer = null;
-        form.codigo = null;
+    if (isNaN(carreraId)) {
+        filteredSemesters.value = null;
+        form.materia_id = null
+        form.semestre_id = null
     } else {
-        filteredCarrer = carrers.filter((carrera) => carrera.id == carreraId);
-        form.codigo = filteredCarrer[0].codigo + "-" + nombreSemestre;
+        filteredSemesters.value = semesters.filter(
+            (semester) => semester.carrera_id === carreraId 
+        );
+
+        form.semestre_id = null
+        form.materia_id = null
     }
 });
 
-const update = () => {
-    form.post(route("semestres.update", form), {
-        preserveScroll: true,
-    });
-};
+watchEffect(() => {
+    const semestreId = parseInt(form.semestre_id);
 
-const deleteSemestre = () => {
-    form.delete(route("semestres.destroy", form.id), {
+    if (isNaN(semestreId)) {
+        filteredMaterias.value = null;
+        form.materia_id = null
+    } else {
+        filteredMaterias.value = materias.filter(
+            (materia) => materia.semestre_id === semestreId 
+        );
+
+        form.materia_id = null
+    }
+});
+
+watchEffect(() => {
+    const materiaId = parseInt(form.materia_id);
+    const randomNumber = Math.floor(Math.random() * 100);
+
+    if(isNaN(materiaId)){
+        form.codigo = null
+    } else{
+        const prefixCode = materias.filter((materia) => materia.id === materiaId);
+
+        form.codigo = prefixCode[0].codigo + randomNumber;
+    }
+
+});
+
+const submit = () => {
+    form.post(route("clases.store"), {
         preserveScroll: true,
     });
 };
 </script>
 <template>
     <div>
-        <AppLayout title="semestre">
-            <Head title="Semestres" />
+        <AppLayout title="Docentes/create">
+            <Head title="Docentes/create" />
 
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Carreras / {{ props.semestre.nombre }}
+                    Usuarios / Docentes / Crear
                 </h2>
             </template>
-
             <div class="py-12 px-4 lg:px-8 max-w-7xl">
                 <div class="w-full overflow-hidden">
-                    <form @submit.prevent="update">
+                    <form @submit.prevent="submit">
                         <div
                             class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
                         >
                             <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Carrera"
+                                id="carrera"
                                 v-model="form.carrera_id"
-                                id="carrera_id"
                                 :error="errors.carrera_id"
                             >
                                 <option :value="null" />
@@ -103,49 +118,57 @@ const deleteSemestre = () => {
                             </select-input>
                             <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
-                                label="Nombre"
-                                v-model="form.nombre"
-                                id="nombre"
-                                :error="errors.nombre"
+                                label="Semestre"
+                                id="semestre"
+                                v-model="form.semestre_id"
+                                :error="errors.semestre_id"
                             >
                                 <option :value="null" />
                                 <option
-                                    v-for="name in nameSemestres"
-                                    :key="name"
-                                    :value="name"
+                                    v-for="semestre in filteredSemesters"
+                                    :key="semestre.id"
+                                    :value="semestre.id"
                                     class="capitalize"
                                 >
-                                    {{ name }}
+                                    {{ semestre.nombre }}
+                                </option>
+                            </select-input>
+                            <select-input
+                                class="pb-8 pr-6 w-full lg:w-1/2"
+                                label="Materia"
+                                v-model="form.materia_id"
+                                id="materia"
+                                :error="errors.materia_id"
+                            >
+                                <option :value="null" />
+                                <option
+                                    v-for="materia in filteredMaterias"
+                                    :key="materia.id"
+                                    :value="materia.id"
+                                    class="capitalize"
+                                >
+                                    {{ materia.nombre }}
                                 </option>
                             </select-input>
                             <text-input
-                                type="text"
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Código"
                                 v-model="form.codigo"
-                                id="nombre"
-                                disabled
+                                id="telefono"
                                 :error="errors.codigo"
+                                disabled
                             />
-                            <text-area
-                                id="descripcion"
-                                class="pb-8 pr-6 w-full lg:w-1/2"
-                                label="Descripción"
-                                v-model="form.descripcion"
-                                :error="errors.descripcion"
-                            >
-                            </text-area>
+                           
                         </div>
-
+                       
                         <div
                             class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
                         >
-                            
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
                                 type="submit"
-                                >Actualizar Semestre
+                                >Crear Clase
                             </loading-button>
                         </div>
                     </form>
@@ -154,8 +177,3 @@ const deleteSemestre = () => {
         </AppLayout>
     </div>
 </template>
-
-<!--        
-                       
-
-                    -->

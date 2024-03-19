@@ -20,6 +20,16 @@ let mql = null;
 const linkList = reactive([
     { id: 1, name: "dashboard", href: "dashboard" },
     {
+        id:3,
+        name: "Clases Impartidas",
+        href: "clases",
+        /* submenu:[
+            {name: "carreras", href: "carreras"},
+            {name: "semestres", href: "semestres"},
+            {name: "materias", href: "materias"}
+        ] */
+    },
+    {
         id: 2,
         name: "usuarios",
         href: "..",
@@ -39,7 +49,8 @@ const linkList = reactive([
             {name: "semestres", href: "semestres"},
             {name: "materias", href: "materias"}
         ]
-    }
+    },
+    
 ]);
 
 const handleSubmenu = (index) => {
@@ -96,7 +107,7 @@ const logout = () => {
                                     </NavLink>
                                     <ul v-if="links.submenu && links.toggle_submenu" class="pl-3">
                                         <li v-for="submenu in links.submenu"
-                                            class="capitalize border-l-2">
+                                            class="capitalize border-l-2 text-sm">
                                             <NavLink :href="submenu.href" :active="route().current(submenu.href)">
                                                 {{ submenu.name }}
                                             </NavLink>
