@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Clase;
+use App\Models\Docente;
 use App\Models\Materia;
 use App\Models\Semestre;
 use Illuminate\Http\Request;
@@ -62,10 +64,8 @@ class ClaseController extends Controller
         $materia = $clase->materia;
         $semestre = Semestre::find($materia->semestre_id);
         $carrera = Carrera::find($semestre->carrera_id);
-       /*  $semestre = Materia::find($clase->materia_id)->semestre;
-        $currentCarrera = Semestre::find($currentSemestre)->carrera->id;
- */
-        return Inertia::render('Clases/Show',[
+
+        return Inertia::render('Clases/Show', [
             'clase' => [
                 'id' => $clase->id,
                 'codigo' => $clase->codigo,
@@ -134,5 +134,41 @@ class ClaseController extends Controller
         $clase->delete();
 
         return Redirect::route("clases.index");
+    }
+
+    public function showPersonas(Clase $clase)
+    {
+        $completeAlumnos = Alumno::join('personas', 'alumnos.persona_id', '=', 'personas.id')
+            ->select('alumnos.id as alumno_id', 'personas.nombre as nombre_persona', 'personas.apellido as apellido_persona', 'personas.ci_numero as ci_numero_persona')
+            ->get();
+        $alumnos = $clase->alumnos()->with('persona')->get();
+        $docente = Docente::find($clase->docente_id)->persona;
+
+        return Inertia::render('Clases/People', [
+            'alumnos' => $alumnos,
+            'docente' => $docente,
+            'clase' => $clase,
+            'completeAlumnos' => $completeAlumnos
+        ]);
+    }
+
+    public function asignAlumnos(Request $request)
+    {
+
+        $request->validate([
+            'alumnos' => 'required'
+        ]);
+
+        $clase = Clase::find($request->clase);
+
+        $clase->alumnos()->attach($request->alumnos);
+    }
+
+    public function revokeAlumno(Request $request)
+    {
+        $clase = Clase::find($request->clase);
+
+        $clase->alumnos()->detach($request->alumnos);
+
     }
 }

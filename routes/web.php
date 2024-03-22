@@ -112,4 +112,7 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
     Route::put('clases/{clase}', 'update')->name('clases.update');
     Route::delete('clases/{clase}', 'destroy')->name('clases.destroy');
     Route::get("clases/{clase}", 'show')->name("clases.show");
+    Route::get("clases/{clase}/personas", 'showPersonas')->name("clases.showPersonas");
+    Route::post('clases', 'asignAlumnos')->name('clases.asignAlumnos');
+    Route::delete('clases/{clase}', 'revokeAlumno')->name('clases.revokeAlumno');
 });

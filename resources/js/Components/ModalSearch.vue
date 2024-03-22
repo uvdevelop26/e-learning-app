@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted, watch, ref } from "vue";
+import TextInput from "./TextInput.vue";
 
 const props = defineProps({
     show: {
@@ -14,6 +15,15 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    title: {
+        type: String,
+        default: String,
+    },
+    placeholder: {
+        type: String,
+        default: String,
+    },
+
 });
 
 const body = ref(null)
@@ -99,21 +109,24 @@ const maxWidthClass = computed(() => {
                     enter-to-class="opacity-100 translate-y-0 sm:scale-100"
                     leave-active-class="ease-in duration-200"
                     leave-from-class="opacity-100 translate-y-0 sm:scale-100"
-                    leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                >
+                    leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                     <div
                         v-show="show"
-                        class="mb-6 p-4 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
-                        :class="maxWidthClass"
-                    >
-                        <div class="py-2 border-b">
-                            <slot name="headerModal" v-if="show" />
+                        class="mb-6 p-4 py-4 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
+                        :class="maxWidthClass">
+                        <div class="py-4 border-b">
+                            <h2 class="font-bold"> Seleccionar {{ title }}</h2>
                         </div>
-                        <div class="py-6" ref="body">
-                            <slot name="bodyModal" v-if="show" />
+                        <input 
+                        type="search" 
+                        class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm"
+                        :placeholder="placeholder">
+                        <div>
+                            <slot name="result" />
                         </div>
-                        <div class="py-2 flex justify-between border-t-2">
-                            <slot name="footerModal" v-if="show" />
+                        <div class="py-4 flex justify-between">
+                            <button class="inline-block px-2 py-1 text-red-500 hover:underline">Cancelar</button>
+                            <button class="inline-block px-4 py-1 bg-primary text-white font-bold rounded-md hover:bg-secondary">Enviar</button>
                         </div>
                     </div>
                 </transition>

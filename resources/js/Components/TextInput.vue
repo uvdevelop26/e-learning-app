@@ -7,7 +7,8 @@ defineProps({
     id: String,
     type: String,
     error: String,
-    disabled: Boolean
+    disabled: Boolean,
+    placeholder: String,
 });
 
 defineEmits(["update:modelValue"]);
@@ -20,7 +21,7 @@ onMounted(() => {
     }
 });
 
-defineExpose({ focus: () => input.value.focus() });
+defineExpose({ focus: () => input.value.focus(), input });
 </script>
 
 <template>
@@ -33,6 +34,7 @@ defineExpose({ focus: () => input.value.focus() });
             :id="id"
             :value="modelValue"
             :disabled="disabled"
+            :placeholder="placeholder"
             @input="$emit('update:modelValue', $event.target.value)"
         />
         <div v-if="error" class="text-sm text-red-500">{{ error }}</div>

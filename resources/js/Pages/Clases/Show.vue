@@ -48,18 +48,13 @@ const props = defineProps({
                     <span class="inline-block text-lg lg:text-xl text-white"
                         >Clase {{ props.clase.codigo }}</span
                     >
-                    
                 </div>
                 <div class="flex flex-col items-center">
-                    <div class="w-full flex justify-center gap-6 lg:flex-col lg:justify-start">
+                    <div
+                        class="w-full flex justify-center flex-wrap gap-6 lg:flex-col lg:justify-start"
+                    >
                         <div
-                            class="w-36 h-36 border rounded-xl flex flex-col items-center justify-center text-sm"
-                        >
-                            <span class="font-bold text-primary">Próximas Entregas</span>
-                            {{ clase.codigo }}
-                        </div>
-                        <div
-                            class="w-36 h-36 border rounded-xl flex flex-col items-center justify-center text-sm"
+                            class="w-36 py-4 border rounded-xl flex flex-col items-center justify-center text-sm"
                         >
                             <span class="font-bold text-primary"
                                 >Plan de Estudio</span
@@ -78,8 +73,39 @@ const props = defineProps({
                                 </div>
                             </a>
                         </div>
+                        <div
+                            class="w-36 py-4 border rounded-xl flex flex-col items-center justify-center text-sm"
+                        >
+                            <span class="font-bold text-primary"
+                                >Próximas Entregas</span
+                            >
+                            {{ clase.codigo }}
+                        </div>
+                        <div
+                            class="w-36 py-4 border rounded-xl flex flex-col items-center justify-center text-sm"
+                        >
+                            <span class="font-bold text-primary">
+                                Personas
+                            </span>
+                            <Link  class="flex items-center px-6 py-4 whitespace-normal" :href="route('clases.showPersonas', clase.id)">
+                                <div class="flex items-center text-xs">
+                                    <icon
+                                        name="user"
+                                        class="w-6 h-6 fill-primary hover:fill-secondary"
+                                    />
+                                </div>
+                            </Link>
+                           <!--  <a
+                                :href="`/download/${materia.id}`"
+                                class="flex items-center px-6 py-4 whitespace-normal"
+                                target="_blank"
+                                tabindex="-1"
+                            >
+                               
+                            </a> -->
+                        </div>
                     </div>
-                    <div></div>
+            
                 </div>
             </div>
             <!-- <div class="flex items-center mb-6">
