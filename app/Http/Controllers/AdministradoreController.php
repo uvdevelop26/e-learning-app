@@ -19,13 +19,19 @@ use Inertia\Inertia;
 class AdministradoreController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        $queries = ['search'];
+
         $administradores = Administradore::with('persona.ciudade', 'user', 'estado')
             ->orderBy('id', 'desc')
+            ->filter($request->only($queries))
             ->get();
 
-        return Inertia::render('Administradores/Index', ['administradores' => $administradores]);
+        return Inertia::render('Administradores/Index', [
+            'administradores' => $administradores,
+            'filters' => $request->all($queries)
+        ]);
     }
 
     

@@ -19,13 +19,20 @@ use Inertia\Inertia;
 class AlumnoController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        $queries = ['search'];
+
         $alumnos = Alumno::with('persona.ciudade', 'carrera', 'user', 'estado')
             ->orderBy('id', 'desc')
-            ->get();
+            ->filter($request->only($queries))
+            ->paginate(6);
 
-        return Inertia::render('Alumnos/Index', ['alumnos' => $alumnos]);
+        return Inertia::render('Alumnos/Index', [
+                'alumnos' => $alumnos,
+                'filters' => $request->all($queries)
+            ]
+        );
     }
 
 

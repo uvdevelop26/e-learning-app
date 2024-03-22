@@ -17,13 +17,19 @@ use Inertia\Inertia;
 class MateriaController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        $queries = ['search'];
+
         $materias = Materia::with('semestre.carrera')
             ->orderBy('id', 'desc')
+            ->filter($request->only($queries))
             ->get();
 
-        return Inertia::render('Materias/Index', ['materias' => $materias]);
+        return Inertia::render('Materias/Index', [
+            'materias' => $materias,
+            'filters' => $request->all($queries)
+        ]);
     }
 
 
@@ -132,14 +138,13 @@ class MateriaController extends Controller
         $materia = Materia::find($id);
 
         if (File::exists(storage_path("app/{$materia->plan_estudio}"))) {
-            
+
             File::delete(storage_path("app/{$materia->plan_estudio}"));
         }
 
         $materia->delete();
 
         return Redirect::route("materias.index");
-
     }
 
     public function download($id)

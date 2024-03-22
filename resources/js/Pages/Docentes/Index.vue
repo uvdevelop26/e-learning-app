@@ -2,10 +2,32 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
+import { reactive, watchEffect } from "vue";
+import { pickBy } from "lodash";
+import { router } from "@inertiajs/vue3";
+import SearchFilter from "../../Components/SearchFilter.vue";
 
-defineProps({
+const props = defineProps({
     docentes: Array,
+    filters: Object
 });
+
+const form = reactive({
+    search: props.filters.search,
+});
+
+const reset = () => {
+    form.search = null;
+};
+
+watchEffect(() => {
+    const query = pickBy(form);
+    router.replace(
+        route("docentes.index", Object.keys(query).length ? query : {})
+    );
+});
+
+
 </script>
 
 <template>
@@ -19,20 +41,13 @@ defineProps({
         </template>
         <!-- -->
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
-            <div class="flex items-center justify-between mb-6">
-                
-                <!-- <search-filter
+            <div class="flex items-center justify-between mb-6">               
+            <search-filter
                 v-model="form.search"
                 class="mr-4 w-full max-w-md"
-                @reset="reset"
-            >
-                <label class="block text-gray-700">Trashed:</label>
-                <select v-model="form.trashed" class="form-select mt-1 w-full">
-                    <option :value="null" />
-                    <option value="with">With Trashed</option>
-                    <option value="only">Only Trashed</option>
-                </select>
-            </search-filter>  -->
+                @reset="reset">
+               
+            </search-filter> 
                 <Link class="btn-indigo" href="/docentes/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Docente</span>
@@ -65,6 +80,7 @@ defineProps({
                                     :href="route('docentes.edit', docente.id)"
                                 >
                                     {{ docente.persona.nombre }}
+                                    {{ docente.persona.apellido }}
                                 </Link>
                             </td>
                             <td class="border-t">

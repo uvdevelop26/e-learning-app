@@ -10,11 +10,18 @@ use Inertia\Inertia;
 class CarreraController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $carreras = Carrera::orderBy('id', 'desc')->get();
+        $queries = ['search'];
 
-        return Inertia::render('Carreras/Index', ['carreras' => $carreras]);
+        $carreras = Carrera::orderBy('id', 'desc')
+            ->filter($request->only($queries))
+            ->get();
+
+        return Inertia::render('Carreras/Index', [
+            'carreras' => $carreras,
+            'filters' => $request->all($queries)
+        ]);
     }
 
 

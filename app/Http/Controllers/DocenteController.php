@@ -18,12 +18,18 @@ use Inertia\Inertia;
 class DocenteController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        $queries = ['search'];
+
         $docentes = Docente::with('persona.ciudade', 'user', 'estado')
             ->orderBy('id', 'desc')
+            ->filter($request->only($queries))
             ->get();
-        return Inertia::render('Docentes/Index', ['docentes' => $docentes]);
+        return Inertia::render('Docentes/Index', [
+            'docentes' => $docentes,
+            'filters' => $request->all($queries)
+        ]);
     }
 
     public function create()

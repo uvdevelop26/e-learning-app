@@ -42,4 +42,18 @@ class Alumno extends Model
     {
         return $this->belongsToMany(Clase::class);
     }
+
+    //scope filter
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search){
+            $query->where(function ($query) use ($search){
+                $query->whereHas('persona', function ($query) use ($search){
+                    $query->where('nombre', 'like', '%' . $search . '%')
+                    ->orWhere('apellido', 'like', '%' . $search . '%')
+                    ->orWhere('ci_numero', 'like', '%' . $search . '%');
+                });
+            });
+        });
+    }
 }

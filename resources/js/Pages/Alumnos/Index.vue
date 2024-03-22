@@ -2,9 +2,30 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
+import Pagination from "../../Components/Pagination.vue";
+import SearchFilter from "../../Components/SearchFilter.vue";
+import { reactive, watchEffect } from "vue";
+import { pickBy } from "lodash";
+import { router } from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
     alumnos: Array,
+    filters: Object,
+});
+
+const form = reactive({
+    search: props.filters.search,
+});
+
+const reset = () => {
+    form.search = null;
+};
+
+watchEffect(() => {
+    const query = pickBy(form);
+    router.replace(
+        route("alumnos.index", Object.keys(query).length ? query : {})
+    );
 });
 </script>
 
@@ -19,19 +40,13 @@ defineProps({
         </template>
         <!-- -->
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
-            <div class="flex items-center justify-between mb-6">
-                <!-- <search-filter
-                v-model="form.search"
-                class="mr-4 w-full max-w-md"
-                @reset="reset"
-            >
-                <label class="block text-gray-700">Trashed:</label>
-                <select v-model="form.trashed" class="form-select mt-1 w-full">
-                    <option :value="null" />
-                    <option value="with">With Trashed</option>
-                    <option value="only">Only Trashed</option>
-                </select>
-            </search-filter>  -->
+            <div class="py-4 flex items-center justify-between mb-6">
+                <search-filter
+                    v-model="form.search"
+                    class="mr-4 w-full max-w-md"
+                    @reset="reset"
+                >
+                </search-filter>
                 <Link class="btn-indigo" href="/alumnos/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Alumno</span>
@@ -54,7 +69,8 @@ defineProps({
                     </thead>
                     <tbody>
                         <tr
-                            v-for="alumno in alumnos"
+                            v-for="alumno in alumnos.data"
+                            v-if="alumnos.data.length"
                             :key="alumno.id"
                             class="hover:bg-gray-100 focus-within:bg-gray-100"
                         >
@@ -135,9 +151,18 @@ defineProps({
                                 </Link>
                             </td>
                         </tr>
+                        <tr
+                            class="hover:bg-gray-100 focus-within:bg-gray-100"
+                            v-else
+                        >
+                            <span class="inline-block pl-8 py-5">
+                                No se encuentran resultados
+                            </span>
+                        </tr>
                     </tbody>
                 </table>
             </div>
+            <pagination class="mt-6" :links="alumnos.links" />
         </div>
     </AppLayout>
 </template>

@@ -85,12 +85,12 @@ const submit = () => {
 </script>
 <template>
     <div>
-        <AppLayout title="Docentes/create">
-            <Head title="Docentes/create" />
+        <AppLayout title="Clases/create">
+            <Head title="Clases/create" />
 
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Docentes / Crear
+                    Usuarios / Clases / Crear
                 </h2>
             </template>
             <div class="py-12 px-4 lg:px-8 max-w-7xl">

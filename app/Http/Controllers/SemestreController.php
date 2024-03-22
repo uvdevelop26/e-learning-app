@@ -11,13 +11,19 @@ use Inertia\Inertia;
 class SemestreController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        $queries = ['search'];
+
         $semestres = Semestre::with('carrera')
             ->orderBy('carrera_id', 'desc')
+            ->filter($request->only($queries))
             ->get();
 
-        return Inertia::render('Semestres/Index', ['semestres' => $semestres]);
+        return Inertia::render('Semestres/Index', [
+            'semestres' => $semestres,
+            'filters' => $request->all($queries)
+        ]);
     }
 
 

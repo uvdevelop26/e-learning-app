@@ -169,6 +169,5 @@ class ClaseController extends Controller
         $clase = Clase::find($request->clase);
 
         $clase->alumnos()->detach($request->alumnos);
-
     }
 }

@@ -2,9 +2,29 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
+import SearchFilter from "../../Components/SearchFilter.vue";
+import { reactive, watchEffect } from "vue";
+import { pickBy } from "lodash";
+import { router } from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
     administradores: Array,
+    filters: Object,
+});
+
+const form = reactive({
+    search: props.filters.search,
+});
+
+const reset = () => {
+    form.search = null;
+};
+
+watchEffect(() => {
+    const query = pickBy(form);
+    router.replace(
+        route("administradores.index", Object.keys(query).length ? query : {})
+    );
 });
 </script>
 
@@ -20,19 +40,12 @@ defineProps({
         <!-- -->
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
             <div class="flex items-center justify-between mb-6">
-                
-                <!-- <search-filter
+                <search-filter
                 v-model="form.search"
                 class="mr-4 w-full max-w-md"
-                @reset="reset"
-            >
-                <label class="block text-gray-700">Trashed:</label>
-                <select v-model="form.trashed" class="form-select mt-1 w-full">
-                    <option :value="null" />
-                    <option value="with">With Trashed</option>
-                    <option value="only">Only Trashed</option>
-                </select>
-            </search-filter>  -->
+                @reset="reset">
+              
+               </search-filter> 
                 <Link class="btn-indigo" href="/administradores/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Administrador</span>
@@ -62,43 +75,75 @@ defineProps({
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="route('administradores.edit', administradore.id)"
+                                    :href="
+                                        route(
+                                            'administradores.edit',
+                                            administradore.id
+                                        )
+                                    "
                                 >
                                     {{ administradore.persona.nombre }}
+                                    {{ administradore.persona.apellido }}
                                 </Link>
                             </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('administradores.edit', administradore.id)"
+                                    :href="
+                                        route(
+                                            'administradores.edit',
+                                            administradore.id
+                                        )
+                                    "
                                 >
-                                    <div>{{ administradore.persona.ci_numero }}</div>
+                                    <div>
+                                        {{ administradore.persona.ci_numero }}
+                                    </div>
                                 </Link>
                             </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('administradores.edit', administradore.id)"
+                                    :href="
+                                        route(
+                                            'administradores.edit',
+                                            administradore.id
+                                        )
+                                    "
                                 >
-                                    <div>{{ administradore.persona.telefono }}</div>
+                                    <div>
+                                        {{ administradore.persona.telefono }}
+                                    </div>
                                 </Link>
                             </td>
                             <td class="border-t max-w-80">
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('administradores.edit', administradore.id)"
+                                    :href="
+                                        route(
+                                            'administradores.edit',
+                                            administradore.id
+                                        )
+                                    "
                                 >
-                                    <div>{{ administradore.persona.direccion }}</div>
+                                    <div>
+                                        {{ administradore.persona.direccion }}
+                                    </div>
                                 </Link>
                             </td>
                             <td class="border-t max-w-80">
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('administradores.edit', administradore.id)"
+                                    :href="
+                                        route(
+                                            'administradores.edit',
+                                            administradore.id
+                                        )
+                                    "
                                 >
                                     <div>{{ administradore.cargo }}</div>
                                 </Link>
@@ -107,7 +152,12 @@ defineProps({
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('administradores.edit', administradore.id)"
+                                    :href="
+                                        route(
+                                            'administradores.edit',
+                                            administradore.id
+                                        )
+                                    "
                                 >
                                     <div>{{ administradore.user.email }}</div>
                                 </Link>
@@ -116,16 +166,28 @@ defineProps({
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('administradores.edit', administradore.id)"
+                                    :href="
+                                        route(
+                                            'administradores.edit',
+                                            administradore.id
+                                        )
+                                    "
                                 >
-                                    <div>{{ administradore.estado.estado }}</div>
+                                    <div>
+                                        {{ administradore.estado.estado }}
+                                    </div>
                                 </Link>
                             </td>
                             <td class="w-px border-t">
                                 <Link
                                     class="flex items-center px-4"
                                     tabindex="-1"
-                                    :href="route('administradores.edit', administradore.id)"
+                                    :href="
+                                        route(
+                                            'administradores.edit',
+                                            administradore.id
+                                        )
+                                    "
                                 >
                                     <icon
                                         name="cheveron-right"

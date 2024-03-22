@@ -27,5 +27,19 @@ class Semestre extends Model
     {
         return $this->hasMany(Materia::class);
     }
-    
+
+    //scope filter
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('nombre', 'like', '%' . $search . '%')
+                    ->orwhere('codigo', 'like', '%' . $search . '%')
+                    ->orWhereHas('carrera', function ($query) use ($search) {
+                        $query->where('nombre', 'like', '%' . $search . '%')
+                            ->orWhere('codigo', 'like', '%' . $search . '%');
+                    });
+            });
+        });
+    }
 }

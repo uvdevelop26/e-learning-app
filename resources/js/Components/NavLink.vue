@@ -8,18 +8,25 @@ const props = defineProps({
     as: String,
 });
 
-const classes = computed(() => {
+/* const classes = computed(() => {
     return props.active
-        ? "block items-center w-full bg-indigo-100 py-3 px-2 border-l-2 border-indigo-400 font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out"
-        : "block py-3 px-2 items-center border-transparent font-medium leading-5 text-gray-500 hover:bg-gray-100 hover:border-gray-900 focus:outline-none focus:text-gray-700 focus:border-indigo-400 transition duration-150 ease-in-out";
-});
+        ? "block items-center w-full bg-indigo-100 py-3 px-2 border-l-2  border-indigo-400 leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out"
+        : "block py-3 px-2 items-center border-transparent leading-5 text-gray-500 focus:outline-none focus:text-gray-700 focus:border-indigo-400 transition duration-150 ease-in-out";
+}); */
 </script>
 
 <template>
-    <button v-if="as == 'button'" :class="classes" class="w-full text-left">
+    <button
+        v-if="as == 'button'"
+        class="block py-3 px-2 font-medium hover:bg-indigo-50 items-center border-transparent leading-5 text-gray-500 focus:outline-none focus:text-gray-700 focus:border-indigo-400 transition duration-150 ease-in-out"
+    >
         <slot />
     </button>
-    <Link v-else :href="href" :class="classes">
+    <Link
+        v-else
+        :href="href"
+        class="block py-3 px-2 font-medium hover:bg-indigo-50 items-center border-transparent leading-5 text-gray-500 focus:outline-none focus:text-gray-700 focus:border-indigo-400 transition duration-150 ease-in-out"
+    >
         <slot />
     </Link>
 </template>

@@ -2,10 +2,32 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
+import SearchFilter from "../../Components/SearchFilter.vue";
+import { reactive, watchEffect } from "vue";
+import { pickBy } from "lodash";
+import { router } from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
     semestres: Array,
+    filters: Object
 });
+
+const form = reactive({
+    search: props.filters.search,
+});
+
+const reset = () => {
+    form.search = null;
+};
+
+watchEffect(() => {
+    const query = pickBy(form);
+    router.replace(
+        route("semestres.index", Object.keys(query).length ? query : {})
+    );
+});
+
+
 </script>
 
 <template>
@@ -20,18 +42,11 @@ defineProps({
         <!-- -->
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
             <div class="flex items-center justify-between mb-6">
-                <!-- <search-filter
+                <search-filter
                 v-model="form.search"
                 class="mr-4 w-full max-w-md"
-                @reset="reset"
-            >
-                <label class="block text-gray-700">Trashed:</label>
-                <select v-model="form.trashed" class="form-select mt-1 w-full">
-                    <option :value="null" />
-                    <option value="with">With Trashed</option>
-                    <option value="only">Only Trashed</option>
-                </select>
-            </search-filter>  -->
+                @reset="reset">
+               </search-filter> 
                 <Link class="btn-indigo" href="/semestres/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Semestre</span>
@@ -44,9 +59,11 @@ defineProps({
                     <thead>
                         <tr class="text-left font-bold">
                             <th class="pb-4 pt-6 px-6">Semestre</th>
-                            <th class="pb-4 pt-6 px-6">Código</th>
-                            <th class="pb-4 pt-6 px-6">Descripcion</th>
+                            <th class="pb-4 pt-6 px-6">Código Semestre</th>
                             <th class="pb-4 pt-6 px-6">Carrera</th>
+                            <th class="pb-4 pt-6 px-6">Código Carrera</th>
+                            <th class="pb-4 pt-6 px-6">Descripcion</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -70,6 +87,24 @@ defineProps({
                                 >
                                     {{ semestre.codigo }}
                                 </Link>
+                            </td> 
+                            <td class="border-t max-w-80">
+                                <Link
+                                    class="flex items-center px-6 py-4 whitespace-normal"
+                                    tabindex="-1"
+                                    :href="route('semestres.edit', semestre.id)"
+                                >
+                                    <div>{{ semestre.carrera.nombre }}</div>
+                                </Link>
+                            </td>
+                            <td class="border-t max-w-80">
+                                <Link
+                                    class="flex items-center px-6 py-4 whitespace-normal"
+                                    tabindex="-1"
+                                    :href="route('semestres.edit', semestre.id)"
+                                >
+                                    <div>{{ semestre.carrera.codigo }}</div>
+                                </Link>
                             </td>
                             <td class="border-t">
                                 <Link
@@ -81,15 +116,6 @@ defineProps({
                                 </Link>
                             </td>
 
-                            <td class="border-t max-w-80">
-                                <Link
-                                    class="flex items-center px-6 py-4 whitespace-normal"
-                                    tabindex="-1"
-                                    :href="route('semestres.edit', semestre.id)"
-                                >
-                                    <div>{{ semestre.carrera.nombre }}</div>
-                                </Link>
-                            </td>
                             <td class="w-px border-t">
                                 <Link
                                     class="flex items-center px-4"

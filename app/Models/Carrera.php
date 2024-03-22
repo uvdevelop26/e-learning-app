@@ -27,4 +27,15 @@ class Carrera extends Model
     {
         return $this->hasMany(Semestre::class);
     }
+
+    //scope filter
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('codigo', 'like', '%' . $search . '%')
+                    ->orWhere('nombre', 'like', '%' . $search . '%');
+            });
+        });
+    }
 }
