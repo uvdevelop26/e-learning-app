@@ -2,17 +2,51 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
-import Card from "../../Components/Card.vue";
-import Dropdown from "../../Components/Dropdown.vue";
+import Modal from "../../Components/Modal.vue";
+import TextInput from "../../Components/TextInput.vue";
+import TextArea from "../../Components/TextArea.vue";
+import Unidad from "../../Components/Unidad.vue";
 import { ref } from "vue";
-import { router } from "@inertiajs/vue3";
+import { useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     clase: Array,
     materia: Array,
     semestre: Array,
     carrera: Array,
+    unidades: Array,
+    errors: Object,
 });
+
+const show = ref(false);
+
+const numeroUnidad = props.unidades.length + 1;
+
+const form = useForm({
+    clase: props.clase.id,
+    numero: numeroUnidad,
+    tema: "",
+    objetivos: "",
+});
+
+const cancelProcess = () => {
+    (form.tema = null),
+        (form.objetivos = null),
+        (show.value = false),
+        (props.errors.tema = "");
+};
+
+const submit = () => {
+    form.post(route("unidades.store"), {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.tema = null;
+            form.objetivos = null;
+            show.value = false;
+            props.errors.tema = "";
+        },
+    });
+};
 </script>
 
 <template>
@@ -26,9 +60,20 @@ const props = defineProps({
                 <span>
                     {{ carrera.nombre }}
                 </span>
-                <!-- <button>
-                    <icon name="plus" class="w-5 h-5 fill-primary hover:fill-secondary" />
-                </button> -->
+                <button
+                    class="flex flex-col items-center group"
+                    type="button"
+                    @click="show = !show"
+                >
+                    <icon
+                        name="plus"
+                        class="w-5 h-5 fill-primary group-hover:fill-secondary"
+                    />
+                    <span
+                        class="text-sm text-primary group-hover:text-secondary"
+                        >Agregar Unidad</span
+                    >
+                </button>
             </h2>
         </template>
         <div
@@ -49,7 +94,7 @@ const props = defineProps({
                         >Clase {{ props.clase.codigo }}</span
                     >
                 </div>
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col gap-6 items-center">
                     <div
                         class="w-full flex justify-center flex-wrap gap-6 lg:flex-col lg:justify-start"
                     >
@@ -87,7 +132,10 @@ const props = defineProps({
                             <span class="font-bold text-primary">
                                 Personas
                             </span>
-                            <Link  class="flex items-center px-6 py-4 whitespace-normal" :href="route('clases.showPersonas', clase.id)">
+                            <Link
+                                class="flex items-center px-6 py-4 whitespace-normal"
+                                :href="route('clases.showPersonas', clase.id)"
+                            >
                                 <div class="flex items-center text-xs">
                                     <icon
                                         name="user"
@@ -95,40 +143,64 @@ const props = defineProps({
                                     />
                                 </div>
                             </Link>
-                           <!--  <a
-                                :href="`/download/${materia.id}`"
-                                class="flex items-center px-6 py-4 whitespace-normal"
-                                target="_blank"
-                                tabindex="-1"
-                            >
-                               
-                            </a> -->
                         </div>
                     </div>
-            
+                    <unidad> 
+
+                    </unidad>
                 </div>
             </div>
-            <!-- <div class="flex items-center mb-6">
-               <search-filter
-                    v-model="form.search"
-                    class="mr-4 w-full max-w-md"
-                    @reset="reset"
-                >
-                    <label class="block text-gray-700">Trashed:</label>
-                    <select
-                        v-model="form.trashed"
-                        class="form-select mt-1 w-full"
-                    >
-                        <option :value="null" />
-                        <option value="with">With Trashed</option>
-                        <option value="only">Only Trashed</option>
-                    </select>
-                </search-filter>
-                <Link class="btn-indigo" href="/clases/create">
-                    <span>Crear</span>
-                    <span class="hidden md:inline">&nbsp;Clase</span>
-                </Link>
-            </div> -->
         </div>
+        <modal :show="show">
+            <template #headerModal>
+                <h3 class="text-lg">Agregar Unidad</h3>
+            </template>
+            <template #bodyModal>
+                <form @submit.prevent="submit">
+                    <div class="bg-white flex flex-wrap -mb-8 -mr-6 rounded-md">
+                        <text-input
+                            class="pb-8 pr-6 w-full"
+                            label="Número"
+                            id="numero"
+                            disabled
+                            v-model="form.numero"
+                            :error="errors.numero"
+                        />
+                        <text-input
+                            class="pb-8 pr-6 w-full"
+                            label="Tema"
+                            id="tema"
+                            v-model="form.tema"
+                            :error="errors.tema"
+                        />
+                        <text-area
+                            id="objetivos"
+                            class="pb-8 pr-6 w-full"
+                            label="Objetivos"
+                            v-model="form.objetivos"
+                            :error="errors.objetivos"
+                        >
+                        </text-area>
+                    </div>
+                    <div
+                        class="flex items-center justify-between pt-4 bg-gray-50 border-t border-gray-100"
+                    >
+                        <button
+                            class="px-3 text-red-500 hover:underline"
+                            @click="cancelProcess"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            class="px-7 py-1 bg-primary hover:bg-secondary text-white rounded-md"
+                            :disabled="form.processing"
+                            type="submit"
+                        >
+                            Enviar
+                        </button>
+                    </div>
+                </form>
+            </template>
+        </modal>
     </AppLayout>
 </template>

@@ -112,7 +112,7 @@ const maxWidthClass = computed(() => {
                         <div class="py-6" ref="body">
                             <slot name="bodyModal" v-if="show" />
                         </div>
-                        <div class="py-2 flex justify-between border-t-2">
+                        <div class="py-2 flex justify-between">
                             <slot name="footerModal" v-if="show" />
                         </div>
                     </div>

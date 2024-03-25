@@ -64,6 +64,7 @@ class ClaseController extends Controller
         $materia = $clase->materia;
         $semestre = Semestre::find($materia->semestre_id);
         $carrera = Carrera::find($semestre->carrera_id);
+        $unidades = $clase->unidades()->get();
 
         return Inertia::render('Clases/Show', [
             'clase' => [
@@ -75,7 +76,8 @@ class ClaseController extends Controller
 
             'materia' => $materia,
             'semestre' => $semestre,
-            'carrera' => $carrera
+            'carrera' => $carrera,
+            'unidades' => $unidades
         ]);
     }
 

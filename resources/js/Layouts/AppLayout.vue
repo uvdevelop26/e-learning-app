@@ -3,17 +3,22 @@ import { ref, onMounted, onUnmounted, reactive } from "vue";
 import { Head, Link, router } from "@inertiajs/vue3";
 import Icon from "../Components/Icon.vue";
 import ApplicationMark from "@/Components/ApplicationMark.vue";
-import Banner from "@/Components/Banner.vue";
-import Dropdown from "@/Components/Dropdown.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import MenuNav from "../Components/MenuNav.vue";
+import { usePage } from '@inertiajs/vue3'
+
 
 const props = defineProps({
     title: String,
-    url: String,
 });
+
+const { auth } = usePage().props;
+
+    // Ahora puedes acceder a la propiedad "auth"
+   /*  console.log(auth.user.id); */
+
+
 
 const isMobile = ref(null);
 let mql = null;
@@ -24,6 +29,12 @@ const linkList = reactive([
         id: 3,
         name: "Clases Impartidas",
         href: "/clases",
+        /* submenu: [
+            { name: "alumnos", href: "/alumnos" },
+            { name: "docentes", href: "/docentes" },
+            { name: "administradores", href: "/administradores" },
+        ],
+        toggle_submenu: false, */
     },
     {
         id: 2,
@@ -48,6 +59,7 @@ const linkList = reactive([
     },
 ]);
 
+
 const handleSubmenu = (index) => {
     linkList[index].toggle_submenu = !linkList[index].toggle_submenu;
 };
@@ -61,6 +73,8 @@ onMounted(() => {
     isMobile.value = mql.matches;
 
     mql.addEventListener("change", handleMqlChange);
+
+       
 });
 
 onUnmounted(() => {
@@ -206,6 +220,7 @@ const logout = () => {
                     >
                         <div class="max-w-7xl py-5 px-12">
                             <slot name="header" />
+                            
                         </div>
                     </header>
 

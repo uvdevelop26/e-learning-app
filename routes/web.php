@@ -7,6 +7,7 @@ use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\SemestreController;
+use App\Http\Controllers\UnidadeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -115,4 +116,9 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
     Route::get("clases/{clase}/personas", 'showPersonas')->name("clases.showPersonas");
     Route::post('clases/asign-alumnos', 'asignAlumnos')->name('clases.asignAlumnos');
     Route::delete('clases/revoke-alumnos/{clase}', 'revokeAlumno')->name('clases.revokeAlumno');
+});
+
+//unidades
+Route::controller(UnidadeController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('unidades', 'store')->name('unidades.store');
 });

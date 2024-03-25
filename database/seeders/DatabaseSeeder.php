@@ -11,6 +11,7 @@ use App\Models\Docente;
 use App\Models\Materia;
 use App\Models\Persona;
 use App\Models\Semestre;
+use App\Models\Unidade;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -31,5 +32,6 @@ class DatabaseSeeder extends Seeder
         Alumno::factory(20)->create();
         Semestre::factory(8)->create();
         Materia::factory(10)->create();
+        Unidade::factory(4)->create();
     }
 }

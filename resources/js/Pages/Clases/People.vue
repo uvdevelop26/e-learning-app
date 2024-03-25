@@ -27,21 +27,17 @@ const show = ref(false);
 
 const inputDisabled = ref(false);
 
+const data = ref(null);
+
 const form = useForm({
     clase: props.clase.id,
     alumnos: [],
 });
 
 const formDelete = useForm({
-
     clase: props.clase.id,
-    alumnos: []
-
+    alumnos: [],
 });
-
-
-
-const data = ref(null);
 
 watchEffect(() => {
     const dataCI = parseInt(data.value);
@@ -95,16 +91,12 @@ const submit = () => {
     });
 };
 
-const deleteAlumno = (id) =>{
+const deleteAlumno = (id) => {
     formDelete.alumnos.push(id);
-
-    formDelete.delete(route("clases.revokeAlumno", formDelete.clase),{
-        preserveScroll: true
-    })
-
-}
-
-
+    formDelete.delete(route("clases.revokeAlumno", formDelete.clase), {
+        preserveScroll: true,
+    });
+};
 </script>
 
 <template>
@@ -115,7 +107,7 @@ const deleteAlumno = (id) =>{
             <h2
                 class="font-semibold text-xl text-gray-800 flex justify-between items-center"
             >
-                <span>Personas clase {{ clase.codigo }}</span>
+                <span>Personas / clase {{ clase.codigo }}</span>
             </h2>
         </template>
         <div class="py-12 px-4 bg-white border lg:px-8 max-w-7xl">
@@ -161,7 +153,10 @@ const deleteAlumno = (id) =>{
                                 {{ alumno.persona.nombre }}
                                 {{ alumno.persona.apellido }}
                             </span>
-                            <button class="p-1" @click="deleteAlumno(alumno.id)">
+                            <button
+                                class="p-1"
+                                @click="deleteAlumno(alumno.id)"
+                            >
                                 <icon
                                     name="trash"
                                     class="w-4 h-4 fill-primary hover:fill-red-500"
@@ -206,7 +201,10 @@ const deleteAlumno = (id) =>{
                             :key="alumnos.alumno_id"
                             class="bg-gray-100 my-1 py-2 px-2 text-sm rounded-md hover:bg-indigo-100 cursor-pointer"
                         >
-                            <button @click="selectAlumno(alumnos.alumno_id)" class="inline-block w-full h-full text-left">
+                            <button
+                                @click="selectAlumno(alumnos.alumno_id)"
+                                class="inline-block w-full h-full text-left"
+                            >
                                 {{ alumnos.nombre_persona
                                 }}{{ alumnos.apellido_persona }}
                             </button>

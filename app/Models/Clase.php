@@ -31,4 +31,9 @@ class Clase extends Model
     {
         return $this->belongsToMany(Alumno::class);
     }
+
+    public function unidades()
+    {
+        return $this->belongsToMany(Unidade::class);
+    }
 }

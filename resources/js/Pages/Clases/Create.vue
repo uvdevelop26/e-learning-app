@@ -4,7 +4,6 @@ import { Link, Head } from "@inertiajs/vue3";
 import TextInput from "../../Components/TextInput.vue";
 import Icon from "../../Components/Icon.vue";
 import SelectInput from "../../Components/SelectInput.vue";
-import TextArea from "../../Components/TextArea.vue";
 import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
 import { watchEffect, ref } from "vue";
