@@ -174,7 +174,7 @@ const deleteAlumno = (id) => {
             </template>
             <template #bodyModal>
                 <div>
-                    <div class="relative bg-red-100">
+                    <div class="relative">
                         <input
                             type="search"
                             class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm"
@@ -220,7 +220,7 @@ const deleteAlumno = (id) => {
                     Cancelar
                 </button>
                 <button
-                    class="px-4 py-1 bg-primary hover:bg-secondary text-white rounded-md"
+                    class="px-6 py-1 bg-primary hover:bg-orange-400 text-white rounded-md"
                     @click="submit()"
                     :disabled="form.processing"
                 >

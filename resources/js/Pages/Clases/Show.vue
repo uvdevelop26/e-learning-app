@@ -5,9 +5,11 @@ import Icon from "../../Components/Icon.vue";
 import Modal from "../../Components/Modal.vue";
 import TextInput from "../../Components/TextInput.vue";
 import TextArea from "../../Components/TextArea.vue";
-import Unidad from "../../Components/Unidad.vue";
+import EditorWrapper from "../../Components/EditorWrapper.vue";
 import { ref } from "vue";
 import { useForm } from "@inertiajs/vue3";
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
 const props = defineProps({
     clase: Array,
@@ -21,6 +23,17 @@ const props = defineProps({
 const show = ref(false);
 
 const numeroUnidad = props.unidades.length + 1;
+
+const options = {
+    placeholder: "Escribe el contenido...",
+    modules: {
+        toolbar: [
+            ["bold", "italic", "underline", "strike"],
+            ["blockquote", "code-block"],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        ],
+    },
+};
 
 const form = useForm({
     clase: props.clase.id,
@@ -69,10 +82,6 @@ const submit = () => {
                         name="plus"
                         class="w-5 h-5 fill-primary group-hover:fill-secondary"
                     />
-                    <span
-                        class="text-sm text-primary group-hover:text-secondary"
-                        >Agregar Unidad</span
-                    >
                 </button>
             </h2>
         </template>
@@ -83,20 +92,21 @@ const submit = () => {
                 <div
                     class="h-56 bg-primary rounded-2xl flex flex-col items-center justify-center"
                 >
-                    <span
-                        class="inline-block text-3xl lg:text-5xl text-white"
-                        >{{ props.materia.nombre }}</span
-                    >
-                    <span class="inline-block text-xl lg:text-2xl text-white"
-                        >Semestre {{ props.semestre.nombre }}</span
-                    >
-                    <span class="inline-block text-lg lg:text-xl text-white"
-                        >Clase {{ props.clase.codigo }}</span
-                    >
+                    <span class="inline-block text-3xl lg:text-5xl text-white">
+                        {{ props.materia.nombre }}
+                    </span>
+                    <span class="inline-block text-xl lg:text-2xl text-white">
+                        Semestre {{ props.semestre.nombre }}
+                    </span>
+                    <span class="inline-block text-lg lg:text-xl text-white">
+                        Clase {{ props.clase.codigo }}
+                    </span>
                 </div>
-                <div class="flex flex-col gap-6 items-center">
+                <div
+                    class="flex flex-col gap-6 items-center lg:flex-row lg:items-start"
+                >
                     <div
-                        class="w-full flex justify-center flex-wrap gap-6 lg:flex-col lg:justify-start"
+                        class="w-full flex justify-center flex-wrap gap-6 lg:flex-col lg:justify-start lg:w-fit"
                     >
                         <div
                             class="w-36 py-4 border rounded-xl flex flex-col items-center justify-center text-sm"
@@ -143,11 +153,56 @@ const submit = () => {
                                     />
                                 </div>
                             </Link>
+                            <!--  <a
+                                :href="`/download/${materia.id}`"
+                                class="flex items-center px-6 py-4 whitespace-normal"
+                                target="_blank"
+                                tabindex="-1"
+                            >
+                               
+                            </a> -->
                         </div>
                     </div>
-                    <unidad> 
-
-                    </unidad>
+                    <div class="w-full flex flex-col gap-6">
+                        <editor-wrapper title="Anuncia algo a tu clase...">
+                            <template #content>
+                                <form action="">
+                                    <text-input
+                                        class="pb-3 pr-6 w-full"
+                                        id="titulo"
+                                        placeholder="Ingresa el título del Anuncio"
+                                    />
+                                    <QuillEditor
+                                        theme="snow"
+                                        :options="options"
+                                        style="height: 120px"
+                                    />
+                                    <div class="py-2 border-t-3">
+                                        <label
+                                            for="imagen"
+                                            class="flex justify-center items-center w-11 h-11 rounded-full cursor-pointer bg-indigo-100"
+                                        >
+                                        <icon name="upload" class="w-4 h-4 fill-primary" />
+                                            <input
+                                                type="file"
+                                                id="imagen"
+                                                class="opacity-0 absolute -z-10"
+                                            />
+                                        </label>
+                                    </div>
+                                </form>
+                            </template>
+                        </editor-wrapper>
+                      <!--   <div
+                            class="w-full p-4 rounded-xl border shadow group bg-white hover:shadow-md cursor-pointer"
+                            v-for="unidad in unidades"
+                        >
+                            <h2 class="text-sm font-bold capitalize">
+                                Unidad Número {{ unidad.numero }} - Tema
+                                {{ unidad.tema }}
+                            </h2>
+                        </div> -->
+                    </div>
                 </div>
             </div>
         </div>

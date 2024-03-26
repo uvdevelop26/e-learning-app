@@ -56,8 +56,7 @@ const deleteClase = (id) => {
             </div>
             <div class="w-full overflow-x-auto">
                 <div
-                    class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6"
-                >
+                    class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6">
                     <card v-for="clase in clases" :key="clase.id">
                         <template #cardHeader>
                             <Dropdown>
@@ -65,8 +64,7 @@ const deleteClase = (id) => {
                                     <div class="text-right">
                                         <button
                                             :open="open"
-                                            class="inline-block h-full"
-                                        >
+                                            class="inline-block h-full">
                                             <icon
                                                 name="trigger"
                                                 class="w-[0.38rem] h-[0.38rem] fill-white"
@@ -78,10 +76,7 @@ const deleteClase = (id) => {
                                     <div class="p-3">
                                         <Link
                                             class="inline-block py-2 font-bold w-full h-full text-primary hover:underline"
-                                            :href="
-                                                route('clases.edit', clase.id)
-                                            "
-                                        >
+                                            :href="route('clases.edit', clase.id)">
                                             Editar
                                         </Link>
                                         <button
@@ -96,11 +91,9 @@ const deleteClase = (id) => {
                             </Dropdown>
                             <Link
                                 class="inline-block w-full group bg-red-2000"
-                                :href="route('clases.show', clase.id)"  
-                            >
+                                :href="route('clases.show', clase.id)" >
                                 <span
-                                    class="block text-3xl text-white font-bold group-hover:underline"
-                                >
+                                    class="block text-3xl text-white font-bold group-hover:underline">
                                     {{ clase.materia.nombre }}
                                 </span>
                                 <span class="block text-md font-md text-white">

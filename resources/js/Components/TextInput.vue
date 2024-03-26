@@ -1,7 +1,7 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 
-defineProps({
+const props = defineProps({
     modelValue: String,
     label: String,
     id: String,
@@ -22,6 +22,10 @@ onMounted(() => {
 });
 
 defineExpose({ focus: () => input.value.focus(), input });
+
+const disbledState = computed(()=>{
+    return props.disabled ? 'bg-gray-100' : 'bg-white'
+})
 </script>
 
 <template>
@@ -30,12 +34,14 @@ defineExpose({ focus: () => input.value.focus(), input });
         <input
             :type="type"
             ref="input"
-            class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm"
+            class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm placeholder:text-xs placeholder:italic"
+            :class="disbledState"
             :id="id"
             :value="modelValue"
             :disabled="disabled"
             :placeholder="placeholder"
             @input="$emit('update:modelValue', $event.target.value)"
+            autocomplete="off"
         />
         <div v-if="error" class="text-sm text-red-500">{{ error }}</div>
     </div>

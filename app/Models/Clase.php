@@ -15,6 +15,7 @@ class Clase extends Model
         'codigo',
         'materia_id',
         'docente_id',
+        'estado_id'
     ];
 
     public function materia()
@@ -25,6 +26,11 @@ class Clase extends Model
     public function docente()
     {
         return $this->belongsTo(Docente::class);
+    }
+
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class);
     }
 
     public function alumnos()

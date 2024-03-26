@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Clase;
 use App\Models\Docente;
+use App\Models\Estado;
 use App\Models\Materia;
 use App\Models\Semestre;
 use Illuminate\Http\Request;
@@ -30,11 +31,13 @@ class ClaseController extends Controller
         $carreras = Carrera::all();
         $semestres = Semestre::all();
         $materias = Materia::all();
+        $estados = Estado::all();
 
         return Inertia::render('Clases/Create', [
             'carreras' => $carreras,
             'semestres' => $semestres,
             'materias' => $materias,
+            'estados' => $estados
         ]);
     }
 
@@ -46,13 +49,15 @@ class ClaseController extends Controller
             'codigo' => 'required',
             'carrera_id' => 'required',
             'semestre_id' => 'required',
-            'materia_id' => 'required'
+            'materia_id' => 'required',
+            'estado_id' => 'required'
         ]);
 
         Clase::create([
             'codigo' => $request->codigo,
             'materia_id' => $request->materia_id,
             'docente_id' => $docente_id,
+            'estado_id' => $request->estado_id
         ]);
 
         return Redirect::route("clases.index");
@@ -87,6 +92,7 @@ class ClaseController extends Controller
         $carreras = Carrera::all();
         $semestres = Semestre::all();
         $materias = Materia::all();
+        $estados = Estado::all();
 
         $currentSemestre = Materia::find($clase->materia_id)->semestre->id;
         $currentCarrera = Semestre::find($currentSemestre)->carrera->id;
@@ -98,12 +104,14 @@ class ClaseController extends Controller
                 'codigo' => $clase->codigo,
                 'materia_id' => $clase->materia_id,
                 'docente_id' => $clase->docente_id,
+                'estado_id' => $clase->estado_id
             ],
             'carreras' => $carreras,
             'semestres' => $semestres,
             'materias' => $materias,
             'currentSemestre' => $currentSemestre,
-            'currentCarrera' => $currentCarrera
+            'currentCarrera' => $currentCarrera,
+            'estados' => $estados
         ]);
     }
 
@@ -116,13 +124,15 @@ class ClaseController extends Controller
             'codigo' => 'required',
             'carrera_id' => 'required',
             'semestre_id' => 'required',
-            'materia_id' => 'required'
+            'materia_id' => 'required',
+            'estado_id' => 'required'
         ]);
 
         $clase->update([
             'codigo' => $request->codigo,
             'materia_id' => $request->materia_id,
             'docente_id' => $docente_id,
+            'estado_id' => $request->estado_id
         ]);
 
         return Redirect::route("clases.index");
