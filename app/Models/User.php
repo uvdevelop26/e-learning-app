@@ -58,6 +58,11 @@ class User extends Authenticatable
         return $this->hasMany(Docente::class);
     }
 
+    public function anuncios()
+    {
+        return $this->hasMany(Anuncio::class);
+    }
+
 
     protected $casts = [
         'email_verified_at' => 'datetime',

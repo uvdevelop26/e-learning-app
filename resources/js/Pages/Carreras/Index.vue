@@ -44,8 +44,7 @@ watchEffect(() => {
                 <search-filter
                 v-model="form.search"
                 class="mr-4 w-full max-w-md"
-                @reset="reset"
-            >
+                @reset="reset">
                 
             </search-filter> 
                 <Link class="btn-indigo" href="/carreras/create">

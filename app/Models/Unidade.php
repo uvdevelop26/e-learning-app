@@ -14,11 +14,19 @@ class Unidade extends Model
     protected $fillable = [
         'numero',
         'tema',
-        'objetivos'
+        'objetivos',
+        'clase_id'
     ];
 
-    public function clases()
+    public function clase()
     {
-        return $this->belongsToMany(Clase::class);
+        return $this->belongsTo(Unidade::class);
+    }
+
+    //relación uno a muchos polimórfica
+
+    public function anuncios()
+    {
+        return $this->morphMany(Anuncio::class, 'anunciable');
     }
 }

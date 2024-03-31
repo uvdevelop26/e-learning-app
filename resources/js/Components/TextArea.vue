@@ -1,12 +1,19 @@
 <script setup>
 import { onMounted, ref } from "vue";
 
-defineProps({
+const props = defineProps({
     label: String,
     modelValue: String,
     id: String,
     error: String,
 })
+
+const modelValue = ref(props.modelValue);
+
+const clearTextArea = () => {
+  modelValue.value = '';
+};
+
 
 defineEmits(["update:modelValue"]);
 

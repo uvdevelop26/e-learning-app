@@ -40,6 +40,13 @@ class Clase extends Model
 
     public function unidades()
     {
-        return $this->belongsToMany(Unidade::class);
+        return $this->hasMany(Unidade::class);
+    }
+
+    //relación uno a muchos polimórfica
+
+    public function anuncios()
+    {
+        return $this->morphMany(Anuncio::class, 'anunciable');
     }
 }

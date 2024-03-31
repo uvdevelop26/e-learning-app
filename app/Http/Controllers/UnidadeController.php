@@ -5,57 +5,59 @@ namespace App\Http\Controllers;
 use App\Models\Clase;
 use App\Models\Unidade;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class UnidadeController extends Controller
 {
-    
+
     public function index()
     {
         //
     }
 
-    
+
     public function create()
     {
         //
     }
 
-    
+
     public function store(Request $request)
     {
-        $clase = Clase::find($request->clase);
 
         $request->validate([
             'numero' => 'required',
             'tema' => 'required',
-            'objetivos' => 'nullable'
+            'objetivos' => 'nullable',
         ]);
 
-        $unidade = Unidade::create([
+
+
+        Unidade::create([
             'numero' => $request->numero,
             'tema' => $request->tema,
-            'objetivos' => $request->objetivos
+            'objetivos' => $request->objetivos,
+            'clase_id' => $request->clase_id
         ]);
 
-        $clase->unidades()->attach($unidade->id);
-
+        
+        /*
+        $clase->unidades()->attach($unidade->id); */
     }
 
-    
+
     public function show($id)
     {
-        //
+       $unidade = Unidade::find($id);
+
+        return Inertia::render('Unidades/Show',[
+            'unidade' => $unidade
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        
     }
 
     /**

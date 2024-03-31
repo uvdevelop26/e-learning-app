@@ -66,10 +66,15 @@ class ClaseController extends Controller
 
     public function show(Clase $clase)
     {
+
         $materia = $clase->materia;
         $semestre = Semestre::find($materia->semestre_id);
         $carrera = Carrera::find($semestre->carrera_id);
-        $unidades = $clase->unidades()->get();
+
+        $anunciosYunidades = Clase::with(['anuncios', 'unidades'])
+            ->findOrFail($clase->id);
+
+        
 
         return Inertia::render('Clases/Show', [
             'clase' => [
@@ -82,7 +87,7 @@ class ClaseController extends Controller
             'materia' => $materia,
             'semestre' => $semestre,
             'carrera' => $carrera,
-            'unidades' => $unidades
+             'anunciosYunidades' => $anunciosYunidades
         ]);
     }
 

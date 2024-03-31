@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdministradoreController;
 use App\Http\Controllers\AlumnoController;
+use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\DocenteController;
@@ -118,7 +119,14 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
     Route::delete('clases/revoke-alumnos/{clase}', 'revokeAlumno')->name('clases.revokeAlumno');
 });
 
+
+//anuncios
+Route::controller(AnuncioController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('anuncios', 'store')->name('anuncios.store');
+});
+
 //unidades
 Route::controller(UnidadeController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('unidades', 'store')->name('unidades.store');
+    Route::get("unidades/{unidad}", 'show')->name("unidades.show");
 });
