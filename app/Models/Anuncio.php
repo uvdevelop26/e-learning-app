@@ -25,6 +25,11 @@ class Anuncio extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class);
+    }
+
     //especificamos que se trata de una tabla polimórfica
     public function anunciable()
     {

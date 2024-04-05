@@ -8,6 +8,7 @@ use App\Models\Administradore;
 use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Clase;
+use App\Models\Comentario;
 use App\Models\Docente;
 use App\Models\Materia;
 use App\Models\Persona;
@@ -35,5 +36,6 @@ class DatabaseSeeder extends Seeder
         Materia::factory(10)->create();
         Clase::factory(5)->create();
         Unidade::factory(4)->create();
+  
     }
 }

@@ -50,7 +50,7 @@ class User extends Authenticatable
 
     public function alumnos()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Alumno::class);
     }
 
     public function administradores()
@@ -61,6 +61,11 @@ class User extends Authenticatable
     public function anuncios()
     {
         return $this->hasMany(Anuncio::class);
+    }
+
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class);
     }
 
 

@@ -93,16 +93,14 @@ const logout = () => {
         <div class="md:h-screen">
             <div class="lg:flex lg:flex-grow">
                 <nav
-                    class="text-gray-500 lg:flex-shrink-0 lg:w-56 lg:h-screen lg:shadow-lg"
-                >
+                    class="text-gray-500 lg:flex-shrink-0 lg:w-56 lg:h-screen lg:shadow-lg">
                     <div class="bg-primary px-4 py-4 flex justify-between">
                         <Link :href="route('dashboard')">
                             <ApplicationMark class="block h-9 w-auto" />
                         </Link>
                         <button
                             class="cursor-pointer lg:hidden"
-                            @click="isMobile = !isMobile"
-                        >
+                            @click="isMobile = !isMobile">
                             <Icon name="hamburger" />
                         </button>
                     </div>
@@ -112,8 +110,7 @@ const logout = () => {
                                 <li
                                     v-for="(links, index) in linkList"
                                     :key="links.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     <NavLink
                                         :href="links.href"
                                         v-if="!links.submenu"
@@ -122,16 +119,14 @@ const logout = () => {
                                                 $page.url.startsWith(
                                                     links.href
                                                 ),
-                                        }"
-                                    >
+                                        }">
                                         {{ links.name }}
                                     </NavLink>
                                     <NavLink
                                         as="button"
                                         v-else
                                         class="flex gap-2 capitalize w-full"
-                                        @click="handleSubmenu(index)"
-                                    >
+                                        @click="handleSubmenu(index)">
                                         <Icon
                                             class="h-3 w-3 fill-primary"
                                             name="plus"
@@ -144,12 +139,10 @@ const logout = () => {
                                                 links.submenu &&
                                                 links.toggle_submenu
                                             "
-                                            class="pl-3 bg-white"
-                                        >
+                                            class="pl-3 bg-white">
                                             <li
                                                 v-for="submenu in links.submenu"
-                                                class="capitalize border-l-2"
-                                            >
+                                                class="capitalize border-l-2">
                                                 <NavLink
                                                     :href="submenu.href"
                                                     :class="{
@@ -157,8 +150,7 @@ const logout = () => {
                                                             $page.url.startsWith(
                                                                 submenu.href
                                                             ),
-                                                    }"
-                                                >
+                                                    }">
                                                     {{ submenu.name }}
                                                 </NavLink>
                                             </li>
@@ -175,20 +167,15 @@ const logout = () => {
                                             <img
                                                 class="h-10 w-10 rounded-full object-cover"
                                                 :src="
-                                                    $page.props.auth.user
+                                                        $page.props.auth.user
                                                         .profile_photo_url
                                                 "
                                                 :alt="
-                                                    $page.props.auth.user.name
+                                                    $page.props.auth.user.email
                                                 "
                                             />
                                         </div>
                                         <div>
-                                            <div
-                                                class="font-medium text-base text-gray-800"
-                                            >
-                                                {{ $page.props.auth.user.name }}
-                                            </div>
                                             <div
                                                 class="font-medium text-xs text-gray-500"
                                             >
@@ -202,7 +189,10 @@ const logout = () => {
                                 <form method="POST" @submit.prevent="logout">
                                     <DropdownLink as="button">
                                         Cerrar Sesión
-                                    </DropdownLink>
+                                    </DropdownLink> 
+                                <!--     <DropdownLink as="a" :href="route('profile.show')">
+                                        Profile
+                                    </DropdownLink>  -->
                                 </form>
                             </div>
                         </template>

@@ -71,10 +71,10 @@ class ClaseController extends Controller
         $semestre = Semestre::find($materia->semestre_id);
         $carrera = Carrera::find($semestre->carrera_id);
 
-        $anunciosYunidades = Clase::with(['anuncios', 'unidades'])
+        $anunciosYunidades = Clase::with(['anuncios.comentarios.user.alumnos.persona', 'unidades'])
             ->findOrFail($clase->id);
 
-        
+
 
         return Inertia::render('Clases/Show', [
             'clase' => [
@@ -87,7 +87,7 @@ class ClaseController extends Controller
             'materia' => $materia,
             'semestre' => $semestre,
             'carrera' => $carrera,
-             'anunciosYunidades' => $anunciosYunidades
+            'anunciosYunidades' => $anunciosYunidades
         ]);
     }
 

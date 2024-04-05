@@ -5,6 +5,7 @@ use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\ClaseController;
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\SemestreController;
@@ -123,10 +124,21 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
 //anuncios
 Route::controller(AnuncioController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('anuncios', 'store')->name('anuncios.store');
+    Route::delete('anuncios/{anuncio}', 'destroy')->name('anuncios.destroy');
 });
 
 //unidades
 Route::controller(UnidadeController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('unidades', 'store')->name('unidades.store');
+    Route::get('unidades/{unidad}/edit', 'edit')->name('unidades.edit');
+    Route::put('unidades/{unidad}', 'update')->name('unidades.update');
+    Route::delete('unidades/{unidad}', 'destroy')->name('unidades.destroy');
     Route::get("unidades/{unidad}", 'show')->name("unidades.show");
+});
+
+//comentarios
+Route::controller(ComentarioController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('comentarios', 'store')->name('comentarios.store');
+    Route::put('comentarios/{comentario}', 'update')->name('comentarios.update');
+    Route::delete('comentarios/{comentario}', 'destroy')->name('comentarios.destroy');
 });

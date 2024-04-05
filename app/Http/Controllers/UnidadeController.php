@@ -31,8 +31,6 @@ class UnidadeController extends Controller
             'objetivos' => 'nullable',
         ]);
 
-
-
         Unidade::create([
             'numero' => $request->numero,
             'tema' => $request->tema,
@@ -40,7 +38,7 @@ class UnidadeController extends Controller
             'clase_id' => $request->clase_id
         ]);
 
-        
+
         /*
         $clase->unidades()->attach($unidade->id); */
     }
@@ -48,38 +46,41 @@ class UnidadeController extends Controller
 
     public function show($id)
     {
-       $unidade = Unidade::find($id);
+        $unidade = Unidade::find($id);
 
-        return Inertia::render('Unidades/Show',[
+        return Inertia::render('Unidades/Show', [
             'unidade' => $unidade
         ]);
     }
 
-    public function edit($id)
+    /*   public function edit(Unidade $unidade)
     {
-        
-    }
+        return $unidade;
+    } */
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+
+        $unidade = Unidade::find($id);
+
+        $request->validate([
+            'numero' => 'required',
+            'tema' => 'required',
+            'objetivos' => 'nullable',
+        ]);
+
+        $unidade->update([
+            'numero' => $request->numero,
+            'tema' => $request->tema,
+            'objetivos' => $request->objetivos,
+            'clase_id' => $request->clase_id
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $unidade = Unidade::find($id);
+
+        $unidade->delete();
     }
 }

@@ -11,11 +11,14 @@ import TextInput from '@/Components/TextInput.vue';
 
 const props = defineProps({
     user: Object,
+    userWrole: Array
 });
+
+console.log(props.userWrole)
 
 const form = useForm({
     _method: 'PUT',
-    name: props.user.name,
+    telefono: props.user.telefono,
     email: props.user.email,
     photo: null,
 });
@@ -78,11 +81,11 @@ const clearPhotoFileInput = () => {
 <template>
     <FormSection @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
+            Información del Perfil
         </template>
 
         <template #description>
-            Update your account's profile information and email address.
+            Actualiza la información del perfil de tu cuenta y la dirección de correo electrónico.
         </template>
 
         <template #form>
@@ -112,7 +115,7 @@ const clearPhotoFileInput = () => {
                 </div>
 
                 <SecondaryButton class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
-                    Select A New Photo
+                    Selecciona una nueva Foto
                 </SecondaryButton>
 
                 <SecondaryButton
@@ -127,17 +130,16 @@ const clearPhotoFileInput = () => {
                 <InputError :message="form.errors.photo" class="mt-2" />
             </div>
 
-            <!-- Name -->
+            <!-- Teléfono -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="telefono" value="Telefono" />
                 <TextInput
-                    id="name"
-                    v-model="form.name"
+                    id="telefono"
+                    v-model="form.telefono"
                     type="text"
-                    class="mt-1 block w-full"
-                    autocomplete="name"
+                    class="mt-1 block w-full"       
                 />
-                <InputError :message="form.errors.name" class="mt-2" />
+                <InputError :message="form.errors.telefono" class="mt-2" />
             </div>
 
             <!-- Email -->
@@ -152,6 +154,7 @@ const clearPhotoFileInput = () => {
                 />
                 <InputError :message="form.errors.email" class="mt-2" />
 
+                <!-- if has email verification -->
                 <div v-if="$page.props.jetstream.hasEmailVerification && user.email_verified_at === null">
                     <p class="text-sm mt-2">
                         Your email address is unverified.
@@ -176,11 +179,11 @@ const clearPhotoFileInput = () => {
 
         <template #actions>
             <ActionMessage :on="form.recentlySuccessful" class="mr-3">
-                Saved.
+                Guardar.
             </ActionMessage>
 
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                Guardar
             </PrimaryButton>
         </template>
     </FormSection>

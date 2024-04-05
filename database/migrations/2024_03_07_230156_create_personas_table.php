@@ -25,18 +25,11 @@ return new class extends Migration
                 ->on('ciudades')
                 ->onDelete('cascade');
 
-            
-           /*  $table->unsignedBigInteger('ciudade_id');
-            
-            $table->foreign('ciudade_id')
-                ->references('id')
-                ->on('ciudades')
-                ->onDelete('set null'); */
             $table->timestamps();
         });
     }
 
-    
+
     public function down()
     {
         Schema::dropIfExists('personas');
