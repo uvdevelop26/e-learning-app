@@ -7,7 +7,6 @@ import Modal from "./Modal.vue";
 import Icon from "./Icon.vue";
 import { Link } from "@inertiajs/vue3";
 import { useForm } from "@inertiajs/vue3";
-import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
     data: Object,
@@ -28,6 +27,7 @@ const form = useForm({
     clase_id: props.clase_id,
 });
 
+
 const cancelProcess = () => {
     openModal.value = false;
     props.errors.tema = "";
@@ -38,19 +38,11 @@ const update = () => {
         preserveScroll: true,
         onSuccess: () => {
             cancelProcess();
-            emit("updateunidades");
+            emit("updatedata");
         },
     });
 };
 
-const deleteUnidad = () => {
-    router.delete(route("unidades.destroy", form.id), {
-        preserveScroll: true,
-        onSuccess: () => {
-            emit("updateunidades");
-        },
-    });
-};
 </script>
 <template>
     <div
@@ -87,12 +79,6 @@ const deleteUnidad = () => {
                             class="inline-block text-left py-2 font-bold w-full h-full text-primary hover:underline"
                             @click="openModal = true">
                             Editar
-                        </button>
-                        <button
-                            class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
-                            type="button"
-                            @click="deleteUnidad()">
-                            Eliminar
                         </button>
                     </div>
                 </template>

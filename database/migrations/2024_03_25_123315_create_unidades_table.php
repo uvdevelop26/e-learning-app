@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->integer('numero');
             $table->string('tema');
-            $table->string('objetivos')->nullable();
+            $table->text('objetivos')->nullable();
             $table->unsignedBigInteger('clase_id');
             $table->foreign('clase_id')
                 ->references('id')
