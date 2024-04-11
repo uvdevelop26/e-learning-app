@@ -28,8 +28,7 @@ const options = {
 
         <template #header>
             <h2
-                class="font-semibold text-xl text-gray-800 flex justify-between items-center"
-            >
+                class="font-semibold text-xl text-gray-800 flex justify-between items-center">
                 <span>
                     Unidad Número {{ unidade.numero }} - {{ unidade.tema }}
                 </span>
@@ -39,7 +38,7 @@ const options = {
             </h2>
         </template>
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
-            <editor-wrapper
+            <!-- <editor-wrapper
                 title="Anuncia algo a tu clase..."
                 @enviar="enviar"
                 @cancelar="cancelar"
@@ -51,21 +50,20 @@ const options = {
                             id="titulo"
                             placeholder="Ingresa el título del Anuncio"
                         />
-                        <!--  v-model="form.user_id" -->
+             v-model="form.user_id" -
                         <text-input
                             class="pb-3 pr-6 w-full"
                             id="titulo"
                             placeholder="Ingresa el título del Anuncio"
                         />
-                        <!-- v-model="formAnuncios.titulo"
-                                    :error="errors.titulo" -->
+                
                         <QuillEditor
                             theme="snow"
                             :options="options"
                             style="height: 120px"
                             ref="editorRef"
                         />
-                        <!--    v-model:content="formAnuncios.descripcion" -->
+               
                         <div class="py-2 border-t-3">
                             <label
                                 for="imagen"
@@ -84,7 +82,7 @@ const options = {
                         </div>
                     </form>
                 </template>
-            </editor-wrapper>
+            </editor-wrapper> -->
         </div>
     </AppLayout>
 </template>

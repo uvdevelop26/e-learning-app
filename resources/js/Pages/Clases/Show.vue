@@ -33,6 +33,24 @@ const newAnunciosUnidades = ref(
 const showAddUnidades = ref(false);
 const showEditUnidades = ref(false);
 
+//update data
+
+function updatedata() {
+    anunciosUnidades.value = props.anunciosYunidades;
+    newAnunciosUnidades.value = anunciosUnidades.value.anuncios.concat(
+        anunciosUnidades.value.unidades
+    );
+    sortArray();
+}
+
+const sortArray = () => {
+    newAnunciosUnidades.value.sort((a, b) => {
+        const dateA = new Date(a.created_at);
+        const dateB = new Date(b.created_at);
+        return dateA - dateB;
+    });
+};
+
 //reactive forms to store unidades
 const form = useForm({
     clase_id: props.clase.id,
@@ -41,56 +59,38 @@ const form = useForm({
     objetivos: "",
 });
 
-//submitting forms to store and update unidades and anuncios
+//submit unidades form
 const submit = () => {
     form.post(route("unidades.store"), {
         preserveScroll: true,
         onSuccess: () => {
+            updatedata();
             form.tema = null;
             form.objetivos = null;
             showAddUnidades.value = false;
             props.errors.tema = "";
-            anunciosUnidades.value = props.anunciosYunidades;
             numeroUnidades.value++;
             form.numero = numeroUnidades;
-            newAnunciosUnidades.value = anunciosUnidades.value.anuncios.concat(
-                anunciosUnidades.value.unidades
-            );
-            sortArray();
         },
     });
 };
 
-//update data to show anuncios
+//update data throught emits
+const updateunidad = () => {
+    setTimeout(() => {
+        updatedata();
+    }, 600);
+};
+
+const newpost = () => {
+    setTimeout(() => {
+        updatedata();
+    }, 600);
+};
+
 const updateanuncios = () => {
     setTimeout(() => {
-        anunciosUnidades.value = props.anunciosYunidades;
-        newAnunciosUnidades.value = anunciosUnidades.value.anuncios.concat(
-            anunciosUnidades.value.unidades
-        );
-        sortArray();
-    }, 600);
-};
-
-//update data to show unidades
-const updateunidades = () => {
-    setTimeout(() => {
-        anunciosUnidades.value = props.anunciosYunidades;
-        newAnunciosUnidades.value = anunciosUnidades.value.anuncios.concat(
-            anunciosUnidades.value.unidades
-        );
-        sortArray();
-    }, 600);
-};
-
-//update comments
-const updatecomments = () => {
-    setTimeout(() => {
-        anunciosUnidades.value = props.anunciosYunidades;
-        newAnunciosUnidades.value = anunciosUnidades.value.anuncios.concat(
-            anunciosUnidades.value.unidades
-        );
-        sortArray();
+        updatedata();
     }, 600);
 };
 
@@ -108,33 +108,10 @@ const cancelProcess = () => {
     showEditUnidades.value = false;
 };
 
-//update data from comments
-
-const updatedata = () => {
-    anunciosUnidades.value = props.anunciosYunidades;
-    newAnunciosUnidades.value = anunciosUnidades.value.anuncios.concat(
-        anunciosUnidades.value.unidades
-    );
-    sortArray();
-};
-
 //organizing array to show in the screen
-const sortArray = () => {
-    newAnunciosUnidades.value.sort((a, b) => {
-        const dateA = new Date(a.created_at);
-        const dateB = new Date(b.created_at);
-        return dateA - dateB;
-    });
-};
 
 onMounted(() => {
-    setTimeout(() => {
-        anunciosUnidades.value = props.anunciosYunidades;
-        newAnunciosUnidades.value = anunciosUnidades.value.anuncios.concat(
-            anunciosUnidades.value.unidades
-        );
-        sortArray();
-    }, 600);
+    updatedata();
 });
 </script>
 
@@ -144,12 +121,11 @@ onMounted(() => {
 
         <template #header>
             <h2
-                class="font-semibold text-xl text-gray-800 flex justify-between items-center"
-            >
+                class="font-semibold text-xl text-gray-800 flex justify-between items-center">
                 <span>
                     {{ carrera.nombre }}
                 </span>
-                <button @click="showAddUnidades = !showAddUnidades">
+                <button @click="showAddUnidades = !showAddUnidades" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-indigo-100 focus:bg-indigo-100">
                     <icon name="plus" class="h-4 w-4 fill-primary" />
                 </button>
             </h2>
@@ -157,8 +133,7 @@ onMounted(() => {
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
             <!-- Header class info -->
             <div
-                class="h-56 bg-primary rounded-2xl flex flex-col items-center justify-center"
-            >
+                class="h-56 bg-primary rounded-2xl flex flex-col items-center justify-center">
                 <h3 class="pt-2 font-bold text-3xl lg:text-5xl text-white">
                     {{ props.materia.nombre }}
                 </h3>
@@ -174,20 +149,16 @@ onMounted(() => {
                 <!-- Option pdf materia -->
                 <div class="flex gap-6 items-center lg:flex-col lg:items-start">
                     <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group hover:shadow-md"
-                    >
+                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group hover:shadow-md">
                         <a
                             :href="`/download/${materia.id}`"
                             class="absolute top-0 left-0 right-0 bottom-0"
                             target="_blank"
-                            tabindex="-1"
-                        >
+                            tabindex="-1">
                             <div
-                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2"
-                            >
+                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2">
                                 <span
-                                    class="block pb-3 group-hover:text-primary"
-                                >
+                                    class="block pb-3 group-hover:text-primary">
                                     Plan de Estudio
                                 </span>
                                 <icon
@@ -199,19 +170,15 @@ onMounted(() => {
                     </div>
                     <!-- opion persoma page -->
                     <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group hover:shadow-md"
-                    >
+                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group hover:shadow-md">
                         <Link
                             :href="route('clases.showPersonas', clase.id)"
                             class="absolute top-0 left-0 right-0 bottom-0"
-                            tabindex="-1"
-                        >
+                            tabindex="-1">
                             <div
-                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2"
-                            >
+                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2">
                                 <span
-                                    class="block pb-3 group-hover:text-primary"
-                                >
+                                    class="block pb-3 group-hover:text-primary">
                                     Personas
                                 </span>
                                 <icon
@@ -229,19 +196,19 @@ onMounted(() => {
                         title="Anuncia algo a tu clase.."
                         :clase="clase"
                         :errors="errors"
-                        @updateanuncios="updateanuncios"
+                        @newpost="newpost"
                     />
                     <!-- Unidades links or class anuncios -->
                     <template
                         v-for="(data, index) in newAnunciosUnidades"
-                        :key="index"
-                    >
+                        :key="index">
                         <component
                             v-if="data.titulo"
                             :data="data"
                             :is="Anuncio"
                             :errors="errors"
-                            @updatecomments="updatecomments"
+                            :clase_id="clase.id"
+                            @updateanuncios="updateanuncios"
                         />
                         <component
                             v-else
@@ -249,7 +216,7 @@ onMounted(() => {
                             :data="data"
                             :errors="errors"
                             :clase_id="clase.id"
-                            @updateunidades="updateunidades"
+                            @updateunidad="updateunidad"
                         />
                     </template>
                 </div>
@@ -266,7 +233,7 @@ onMounted(() => {
                     <div class="bg-white flex flex-wrap -mb-8 -mr-6 rounded-md">
                         <text-input
                             class="pb-8 pr-6 w-full"
-                            label="Número Unidad"
+                            label="Unidad Número"
                             id="numero"
                             v-model="form.numero"
                             :error="errors.numero"
@@ -284,25 +251,25 @@ onMounted(() => {
                             class="pb-8 pr-6 w-full"
                             label="Objetivos"
                             :error="errors.objetivos"
-                            v-model="form.objetivos"
-                        >
+                            v-model="form.objetivos">
                         </text-area>
                     </div>
                     <div
-                        class="flex items-center justify-between pt-4 bg-gray-50 border-t border-gray-100"
-                    >
+                        class="flex items-center justify-between pt-4 bg-gray-50 border-t border-gray-100">
                         <button
                             class="px-3 text-red-500 hover:underline"
                             type="button"
-                            @click="cancelProcess"
-                        >
+                            @click="cancelProcess">
                             Cancelar
                         </button>
                         <button
-                            class="px-7 py-1 bg-primary hover:bg-orange-400 text-white rounded-md"
+                            class="px-6 py-3 rounded text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-orange-400 focus:bg-orange-400"
+                            :class="{
+                                'bg-gray-400': form.processing,
+                                'bg-primary': !form.processing,
+                            }"
                             type="submit"
-                            :disabled="form.processing"
-                        >
+                            :disabled="form.processing">
                             Enviar
                         </button>
                     </div>

@@ -44,6 +44,10 @@ const alignmentClasses = computed(() => {
         return 'origin-top-right right-0';
     }
 
+    if(props.align === 'right-right'){
+       return 'origin-top-right -right-1/2 -bottom-[-90%]'
+    }
+
     return 'origin-top';
 });
 </script>

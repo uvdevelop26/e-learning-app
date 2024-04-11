@@ -20,35 +20,18 @@ const deleteClase = (id) => {
 
 <template>
     <AppLayout>
-        <Head title="Carreras" />
+        <Head title="Clases" />
 
         <template #header>
             <h2
                 class="font-semibold text-xl text-gray-800 flex justify-between items-center"
             >
                 <span>Clases Impartidas</span>
-                <!-- <button>
-                    <icon name="plus" class="w-5 h-5 fill-primary hover:fill-secondary" />
-                </button> -->
             </h2>
         </template>
         <div class="py-12 px-4 bg-gray-100 border lg:px-8 max-w-7xl">
+            <!-- create button -->
             <div class="flex items-center mb-6">
-                <!-- <search-filter
-                    v-model="form.search"
-                    class="mr-4 w-full max-w-md"
-                    @reset="reset"
-                >
-                    <label class="block text-gray-700">Trashed:</label>
-                    <select
-                        v-model="form.trashed"
-                        class="form-select mt-1 w-full"
-                    >
-                        <option :value="null" />
-                        <option value="with">With Trashed</option>
-                        <option value="only">Only Trashed</option>
-                    </select>
-                </search-filter> -->
                 <Link class="btn-indigo" href="/clases/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Clase</span>
@@ -56,18 +39,32 @@ const deleteClase = (id) => {
             </div>
             <div class="w-full overflow-x-auto">
                 <div
-                    class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6">
+                    class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6"
+                >
+                    <!-- cards -->
                     <card v-for="clase in clases" :key="clase.id">
                         <template #cardHeader>
-                            <Dropdown>
+                            <Link
+                                class="inline-block pb-4 w-full group"
+                                :href="route('clases.show', clase.id)">
+                                <span
+                                    class="block text-3xl text-white font-bold capitalize group-hover:underline">
+                                    {{ clase.materia.nombre }}
+                                </span>
+                                <span class="block text-md font-md text-white">
+                                    {{ clase.codigo }}
+                                </span>
+                            </Link>
+                            <Dropdown class="self-start">
                                 <template #trigger>
-                                    <div class="text-right">
+                                    <div
+                                        class="pt-2 pr-1 pb-1 overflow-hidden flex items-center justify-end">
                                         <button
                                             :open="open"
-                                            class="inline-block h-full">
+                                            class="flex h-6 w-6 pt-1 rounded-full justify-center overflow-hidden z-10 group hover:ring-1 hover:ring-white focus:ring-1 focus:ring-white">
                                             <icon
                                                 name="trigger"
-                                                class="w-[0.38rem] h-[0.38rem] fill-white"
+                                                class="w-[0.2rem] h-[0.2rem] fill-white"
                                             />
                                         </button>
                                     </div>
@@ -82,24 +79,12 @@ const deleteClase = (id) => {
                                         <button
                                             class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
                                             type="button"
-                                            @click="deleteClase(clase.id)"
-                                        >
+                                            @click="deleteClase(clase.id)">
                                             Eliminar
                                         </button>
                                     </div>
                                 </template>
                             </Dropdown>
-                            <Link
-                                class="inline-block w-full group bg-red-2000"
-                                :href="route('clases.show', clase.id)" >
-                                <span
-                                    class="block text-3xl text-white font-bold group-hover:underline">
-                                    {{ clase.materia.nombre }}
-                                </span>
-                                <span class="block text-md font-md text-white">
-                                    {{ clase.codigo }}
-                                </span>
-                            </Link>
                         </template>
                     </card>
                 </div>

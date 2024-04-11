@@ -101,24 +101,16 @@ const deleteAlumno = (id) => {
 
 <template>
     <AppLayout>
-        <Head title="Carreras" />
+        <Head title="Personas" />
 
         <template #header>
             <h2
-                class="font-semibold text-xl text-gray-800 flex justify-between items-center"
-            >
+                class="font-semibold text-xl text-gray-800 flex justify-between items-center">
                 <span>Personas / clase {{ clase.codigo }}</span>
             </h2>
         </template>
-        <div class="py-12 px-4 bg-white border lg:px-8 max-w-7xl">
-            <!-- <div class="flex items-center mb-6">
-                
-                <Link class="btn-indigo" href="/clases/create">
-                    <span>Crear</span>
-                    <span class="hidden md:inline">&nbsp;Clase</span>
-                </Link>
-            </div> -->
-            <div class="w-full max-w-4xl mx-auto overflow-x-auto">
+        <div class="py-12 px-4 lg:px-8 max-w-7xl">
+            <div class="w-full p-4 rounded-xl border shadow bg-white group">
                 <div class="py-4">
                     <div class="py-4 px-4 border-b border-primary">
                         <h3 class="text-2xl font-bold text-primary">
@@ -132,8 +124,7 @@ const deleteAlumno = (id) => {
                 </div>
                 <div class="py-4">
                     <div
-                        class="py-4 px-4 border-b border-primary flex justify-between"
-                    >
+                        class="py-4 px-4 border-b border-primary flex justify-between">
                         <h3 class="text-2xl font-bold text-primary">Alumnos</h3>
                         <button @click="show = !show">
                             <icon
@@ -147,16 +138,14 @@ const deleteAlumno = (id) => {
                         <li
                             v-for="alumno in alumnos"
                             :key="alumno.id"
-                            class="py-2 px-2 rounded-md flex justify-between hover:bg-gray-100"
-                        >
+                            class="py-2 px-2 rounded-md flex justify-between hover:bg-gray-100">
                             <span>
                                 {{ alumno.persona.nombre }}
                                 {{ alumno.persona.apellido }}
                             </span>
                             <button
                                 class="p-1"
-                                @click="deleteAlumno(alumno.id)"
-                            >
+                                @click="deleteAlumno(alumno.id)">
                                 <icon
                                     name="trash"
                                     class="w-4 h-4 fill-primary hover:fill-red-500"
@@ -190,21 +179,19 @@ const deleteAlumno = (id) => {
                         <button
                             v-if="inputDisabled"
                             class="absolute top-2 right-5 bg-gray-300 p-2 flex items-center justify-center rounded-full"
-                            @click="deleteSelected()"
-                        >
+                            @click="deleteSelected()">
                             <icon name="close" class="h-2 w-2 fill-gray-500" />
                         </button>
                     </div>
                     <ul>
                         <li
-                            v-for="alumnos in filteredAlumnosData"
+                            v-for="(alumnos, index) in filteredAlumnosData"
                             :key="alumnos.alumno_id"
-                            class="bg-gray-100 my-1 py-2 px-2 text-sm rounded-md hover:bg-indigo-100 cursor-pointer"
-                        >
+                            class="my-1 py-2 px-2 text-sm rounded-md hover:bg-gray-100 cursor-pointer"
+                            :class="{ hidden: index > 4 }">
                             <button
                                 @click="selectAlumno(alumnos.alumno_id)"
-                                class="inline-block w-full h-full text-left"
-                            >
+                                class="inline-block w-full h-full text-left">
                                 {{ alumnos.nombre_persona
                                 }}{{ alumnos.apellido_persona }}
                             </button>
@@ -216,14 +203,17 @@ const deleteAlumno = (id) => {
                 <button
                     class="px-3 text-red-500 hover:underline"
                     @click="cancelOperation()"
-                >
+                    type="button">
                     Cancelar
                 </button>
                 <button
-                    class="px-6 py-1 bg-primary hover:bg-orange-400 text-white rounded-md"
+                    class="px-6 py-3 rounded text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-orange-400 focus:bg-orange-400"
+                    :class="{
+                        'bg-primary': !form.processing,
+                        'bg-gray-500': form.processing,
+                    }"
                     @click="submit()"
-                    :disabled="form.processing"
-                >
+                    :disabled="form.processing">
                     Enviar
                 </button>
             </template>

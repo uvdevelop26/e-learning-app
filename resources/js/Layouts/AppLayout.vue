@@ -4,6 +4,7 @@ import { Head, Link, router } from "@inertiajs/vue3";
 import Icon from "../Components/Icon.vue";
 import ApplicationMark from "@/Components/ApplicationMark.vue";
 import DropdownLink from "@/Components/DropdownLink.vue";
+import Dropdown from "../Components/Dropdown.vue";
 import NavLink from "@/Components/NavLink.vue";
 import MenuNav from "../Components/MenuNav.vue";
 import { usePage } from '@inertiajs/vue3'
@@ -92,8 +93,10 @@ const logout = () => {
 
         <div class="md:h-screen">
             <div class="lg:flex lg:flex-grow">
+                <!-- navbar -->
                 <nav
-                    class="text-gray-500 lg:flex-shrink-0 lg:w-56 lg:h-screen lg:shadow-lg">
+                    class="lg:flex-shrink-0 lg:w-56 lg:h-screen lg:shadow-lg">
+                    <!-- navbar header -->
                     <div class="bg-primary px-4 py-4 flex justify-between">
                         <Link :href="route('dashboard')">
                             <ApplicationMark class="block h-9 w-auto" />
@@ -104,22 +107,22 @@ const logout = () => {
                             <Icon name="hamburger" />
                         </button>
                     </div>
+                    <!-- navbar body -->
                     <MenuNav :showDropdown="isMobile">
+                        <!-- content -->
                         <template #content>
-                            <ul class="">
+                            <ul>
                                 <li
                                     v-for="(links, index) in linkList"
                                     :key="links.id"
                                     class="capitalize">
                                     <NavLink
                                         :href="links.href"
-                                        v-if="!links.submenu"
+                                         v-if="!links.submenu"
                                         :class="{
                                             'bg-indigo-100 font-bold':
-                                                $page.url.startsWith(
-                                                    links.href
-                                                ),
-                                        }">
+                                             $page.url.startsWith(links.href)
+                                                }">
                                         {{ links.name }}
                                     </NavLink>
                                     <NavLink
@@ -128,17 +131,16 @@ const logout = () => {
                                         class="flex gap-2 capitalize w-full"
                                         @click="handleSubmenu(index)">
                                         <Icon
-                                            class="h-3 w-3 fill-primary"
-                                            name="plus"
+                                            class="h-2 w-2 fill-primary"
+                                            :name="toggle_submenu ? '' : 'cheveron-down'"
+                                            
                                         />
                                         {{ links.name }}
                                     </NavLink>
                                     <transition name="submenu-slice">
                                         <ul
-                                            v-if="
-                                                links.submenu &&
-                                                links.toggle_submenu
-                                            "
+                                            v-if="links.submenu &&
+                                                  links.toggle_submenu"
                                             class="pl-3 bg-white">
                                             <li
                                                 v-for="submenu in links.submenu"
@@ -148,9 +150,7 @@ const logout = () => {
                                                     :class="{
                                                         'bg-indigo-100 font-bold':
                                                             $page.url.startsWith(
-                                                                submenu.href
-                                                            ),
-                                                    }">
+                                                                submenu.href),}">
                                                     {{ submenu.name }}
                                                 </NavLink>
                                             </li>
@@ -159,41 +159,40 @@ const logout = () => {
                                 </li>
                             </ul>
                         </template>
+                        <!-- foother (authdata) -->
                         <template #authData>
-                            <div class="mt-4 border-t">
-                                <div class="pt-1 border-gray-200">
-                                    <div class="flex items-center px-3">
-                                        <div class="shrink-0 mr-3">
-                                            <img
-                                                class="h-10 w-10 rounded-full object-cover"
-                                                :src="
-                                                        $page.props.auth.user
-                                                        .profile_photo_url
-                                                "
-                                                :alt="
-                                                    $page.props.auth.user.email
-                                                "
-                                            />
+                            <div class="w-full mt-4 border-t lg:mt-8">
+                                <Dropdown :width="'40'" class="w-fit" :align="'right-right'" >
+                                    <template #trigger>
+                                        <div class="pt-2 w-fit">
+                                            <button class="flex items-center justify-evenly rounded-2xl bg-primary w-56 h-12 group hover:bg-white hover:border-primary hover:border lg:w-52">
+                                                <img
+                                                    class="h-9 w-9 rounded-full object-cover lg:h-8 lg:w-8"
+                                                    :src="$page.props.auth.user.profile_photo_url"
+                                                    :alt="$page.props.auth.user.email"
+                                                />
+                                                <span class="text-white font-bold text-sm group-hover:text-primary lg:text-xs">
+                                                    {{ $page.props.auth.user.email }}
+                                                </span>
+                                                <icon name="cheveron-right" class="w-5 h-5 fill-white lg:w-4 lg:h-4" />
+                                            </button>
                                         </div>
-                                        <div>
-                                            <div
-                                                class="font-medium text-xs text-gray-500"
-                                            >
-                                                {{
-                                                    $page.props.auth.user.email
-                                                }}
+                                    </template>
+                                    <template #content>
+                                        <div class="pl-3 py-2">
+                                            <form method="POST" @submit.prevent="logout">
+                                                <button type="submit" class="inline-block text-left py-2 w-full font-bold text-black hover:text-primary hover:underline">
+                                                    Cerrar Sesión
+                                                </button> 
+                                            </form>
+                                            <div>
+                                                <Link :href="route('profile.show')" class="inline-block py-2 w-full font-bold text-black hover:text-primary hover:underline">
+                                                    Perfil
+                                                </Link>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <form method="POST" @submit.prevent="logout">
-                                    <DropdownLink as="button">
-                                        Cerrar Sesión
-                                    </DropdownLink> 
-                                <!--     <DropdownLink as="a" :href="route('profile.show')">
-                                        Profile
-                                    </DropdownLink>  -->
-                                </form>
+                                    </template>
+                                </Dropdown>
                             </div>
                         </template>
                     </MenuNav>
@@ -201,19 +200,16 @@ const logout = () => {
                 <!-- Page  -->
                 <div
                     class="bg-gray-100 lg:pt-10 lg:flex-1 lg:h-screen lg:overflow-y-auto"
-                    scroll-region
-                >
+                    scroll-region>
                     <!-- Page Header -->
                     <header
                         v-if="$slots.header"
-                        class="bg-white w-full shadow lg:fixed lg:top-0 z-50"
-                    >
+                        class="bg-white w-full shadow lg:fixed lg:top-0 z-50">
                         <div class="max-w-7xl py-5 px-12">
                             <slot name="header" />
                             
                         </div>
                     </header>
-
                     <!-- Page Content -->
                     <main>
                         <slot />

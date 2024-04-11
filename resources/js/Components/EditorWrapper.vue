@@ -6,6 +6,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { ref, getCurrentInstance } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
+import Modal from "./Modal.vue";
 
 const props = defineProps({
     title: String,
@@ -14,9 +15,11 @@ const props = defineProps({
 });
 
 const open = ref(false);
+const openModal = ref(false);
 const editorRef = ref(null);
 const { auth } = usePage().props;
 const { emit } = getCurrentInstance();
+const uploadedFiles = ref([]);
 
 const form = useForm({
     titulo: "",
@@ -24,6 +27,8 @@ const form = useForm({
     user_id: auth.user.id,
     anunciable_id: props.clase.id,
     anunciable_type: "",
+    nombre: [],
+    url: [],
 });
 
 const options = {
@@ -46,16 +51,51 @@ const cancelOperation = () => {
             }
         }
         form.titulo = "";
-        open.value = false
+        open.value = false;
+        props.errors.titulo = "";
     }, 300);
+};
+
+const getFileData = (myFile) => {
+    const name = myFile.files[0].name;
+    const file = myFile.files[0];
+
+    if (name.endsWith(".pdf")) {
+        uploadedFiles.value.push({ extension: "pdf", data: file });
+        form.url.push(file);
+        
+    } else if (
+        name.endsWith(".jpeg") ||
+        name.endsWith(".png") ||
+        name.endsWith(".gif")
+    ) {
+        uploadedFiles.value.push({ extension: "image", data: file });
+        form.url.push(file);
+    } else if (
+        name.endsWith(".doc") ||
+        name.endsWith(".docx") ||
+        name.endsWith(".xls") ||
+        name.endsWith(".xlsx") ||
+        name.endsWith(".ppt") ||
+        name.endsWith(".pptx")
+    ) {
+        uploadedFiles.value.push({ extension: "office", data: file });
+        form.url.push(file);
+    }
+};
+
+const deleteFile = (index) => {
+    uploadedFiles.value.splice(index, 1);
+    form.url.splice(index, 1);
 };
 
 const submit = () => {
     form.post(route("anuncios.store"), {
         preserveScroll: true,
+        forceFormData: true,
         onSuccess: () => {
+            emit("newpost");
             cancelOperation();
-            emit('updateanuncios');
         },
     });
 };
@@ -64,12 +104,14 @@ const submit = () => {
     <div>
         <div
             class="bg-white w-full p-4 rounded-xl border shadow group"
-            @click="open = true">
+            @click="open = true"
+        >
             <!-- label header -->
             <transition name="show-label">
                 <label
                     class="block py-2 text-sm italic cursor-pointer group-hover:text-primary"
-                    v-if="!open">
+                    v-if="!open"
+                >
                     {{ title }}
                 </label>
             </transition>
@@ -91,31 +133,87 @@ const submit = () => {
                             ref="editorRef"
                             v-model:content="form.descripcion"
                         />
-                        <div class="py-2 border-t-3">
+                        <div class="py-2 border-t-3 flex gap-3 items-center">
                             <label
-                                for="imagen"
-                                class="flex justify-center items-center w-11 h-11 rounded-full cursor-pointer bg-indigo-100">
+                                for="upload"
+                                class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
+                            >
                                 <icon
                                     name="upload"
                                     class="w-4 h-4 fill-primary"
                                 />
                                 <input
                                     type="file"
-                                    id="imagen"
+                                    id="upload"
                                     class="opacity-0 absolute -z-10"
+                                    @change="getFileData($event.target)"
                                 />
                             </label>
+                            <button
+                                type="button"
+                                class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
+                                @click="openModal = true"
+                            >
+                                <icon
+                                    name="link"
+                                    class="w-4 h-4 fill-primary"
+                                />
+                            </button>
+                            <!-- -->
                         </div>
+                        <ul class="flex py-2 flex-wrap gap-3">
+                            <li
+                                v-for="(files, index) in uploadedFiles"
+                                :key="index"
+                                class="flex items-center h-12 border rounded-xl overflow-hidden"
+                            >
+                                <div
+                                    class="flex h-full px-3 justify-center items-center gap-2 border-r"
+                                >
+                                    <span
+                                        class="text-xs lowercase font-bold text-primary"
+                                    >
+                                        {{ files.data.name }}
+                                    </span>
+                                    <icon
+                                        :name="files.extension"
+                                        class="w-4 h-4 fill-primary"
+                                    />
+                                </div>
+                                <div
+                                    class="w-10 h-full flex items-center justify-center"
+                                >
+                                    <button
+                                        class="h-full w-full flex justify-center items-center hover:bg-gray-100"
+                                        type="button"
+                                        @click="deleteFile(index)"
+                                    >
+                                        <icon
+                                            name="close"
+                                            class="w-2 fill-primary"
+                                        />
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
                         <!-- options -->
                         <div class="pt-4 border-t-2 flex justify-between">
                             <button
                                 class="inline-block px-8 py-2 text-red-500 hover:underline"
-                                @click="cancelOperation()">
+                                @click="cancelOperation"
+                                type="button"
+                            >
                                 Cancelar
                             </button>
                             <button
-                                class="inline-block px-8 py-2 bg-primary rounded-md text-white font-bold hover:bg-orange-400"
-                                type="submit">
+                                class="px-6 py-3 rounded text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-orange-400 focus:bg-orange-400"
+                                :class="{
+                                    'bg-gray-400': form.processing,
+                                    'bg-primary': !form.processing,
+                                }"
+                                :disabled="form.processing"
+                                type="submit"
+                            >
                                 Enviar
                             </button>
                         </div>
@@ -124,6 +222,23 @@ const submit = () => {
             </transition>
         </div>
     </div>
+    <Modal :show="openModal">
+        <!-- <template #headerModal>
+            <h3 class="text-lg">Agregar Materiales</h3>
+        </template>
+        <template #bodyModal>
+            <div class="h-40 flex justify-center items-center gap-3">
+                <label for="file" class="flex items-center gap-2 bg-primary justify-center w-32 h-9 rounded-lg cursor-pointer hover:bg-orange-400  relative">
+                    <span class="text-white font-bold">Examinar</span>
+                    <input type="file" id="file" class="absolute opacity-0 -z-20" @change="getFileData($event.target)">
+                    <icon name="upload" class="w-4 h-4 fill-white"  />
+                </label>
+                <div>
+                    <span class="font-bold text-primary">{{ dataFilename }}</span>
+                </div>
+            </div>
+        </template> -->
+    </Modal>
 </template>
 <style scoped>
 /* transition show form */

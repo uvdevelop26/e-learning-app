@@ -9,7 +9,7 @@ defineProps({
             <div class="lg:h-[82%] overflow-y-auto">
                 <slot name="content" />
             </div>
-            <div>
+            <div class="flex p-2 items-center">
                 <slot name="authData" />
             </div>
         </div>

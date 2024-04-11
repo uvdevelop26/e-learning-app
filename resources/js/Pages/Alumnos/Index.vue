@@ -38,14 +38,12 @@ watchEffect(() => {
                 Usuarios / Alumnos
             </h2>
         </template>
-        <!-- -->
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
             <div class="py-4 flex items-center justify-between mb-6">
                 <search-filter
                     v-model="form.search"
                     class="mr-4 w-full max-w-md"
-                    @reset="reset"
-                >
+                    @reset="reset">
                 </search-filter>
                 <Link class="btn-indigo" href="/alumnos/create">
                     <span>Crear</span>
@@ -54,8 +52,7 @@ watchEffect(() => {
             </div>
             <div class="w-full bg-white overflow-x-auto rounded-md shadow">
                 <table
-                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md"
-                >
+                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md">
                     <thead>
                         <tr class="text-left font-bold">
                             <th class="pb-4 pt-6 px-6">Nombre</th>
@@ -72,13 +69,11 @@ watchEffect(() => {
                             v-for="alumno in alumnos.data"
                             v-if="alumnos.data.length"
                             :key="alumno.id"
-                            class="hover:bg-gray-100 focus-within:bg-gray-100"
-                        >
+                            class="hover:bg-gray-100 focus-within:bg-gray-100">
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="route('alumnos.edit', alumno.id)"
-                                >
+                                    :href="route('alumnos.edit', alumno.id)">
                                     {{ alumno.persona.nombre }}
                                     {{ alumno.persona.apellido }}
                                 </Link>
@@ -87,8 +82,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('alumnos.edit', alumno.id)"
-                                >
+                                    :href="route('alumnos.edit', alumno.id)">
                                     <div>{{ alumno.persona.ci_numero }}</div>
                                 </Link>
                             </td>
@@ -96,8 +90,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('alumnos.edit', alumno.id)"
-                                >
+                                    :href="route('alumnos.edit', alumno.id)">
                                     <div>{{ alumno.persona.telefono }}</div>
                                 </Link>
                             </td>
@@ -105,8 +98,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('alumnos.edit', alumno.id)"
-                                >
+                                    :href="route('alumnos.edit', alumno.id)">
                                     <div>{{ alumno.persona.direccion }}</div>
                                 </Link>
                             </td>
@@ -114,8 +106,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('alumnos.edit', alumno.id)"
-                                >
+                                    :href="route('alumnos.edit', alumno.id)">
                                     <div>{{ alumno.carrera.nombre }}</div>
                                 </Link>
                             </td>
@@ -124,8 +115,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('alumnos.edit', alumno.id)"
-                                >
+                                    :href="route('alumnos.edit', alumno.id)">
                                     <div>{{ alumno.user.email }}</div>
                                 </Link>
                             </td>
@@ -133,8 +123,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('alumnos.edit', alumno.id)"
-                                >
+                                    :href="route('alumnos.edit', alumno.id)">
                                     <div>{{ alumno.estado.estado }}</div>
                                 </Link>
                             </td>
@@ -142,8 +131,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-4"
                                     tabindex="-1"
-                                    :href="route('alumnos.edit', alumno.id)"
-                                >
+                                    :href="route('alumnos.edit', alumno.id)">
                                     <icon
                                         name="cheveron-right"
                                         class="block w-6 h-6 fill-gray-400"
@@ -153,8 +141,7 @@ watchEffect(() => {
                         </tr>
                         <tr
                             class="hover:bg-gray-100 focus-within:bg-gray-100"
-                            v-else
-                        >
+                            v-else>
                             <span class="inline-block pl-8 py-5">
                                 No se encuentran resultados
                             </span>

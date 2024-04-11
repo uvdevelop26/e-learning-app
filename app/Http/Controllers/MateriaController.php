@@ -50,6 +50,7 @@ class MateriaController extends Controller
 
         if ($request->hasFile('plan_estudio')) {
             $file = $request->file('plan_estudio');
+            
             $extension = $file->getClientOriginalExtension();
 
             $filename = time() . '.' . $extension;

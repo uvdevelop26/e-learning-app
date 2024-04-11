@@ -13,7 +13,7 @@ const props = defineProps({
 
 const hiddeComments = ref(true);
 const buttonDisabled = ref(true);
-const buttonEditDisabled = ref(true);
+const buttonEditDisabled = ref(false);
 const { auth } = usePage().props;
 const { emit } = getCurrentInstance();
 const editing = ref(false);
@@ -43,15 +43,13 @@ watchEffect(() => {
     }
 });
 
-watchEffect(() => {
+/* watchEffect(() => {
     const contenido = formEdit.contenido;
 
-    if (contenido !== "") {
-        buttonEditDisabled.value = false;
-    } else {
+    if (contenido === "") {
         buttonEditDisabled.value = true;
     }
-});
+}); */
 
 const setEditData = (data, index) => {
     comentIndex.value = index;
@@ -69,7 +67,7 @@ const submit = () => {
     form.post(route("comentarios.store"), {
         preserveScroll: true,
         onSuccess: () => {
-            emit("updatecomments");
+            emit("updateanuncios");
             form.contenido = "";
         },
     });
@@ -81,7 +79,7 @@ const update = () => {
     formEdit.post(route("comentarios.update", formEdit), {
         preserveScroll: true,
         onSuccess: () => {
-            emit("updatecomments");
+            emit("updateanuncios");
             formEdit.contenido = "";
             setTimeout(() => {
                 editing.value = false;
@@ -94,7 +92,7 @@ const deleteData = (id) => {
     router.delete(route("comentarios.destroy", id), {
         preserveScroll: true,
         onSuccess: () => {
-            emit("updatecomments");
+            emit("updateanuncios");
         },
     });
 };
@@ -117,8 +115,7 @@ const deleteData = (id) => {
                 v-for="(comentario, index) in comentarios"
                 :key="comentario.id"
                 ref="commentsList"
-                :class="{ hidden: index < 4 && hiddeComments }"
-            >
+                :class="{ hidden: index < 4 && hiddeComments }">
                 <!-- Profile picture -->
                 <div class="w-12 h-12 rounded-full self-start">
                     <img
@@ -134,36 +131,32 @@ const deleteData = (id) => {
                     </p>
                     <p
                         class="text-xs whitespace-normal"
-                        v-if="!editing || comentIndex !== index"
-                    >
+                        v-if="!editing || comentIndex !== index">
                         {{ comentario.contenido }}
                     </p>
                     <form
                         @submit.prevent="update"
-                        v-if="editing && comentIndex == index"
-                    >
+                        v-if="editing && comentIndex == index">
                         <textarea
                             id="editcontenido"
                             class="p-1 m-0 h-11 overflow-y-auto whitespace-normal border-gray-200 outline-0 focus:outline-0 w-full text-xs rounded-lg resize-none focus:border-gray-500 focus:right-0"
-                            v-model="formEdit.contenido"
-                        >
+                            v-model="formEdit.contenido">
                         </textarea>
                         <div class="py-2 flex justify-between items-center">
                             <button
                                 class="px-3 text-red-500 hover:underline"
                                 type="button"
-                                @click="editing = false"
-                            >
+                                @click="editing = false">
                                 Cancelar
                             </button>
                             <button
-                                class="px-4 py-1 text-white rounded-md"
+                                class="px-6 py-3 rounded text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-orange-400 focus:bg-orange-400"
+                                :class="{
+                                'bg-gray-400': form.processing,
+                                'bg-primary': !form.processing,
+                                    }"
                                 type="submit"
-                                :disabled="buttonEditDisabled"
-                                :class="{'bg-gray-200 text-primary' : !buttonDisabled,
-                                    'bg-primary hover:bg-orange-400' :buttonDisabled
-                                }"
-                            >
+                                :disabled="form.processing">
                                 Actualizar
                             </button>
                         </div>

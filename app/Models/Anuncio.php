@@ -30,6 +30,11 @@ class Anuncio extends Model
         return $this->hasMany(Comentario::class);
     }
 
+    public function materiales()
+    {
+        return $this->hasMany(Materiale::class);
+    }
+
     //especificamos que se trata de una tabla polimórfica
     public function anunciable()
     {

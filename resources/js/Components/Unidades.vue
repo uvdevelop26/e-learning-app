@@ -27,10 +27,19 @@ const form = useForm({
     clase_id: props.clase_id,
 });
 
-
 const cancelProcess = () => {
     openModal.value = false;
     props.errors.tema = "";
+};
+
+const setOpenModal = () => {
+    form.id = props.data.id,
+    form.numero = props.data.numero,
+    form.tema = props.data.tema,
+    form.objetivos = props.data.objetivos,
+    form.clase_id = props.clase_id,
+
+    openModal.value = true
 };
 
 const update = () => {
@@ -38,11 +47,10 @@ const update = () => {
         preserveScroll: true,
         onSuccess: () => {
             cancelProcess();
-            emit("updatedata");
+            emit("updateunidad");
         },
     });
 };
-
 </script>
 <template>
     <div
@@ -52,8 +60,8 @@ const update = () => {
             <div class="w-full">
                 <h3 class="font-bold uppercase">
                     <Link
-                        :href="route('unidades.show', data.id)"
-                        class="block py-2 group-hover:text-primary">
+                        class="block py-2 group-hover:text-primary"
+                        :href="route('unidades.show', data.id)">
                         Unidad Número {{ data.numero }} -
                         {{ data.tema }}
                     </Link>
@@ -77,7 +85,7 @@ const update = () => {
                     <div class="p-3">
                         <button
                             class="inline-block text-left py-2 font-bold w-full h-full text-primary hover:underline"
-                            @click="openModal = true">
+                            @click="setOpenModal()">
                             Editar
                         </button>
                     </div>
@@ -126,7 +134,11 @@ const update = () => {
                         Cancelar
                     </button>
                     <button
-                        class="px-7 py-1 bg-primary hover:bg-orange-400 text-white rounded-md"
+                        class="px-6 py-3 rounded text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-orange-400 focus:bg-orange-400"
+                        :class="{
+                            'bg-gray-400': form.processing,
+                            'bg-primary': !form.processing,
+                        }"
                         type="submit"
                         :disabled="form.processing">
                         Actualizar

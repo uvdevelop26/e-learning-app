@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import { Link, Head } from "@inertiajs/vue3";
 import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
 import LogoutOtherBrowserSessionsForm from "@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue";
 import SectionBorder from "@/Components/SectionBorder.vue";
@@ -14,10 +15,13 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Profile">
+    <AppLayout title="Perfil">
+        <Head title="Perfil" />
+
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Profile
+            <h2
+                class="font-semibold text-xl text-gray-800 flex justify-between items-center">
+                Perfil
             </h2>
         </template>
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
@@ -31,7 +35,7 @@ defineProps({
 
                 <SectionBorder />
             </div>
-          <!--   <LogoutOtherBrowserSessionsForm
+            <!--   <LogoutOtherBrowserSessionsForm
                 :sessions="sessions"
                 class="mt-10 sm:mt-0"
             />

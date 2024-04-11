@@ -124,6 +124,7 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
 //anuncios
 Route::controller(AnuncioController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('anuncios', 'store')->name('anuncios.store');
+    Route::put('anuncios/{anuncio}', 'update')->name('anuncios.update');
     Route::delete('anuncios/{anuncio}', 'destroy')->name('anuncios.destroy');
 });
 

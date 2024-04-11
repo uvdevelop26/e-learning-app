@@ -46,6 +46,7 @@ class UnidadeController extends Controller
 
     public function show($id)
     {
+       
         $unidade = Unidade::find($id);
 
         return Inertia::render('Unidades/Show', [
