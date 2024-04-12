@@ -2,6 +2,7 @@
 import Icon from "./Icon.vue";
 import Dropdown from "./Dropdown.vue";
 import Comentarios from "./Comentarios.vue";
+import Materiales from "./Materiales.vue";
 import Modal from "./Modal.vue";
 import TextInput from "./TextInput.vue";
 import { QuillEditor } from "@vueup/vue-quill";
@@ -57,9 +58,7 @@ const setOpenModal = () => {
     form.titulo = props.data.titulo;
     form.descripcion = props.data.descripcion;
     form.user_id = auth.user.id;
-    form.anunciable_id = props.clase_id,
-
-    openModal.value = true
+    (form.anunciable_id = props.clase_id), (openModal.value = true);
 };
 
 const update = () => {
@@ -121,6 +120,18 @@ const deleteAnuncio = () => {
                 </template>
             </dropdown>
         </div>
+        <!-- materiales section -->
+        <!-- <div v-for="materiale in data.materiales">
+            <div v-if="isImage(materiale)">
+                {{ imageUrl(materiale.url) }}
+                <img
+                    :src="imageUrl(materiale.url)"
+                    alt=""
+                    srcset=""
+                />
+            </div>
+        </div> -->
+        <Materiales :materiales="data.materiales" />
         <!-- comments sectios -->
         <Comentarios
             class="mt-3 border-t"

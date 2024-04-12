@@ -53,6 +53,8 @@ const cancelOperation = () => {
         form.titulo = "";
         open.value = false;
         props.errors.titulo = "";
+        uploadedFiles.value = []
+        form.url = []
     }, 300);
 };
 
@@ -66,6 +68,7 @@ const getFileData = (myFile) => {
         
     } else if (
         name.endsWith(".jpeg") ||
+        name.endsWith(".jpg") ||
         name.endsWith(".png") ||
         name.endsWith(".gif")
     ) {
@@ -104,14 +107,12 @@ const submit = () => {
     <div>
         <div
             class="bg-white w-full p-4 rounded-xl border shadow group"
-            @click="open = true"
-        >
+            @click="open = true">
             <!-- label header -->
             <transition name="show-label">
                 <label
                     class="block py-2 text-sm italic cursor-pointer group-hover:text-primary"
-                    v-if="!open"
-                >
+                    v-if="!open">
                     {{ title }}
                 </label>
             </transition>
@@ -136,8 +137,7 @@ const submit = () => {
                         <div class="py-2 border-t-3 flex gap-3 items-center">
                             <label
                                 for="upload"
-                                class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                            >
+                                class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
                                 <icon
                                     name="upload"
                                     class="w-4 h-4 fill-primary"
@@ -152,8 +152,7 @@ const submit = () => {
                             <button
                                 type="button"
                                 class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                                @click="openModal = true"
-                            >
+                                @click="openModal = true">
                                 <icon
                                     name="link"
                                     class="w-4 h-4 fill-primary"
@@ -165,14 +164,11 @@ const submit = () => {
                             <li
                                 v-for="(files, index) in uploadedFiles"
                                 :key="index"
-                                class="flex items-center h-12 border rounded-xl overflow-hidden"
-                            >
+                                class="flex items-center h-12 border rounded-xl overflow-hidden">
                                 <div
-                                    class="flex h-full px-3 justify-center items-center gap-2 border-r"
-                                >
+                                    class="flex h-full px-3 justify-center items-center gap-2 border-r">
                                     <span
-                                        class="text-xs lowercase font-bold text-primary"
-                                    >
+                                        class="text-xs lowercase font-bold text-primary">
                                         {{ files.data.name }}
                                     </span>
                                     <icon
@@ -181,13 +177,11 @@ const submit = () => {
                                     />
                                 </div>
                                 <div
-                                    class="w-10 h-full flex items-center justify-center"
-                                >
+                                    class="w-10 h-full flex items-center justify-center">
                                     <button
                                         class="h-full w-full flex justify-center items-center hover:bg-gray-100"
                                         type="button"
-                                        @click="deleteFile(index)"
-                                    >
+                                        @click="deleteFile(index)">
                                         <icon
                                             name="close"
                                             class="w-2 fill-primary"

@@ -181,15 +181,13 @@ const deleteData = (id) => {
                         <div class="p-3">
                             <button
                                 class="inline-block text-left py-2 font-bold w-full h-full text-primary hover:underline"
-                                @click="setEditData(comentario, index)"
-                            >
+                                @click="setEditData(comentario, index)">
                                 Editar
                             </button>
                             <button
                                 class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
                                 type="button"
-                                @click="deleteData(comentario.id)"
-                            >
+                                @click="deleteData(comentario.id)">
                                 Eliminar
                             </button>
                         </div>
@@ -202,7 +200,6 @@ const deleteData = (id) => {
             <form @submit.prevent="submit">
                 <div class="pt-3 flex gap-3">
                     <div class="w-full">
-                        <!-- {{ props.data.id }} -->
                         <input
                             type="text"
                             id="cometario"
@@ -219,8 +216,7 @@ const deleteData = (id) => {
                             'hover:bg-indigo-100': !buttonDisabled,
                         }"
                         :disabled="buttonDisabled"
-                        type="submit"
-                    >
+                        type="submit">
                         <icon
                             name="send"
                             class="w-4 h-4"

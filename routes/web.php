@@ -8,6 +8,7 @@ use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\MateriaController;
+use App\Http\Controllers\MaterialeController;
 use App\Http\Controllers\SemestreController;
 use App\Http\Controllers\UnidadeController;
 use Illuminate\Foundation\Application;
@@ -142,4 +143,9 @@ Route::controller(ComentarioController::class)->middleware(['auth:sanctum', 'ver
     Route::post('comentarios', 'store')->name('comentarios.store');
     Route::put('comentarios/{comentario}', 'update')->name('comentarios.update');
     Route::delete('comentarios/{comentario}', 'destroy')->name('comentarios.destroy');
+});
+
+//materiales
+Route::controller(MaterialeController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('download/{id}', 'download')->name('materiales.download');
 });

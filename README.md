@@ -7,6 +7,49 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Pasos a Seguir
+- Después de Instalar Xampp dentro de la carpeta "Htdoc" hacer el "pull" utilizando git (tener instalado git) para copiar los archivos en el servidor local
+
+```git
+    git pull *link del repositorio remoto"
+
+```
+- Abrir la carpeta en visual studio code y ejecutar en la terminal "npm install" (tener instalado node js)
+```
+    npm install
+
+```
+- Crear una nueva base de datos en xampp utilizando "phpMyAdmin"
+- Configurar el archivo ".env" con los datos de la base de datos
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=elearningdb
+DB_USERNAME=root
+DB_PASSWORD=
+
+```
+
+- Ejutar en la terminal el comando de migración con los seeders
+
+```
+
+ php artisan migrate:fresh --seed
+
+```
+- Ejecutar los comandos para abrir nuevo enlace de servidor local
+```
+    npm run dev
+    php artisan serve
+
+```
+- Copiar de la tabla "users" un correo electrónico y como contraseña ingresar la palabra "password"
+
+
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

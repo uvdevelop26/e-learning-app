@@ -71,8 +71,10 @@ class ClaseController extends Controller
         $semestre = Semestre::find($materia->semestre_id);
         $carrera = Carrera::find($semestre->carrera_id);
 
-        $anunciosYunidades = Clase::with(['anuncios.comentarios.user.alumnos.persona', 'unidades'])
+        $anunciosYunidades = Clase::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales', 'unidades'])
             ->findOrFail($clase->id);
+
+        //$anunciosYmateriales = Clase::with('anuncios.materiales')->findOrFail($clase->id);
 
 
 

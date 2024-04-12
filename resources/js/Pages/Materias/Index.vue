@@ -54,8 +54,7 @@ watchEffect(() => {
             </div>
             <div class="w-full bg-white overflow-x-auto rounded-md shadow">
                 <table
-                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md"
-                >
+                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md">
                     <thead>
                         <tr class="text-left font-bold">
                             <th class="pb-4 pt-6 px-6">Código</th>
@@ -70,21 +69,18 @@ watchEffect(() => {
                         <tr
                             v-for="materia in materias"
                             :key="materia.id"
-                            class="hover:bg-gray-100 focus-within:bg-gray-100"
-                        >
+                            class="hover:bg-gray-100 focus-within:bg-gray-100">
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="route('materias.edit', materia.id)"
-                                >
+                                    :href="route('materias.edit', materia.id)">
                                     {{ materia.codigo }}
                                 </Link>
                             </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="route('materias.edit', materia.id)"
-                                >
+                                    :href="route('materias.edit', materia.id)">
                                     {{ materia.nombre }}
                                 </Link>
                             </td>
@@ -92,8 +88,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('materias.edit', materia.id)"
-                                >
+                                    :href="route('materias.edit', materia.id)">
                                     <div>{{ materia.horas_semanales }}</div>
                                 </Link>
                             </td>
@@ -103,8 +98,7 @@ watchEffect(() => {
                                     :href="`/download/${materia.id}`"
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     target="_blank"
-                                    tabindex="-1"
-                                >
+                                    tabindex="-1">
                                     <div class="flex items-center text-xs">
                                         <icon
                                             name="pdf"
@@ -117,8 +111,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex flex-col items-start px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('materias.edit', materia.id)"
-                                >
+                                    :href="route('materias.edit', materia.id)">
                                     <div>
                                         {{ materia.semestre.carrera.nombre }}
                                     </div>
@@ -131,8 +124,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('materias.edit', materia.id)"
-                                >
+                                    :href="route('materias.edit', materia.id)">
                                     <div>{{ materia.descripcion }}</div>
                                 </Link>
                             </td>
@@ -140,8 +132,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-4"
                                     tabindex="-1"
-                                    :href="route('materias.edit', materia.id)"
-                                >
+                                    :href="route('materias.edit', materia.id)">
                                     <icon
                                         name="cheveron-right"
                                         class="block w-6 h-6 fill-gray-400"
