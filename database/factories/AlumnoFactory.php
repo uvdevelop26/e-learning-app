@@ -18,13 +18,13 @@ class AlumnoFactory extends Factory
     {
         $persona_id = Persona::all()->random()->id;
         $carrera_id = Carrera::all()->random()->id;
-        $user_id = User::all()->random()->id;
+        $user_id = User::where("role_id", 1)->get();
         $estado_id = Estado::all()->random()->id;
 
         return [
             'persona_id' => $persona_id,
             'carrera_id' => $carrera_id,
-            'user_id' => $user_id,
+            'user_id' => $this->faker->randomElement($user_id)->id,
             'estado_id' => $estado_id
         ];
     }

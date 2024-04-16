@@ -7,7 +7,7 @@ import Modal from "./Modal.vue";
 import TextInput from "./TextInput.vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { ref, getCurrentInstance } from "vue";
+import { ref, getCurrentInstance, onMounted } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
@@ -18,21 +18,14 @@ const props = defineProps({
     errors: Object,
 });
 
+//reactive variables and objects
 const open = ref(false);
 const openModal = ref(false);
 const { emit } = getCurrentInstance();
 const { auth } = usePage().props;
+const uploadedFiles = ref(props.data.materiales.slice());
 
-const form = useForm({
-    _method: "PUT",
-    id: props.data.id,
-    titulo: props.data.titulo,
-    descripcion: props.data.descripcion,
-    user_id: auth.user.id,
-    anunciable_id: props.clase_id,
-    anunciable_type: "",
-});
-
+//quill editor options
 const options = {
     placeholder: "Escribe el contenido...",
     modules: {
@@ -44,26 +37,91 @@ const options = {
     },
 };
 
-const cancelProcess = () => {
-    openModal.value = false;
-    props.errors.titulo = "";
-};
+//form edit anuncios
+const form = useForm({
+    _method: "PUT",
+    id: props.data.id,
+    titulo: props.data.titulo,
+    descripcion: props.data.descripcion,
+    user_id: auth.user.id,
+    anunciable_id: props.clase_id,
+    anunciable_type: "",
+    nombre: [],
+    url: props.data.materiales,
+});
 
-const updateanuncios = () => {
-    emit("updateanuncios");
-};
-
+//handle modal
 const setOpenModal = () => {
     form.id = props.data.id;
     form.titulo = props.data.titulo;
     form.descripcion = props.data.descripcion;
     form.user_id = auth.user.id;
-    (form.anunciable_id = props.clase_id), (openModal.value = true);
+    form.anunciable_id = props.clase_id;
+    /* form.url = props.data.materiales */
+    setTimeout(() => {
+        openModal.value = true;
+    }, 300);
 };
+
+const cancelProcess = () => {
+    openModal.value = false;
+    props.errors.titulo = "";
+};
+
+
+//handle file upload
+const deleteFile = (index) => {
+    uploadedFiles.value.splice(index, 1);
+    form.url.splice(index, 1)
+
+    console.log(uploadedFiles.value)
+    console.log(form.url)
+};
+
+const getFileData = (myFile) =>{
+   // const name = myFile.files[0].name;
+    const file = myFile.files[0];
+
+    uploadedFiles.value.push(file)
+    form.url.push(file)
+
+    console.log(uploadedFiles.value)
+    console.log(form.url)
+
+   /*  if (name.endsWith(".pdf")) {
+       // uploadedFiles.value.push(file);
+      //  form.url.push(file);
+        
+    } else if (
+        name.endsWith(".jpeg") ||
+        name.endsWith(".jpg") ||
+        name.endsWith(".png") ||
+        name.endsWith(".gif")
+    ) {
+       // uploadedFiles.value.push({ extension: "image", data: file });
+       // form.url.push(file);
+    } else if (
+        name.endsWith(".doc") ||
+        name.endsWith(".docx") ||
+        name.endsWith(".xls") ||
+        name.endsWith(".xlsx") ||
+        name.endsWith(".ppt") ||
+        name.endsWith(".pptx")
+    ) {
+       // uploadedFiles.value.push({ extension: "office", data: file });
+       // form.url.push(file);
+    }else{
+      //  console.log(file)
+    } */
+}
+
+
+//send form
 
 const update = () => {
     form.post(route("anuncios.update", form), {
         preserveScroll: true,
+        forceFormData: true,
         onSuccess: () => {
             cancelProcess();
             emit("updateanuncios");
@@ -79,6 +137,13 @@ const deleteAnuncio = () => {
         },
     });
 };
+
+
+//emit custom event
+const updateanuncios = () => {
+    emit("updateanuncios");
+};
+
 </script>
 <template>
     <div class="w-full p-4 rounded-xl border shadow bg-white group">
@@ -95,7 +160,8 @@ const deleteAnuncio = () => {
                     <div class="text-right">
                         <button
                             :open="open"
-                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100">
+                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100"
+                        >
                             <icon
                                 name="trigger"
                                 class="inline-block w-[0.18rem] h-[0.18rem] fill-primary"
@@ -107,13 +173,15 @@ const deleteAnuncio = () => {
                     <div class="p-3">
                         <button
                             class="inline-block text-left py-2 font-bold w-full h-full text-primary hover:underline"
-                            @click="setOpenModal()">
+                            @click="setOpenModal()"
+                        >
                             Editar
                         </button>
                         <button
                             class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
                             type="button"
-                            @click="deleteAnuncio()">
+                            @click="deleteAnuncio()"
+                        >
                             Eliminar
                         </button>
                     </div>
@@ -121,16 +189,6 @@ const deleteAnuncio = () => {
             </dropdown>
         </div>
         <!-- materiales section -->
-        <!-- <div v-for="materiale in data.materiales">
-            <div v-if="isImage(materiale)">
-                {{ imageUrl(materiale.url) }}
-                <img
-                    :src="imageUrl(materiale.url)"
-                    alt=""
-                    srcset=""
-                />
-            </div>
-        </div> -->
         <Materiales :materiales="data.materiales" />
         <!-- comments sectios -->
         <Comentarios
@@ -162,24 +220,59 @@ const deleteAnuncio = () => {
                     v-model:content="form.descripcion"
                     contentType="text"
                 />
-                <div class="py-2 border-t-3">
+                <div class="py-2 border-t-3 flex gap-3 items-center">
                     <label
-                        for="imagen"
-                        class="flex justify-center items-center w-11 h-11 rounded-full cursor-pointer bg-indigo-100">
+                        for="upload"
+                        class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
+                    >
                         <icon name="upload" class="w-4 h-4 fill-primary" />
                         <input
                             type="file"
-                            id="imagen"
+                            id="upload"
                             class="opacity-0 absolute -z-10"
+                            accept=".pdf, .jpeg, .jpg, .png, .gif, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
+                            @change="getFileData($event.target)"
                         />
                     </label>
                 </div>
+
+                <ul class="flex py-2 flex-wrap gap-3">
+                    <li
+                        v-for="(files, index) in uploadedFiles"
+                        :key="index"
+                        class="flex items-center h-12 border rounded-xl overflow-hidden">
+                        <div
+                            class="flex h-full px-3 justify-center items-center gap-2 border-r">
+                            <span v-if="files.nombre"
+                                class="text-xs lowercase font-bold text-primary">
+                                {{ files.nombre }}
+                            </span>
+                            <span v-else
+                                class="text-xs lowercase font-bold text-primary">
+                                {{ files.name }}
+                            </span>
+                            <icon name="pdf" class="w-4 h-4 fill-primary" />
+                        </div>
+                        <div
+                            class="w-10 h-full flex items-center justify-center"
+                        >
+                            <button
+                                class="h-full w-full flex justify-center items-center hover:bg-gray-100"
+                                type="button"
+                                @click="deleteFile(index)"
+                            >
+                                <icon name="close" class="w-2 fill-primary" />
+                            </button>
+                        </div>
+                    </li>
+                </ul>
                 <!-- options -->
                 <div class="pt-4 border-t-2 flex justify-between">
                     <button
                         class="inline-block px-8 py-2 text-red-500 hover:underline"
                         type="button"
-                        @click="cancelProcess()">
+                        @click="cancelProcess()"
+                    >
                         Cancelar
                     </button>
                     <button
@@ -189,7 +282,8 @@ const deleteAnuncio = () => {
                             'bg-primary': !form.processing,
                         }"
                         type="submit"
-                        :disabled="form.processing">
+                        :disabled="form.processing"
+                    >
                         Actualizar
                     </button>
                 </div>

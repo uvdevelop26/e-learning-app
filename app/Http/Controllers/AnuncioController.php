@@ -99,7 +99,10 @@ class AnuncioController extends Controller
 
     public function update(AnuncioRequest $request, $id)
     {
+
         $clase = Clase::find($request->anunciable_id);
+
+        $materiales = $request->url;
 
         $descripcionArray = $request->descripcion;
 
@@ -125,6 +128,10 @@ class AnuncioController extends Controller
             'anunciable_id' => $request->anunciable_id,
             'anunciable_type' => get_class($clase)
         ]);
+
+        if (empty($materiales)) {
+            $anuncio->materiales()->delete();
+        }
     }
 
 

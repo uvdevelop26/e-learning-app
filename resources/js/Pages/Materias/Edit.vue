@@ -42,8 +42,6 @@ watchEffect(() => {
         filteredSemestres.value = semesters.filter(
             (sem) => sem.carrera_id === carreraId
         );
-
-      //  form.semestre_id = null;
     }
 });
 
@@ -155,8 +153,7 @@ const deleteMateria = () => {
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Plan de Estudio"
                                 @input="
-                                    form.plan_estudio = $event.target.files[0]
-                                "
+                                    form.plan_estudio = $event.target.files[0]"
                                 id="duracion"
                                 :error="errors.plan_estudio"
                             />

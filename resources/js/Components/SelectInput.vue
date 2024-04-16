@@ -1,7 +1,7 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 
-defineProps({
+const props = defineProps({
     modelValue: String,
     label: String,
     id: String,
@@ -12,6 +12,10 @@ defineProps({
 defineEmits(["update:modelValue"]);
 
 const inputSelect = ref(null);
+
+const disbledState = computed(()=>{
+    return props.disabled ? 'bg-gray-100' : 'bg-white'
+})
 
 onMounted(() => {
     if (inputSelect.value.hasAttribute("autofocus")) {
@@ -26,6 +30,7 @@ defineExpose({ focus: () => inputSelect.value.focus(), inputSelect });
         <label :for="id">{{ label }}</label>
         <select
             class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm cursor-pointer"
+            :class="disbledState"
             :name="id"
             :id="id"
             ref="inputSelect"

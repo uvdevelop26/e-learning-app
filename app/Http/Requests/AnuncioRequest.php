@@ -22,7 +22,7 @@ class AnuncioRequest extends FormRequest
             'anunciable_id' => 'required|numeric',
             'anunciable_type' => 'nullable',
             'nombre' => 'nullable|max:255',
-            'url' => 'nullable',
+            'url' => 'nullable|array|min:1',
         ];
     }
 }

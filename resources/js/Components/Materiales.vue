@@ -85,7 +85,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <div class="pt-2 flex flex-col gap-2">
+    <div class="pt-4 flex flex-col gap-4">
         <div v-for="materiale in materialesNew" :key="materiale.id">
             <!-- Pictures container -->
             <figure
@@ -106,6 +106,7 @@ onMounted(() => {
                     <span class="font-bold text-sm hover:underline">{{ materiale.nombre }}</span>   
                 </a>
             </div>
+            <!-- Office -->
             <div
                 v-else-if="isOffice(materiale)"
                 class="h-14  border rounded-2xl overflow-hidden">

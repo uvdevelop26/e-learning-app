@@ -84,6 +84,8 @@ const getFileData = (myFile) => {
     ) {
         uploadedFiles.value.push({ extension: "office", data: file });
         form.url.push(file);
+    }else{
+        console.log(file)
     }
 };
 
@@ -146,6 +148,7 @@ const submit = () => {
                                     type="file"
                                     id="upload"
                                     class="opacity-0 absolute -z-10"
+                                    accept=".pdf, .jpeg, .jpg, .png, .gif, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
                                     @change="getFileData($event.target)"
                                 />
                             </label>
@@ -195,8 +198,7 @@ const submit = () => {
                             <button
                                 class="inline-block px-8 py-2 text-red-500 hover:underline"
                                 @click="cancelOperation"
-                                type="button"
-                            >
+                                type="button">
                                 Cancelar
                             </button>
                             <button
@@ -206,8 +208,7 @@ const submit = () => {
                                     'bg-primary': !form.processing,
                                 }"
                                 :disabled="form.processing"
-                                type="submit"
-                            >
+                                type="submit">
                                 Enviar
                             </button>
                         </div>
