@@ -8,42 +8,8 @@ const props = defineProps({
 
 const materialesNew = ref(props.materiales);
 
-const isImage = (data) => {
-    const name = data.nombre;
 
-    if (
-        name.endsWith(".jpeg") ||
-        name.endsWith(".jpg") ||
-        name.endsWith(".png") ||
-        name.endsWith(".gif")
-    ) {
-        return true;
-    }
-};
 
-const isPdf = (data) => {
-    const name = data.nombre;
-    return name.endsWith(".pdf");
-};
-
-const isOffice = (data) => {
-    const name = data.nombre;
-
-    if (
-        name.endsWith(".doc") ||
-        name.endsWith(".docx") ||
-        name.endsWith(".xls") ||
-        name.endsWith(".xlsx") ||
-        name.endsWith(".ppt") ||
-        name.endsWith(".pptx")
-    ) {
-        return true;
-    }
-};
-
-const imageUrl = (url) => {
-    return "/" + url.replace("public/", "storage/");
-};
 
 onMounted(() => {
     materialesNew.value.sort((a, b) => {
@@ -85,9 +51,9 @@ onMounted(() => {
 });
 </script>
 <template>
-    <div class="pt-4 flex flex-col gap-4">
+    <!-- <div class="pt-4 flex flex-col gap-4">
         <div v-for="materiale in materialesNew" :key="materiale.id">
-            <!-- Pictures container -->
+        
             <figure
                 v-if="isImage(materiale)"
                 class="h-48 rounded-2xl border overflow-hidden md:h-64 lg:h-[28.5rem]">
@@ -97,7 +63,7 @@ onMounted(() => {
                     class="object-cover w-full h-full"
                 />
             </figure>
-            <!-- PDF -->
+        
             <div
                 v-else-if="isPdf(materiale)"
                 class="h-14  border rounded-2xl overflow-hidden">
@@ -106,7 +72,7 @@ onMounted(() => {
                     <span class="font-bold text-sm hover:underline">{{ materiale.nombre }}</span>   
                 </a>
             </div>
-            <!-- Office -->
+        
             <div
                 v-else-if="isOffice(materiale)"
                 class="h-14  border rounded-2xl overflow-hidden">
@@ -116,5 +82,5 @@ onMounted(() => {
                 </a>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>

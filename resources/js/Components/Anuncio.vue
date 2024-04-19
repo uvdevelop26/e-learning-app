@@ -2,7 +2,7 @@
 import Icon from "./Icon.vue";
 import Dropdown from "./Dropdown.vue";
 import Comentarios from "./Comentarios.vue";
-import Materiales from "./Materiales.vue";
+//import Materiales from "./Materiales.vue";
 import Modal from "./Modal.vue";
 import TextInput from "./TextInput.vue";
 import { QuillEditor } from "@vueup/vue-quill";
@@ -37,7 +37,92 @@ const options = {
     },
 };
 
-//form edit anuncios
+//handle open and close modal
+const setOpenModal = () => {
+    form.id = props.data.id;
+    form.titulo = props.data.titulo;
+    form.descripcion = props.data.descripcion;
+    form.user_id = auth.user.id;
+    form.anunciable_id = props.clase_id;
+    uploadedFiles.value = props.data.materiales.slice();
+    /* anunciable type */
+    /* nombre */
+    /* url*/
+    setTimeout(() => {
+        openModal.value = true;
+    }, 300);
+};
+
+const sortMateriales = () => {
+    props.data.materiales.sort((a, b) => {
+        if (
+            getFileType(a.nombre) == "picture" &&
+            getFileType(b.nombre) !== "picture"
+        ) {
+            return -1;
+        } else if (
+            getFileType(a.nombre) !== "picture" &&
+            getFileType(b.nombre) == "picture"
+        ) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+};
+
+const cancelProcess = () => {
+    openModal.value = false;
+    props.errors.titulo = "";
+    uploadedFiles.value = props.data.materiales.slice();
+    form.nombre = [];
+    form.url = [];
+};
+
+//handle files
+
+const getFileType = (filename) => {
+    if (filename.endsWith(".pdf")) {
+        return "pdf";
+    } else if (
+        filename.endsWith(".jpeg") ||
+        filename.endsWith(".jpg") ||
+        filename.endsWith(".png") ||
+        filename.endsWith(".gif")
+    ) {
+        return "picture";
+    } else if (
+        filename.endsWith(".doc") ||
+        filename.endsWith(".docx") ||
+        filename.endsWith(".xls") ||
+        filename.endsWith(".xlsx") ||
+        filename.endsWith(".ppt") ||
+        filename.endsWith(".pptx")
+    ) {
+        return "office";
+    }
+};
+
+const imageUrl = (url) => {
+    return "/" + url.replace("public/", "storage/");
+};
+
+const deleteFile = (index) => {
+    uploadedFiles.value.splice(index, 1);
+    // form.url.splice(index, 1);
+};
+
+const getFileData = (myFile) => {
+    const file = myFile.files[0];
+    /* charge the fake array */
+    uploadedFiles.value.push(file);
+    //form.url.push(file);
+
+    /* console.log(uploadedFiles.value)
+    console.log(form.url) */
+};
+
+//Update and delete Anuncios
 const form = useForm({
     _method: "PUT",
     id: props.data.id,
@@ -47,84 +132,25 @@ const form = useForm({
     anunciable_id: props.clase_id,
     anunciable_type: "",
     nombre: [],
-    url: props.data.materiales,
+    url: [],
 });
 
-//handle modal
-const setOpenModal = () => {
-    form.id = props.data.id;
-    form.titulo = props.data.titulo;
-    form.descripcion = props.data.descripcion;
-    form.user_id = auth.user.id;
-    form.anunciable_id = props.clase_id;
-    /* form.url = props.data.materiales */
-    setTimeout(() => {
-        openModal.value = true;
-    }, 300);
-};
-
-const cancelProcess = () => {
-    openModal.value = false;
-    props.errors.titulo = "";
-};
-
-
-//handle file upload
-const deleteFile = (index) => {
-    uploadedFiles.value.splice(index, 1);
-    form.url.splice(index, 1)
-
-    console.log(uploadedFiles.value)
-    console.log(form.url)
-};
-
-const getFileData = (myFile) =>{
-   // const name = myFile.files[0].name;
-    const file = myFile.files[0];
-
-    uploadedFiles.value.push(file)
-    form.url.push(file)
-
-    console.log(uploadedFiles.value)
-    console.log(form.url)
-
-   /*  if (name.endsWith(".pdf")) {
-       // uploadedFiles.value.push(file);
-      //  form.url.push(file);
-        
-    } else if (
-        name.endsWith(".jpeg") ||
-        name.endsWith(".jpg") ||
-        name.endsWith(".png") ||
-        name.endsWith(".gif")
-    ) {
-       // uploadedFiles.value.push({ extension: "image", data: file });
-       // form.url.push(file);
-    } else if (
-        name.endsWith(".doc") ||
-        name.endsWith(".docx") ||
-        name.endsWith(".xls") ||
-        name.endsWith(".xlsx") ||
-        name.endsWith(".ppt") ||
-        name.endsWith(".pptx")
-    ) {
-       // uploadedFiles.value.push({ extension: "office", data: file });
-       // form.url.push(file);
-    }else{
-      //  console.log(file)
-    } */
-}
-
-
-//send form
-
 const update = () => {
+    const newFiles = uploadedFiles.value.filter((item) => item.name);
+    const oldFiles = uploadedFiles.value.filter((item) => item.id);
+
+    form.url = newFiles;
+    form.nombre = oldFiles;
+
     form.post(route("anuncios.update", form), {
         preserveScroll: true,
         forceFormData: true,
         onSuccess: () => {
             cancelProcess();
             emit("updateanuncios");
+            sortMateriales();
+            uploadedFiles.value = props.data.materiales.slice();
+            
         },
     });
 };
@@ -138,12 +164,15 @@ const deleteAnuncio = () => {
     });
 };
 
-
-//emit custom event
+//emitting custom events
 const updateanuncios = () => {
     emit("updateanuncios");
 };
 
+//onMounted function
+onMounted(() => {
+    sortMateriales();
+});
 </script>
 <template>
     <div class="w-full p-4 rounded-xl border shadow bg-white group">
@@ -160,8 +189,7 @@ const updateanuncios = () => {
                     <div class="text-right">
                         <button
                             :open="open"
-                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100"
-                        >
+                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100">
                             <icon
                                 name="trigger"
                                 class="inline-block w-[0.18rem] h-[0.18rem] fill-primary"
@@ -173,15 +201,13 @@ const updateanuncios = () => {
                     <div class="p-3">
                         <button
                             class="inline-block text-left py-2 font-bold w-full h-full text-primary hover:underline"
-                            @click="setOpenModal()"
-                        >
+                            @click="setOpenModal()">
                             Editar
                         </button>
                         <button
                             class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
                             type="button"
-                            @click="deleteAnuncio()"
-                        >
+                            @click="deleteAnuncio()">
                             Eliminar
                         </button>
                     </div>
@@ -189,7 +215,46 @@ const updateanuncios = () => {
             </dropdown>
         </div>
         <!-- materiales section -->
-        <Materiales :materiales="data.materiales" />
+        <div class="pt-4 flex flex-col gap-4" v-if="data.materiales">
+            <div v-for="materiale in data.materiales" :key="materiale.id">
+                <!-- show images -->
+                <figure
+                    v-if="getFileType(materiale.nombre) == 'picture'"
+                    class="h-48 rounded-2xl border overflow-hidden md:h-64 lg:h-[28.5rem]">
+                    <img
+                        :src="imageUrl(materiale.url)"
+                        :alt="materiale.nombre"
+                        class="object-cover w-full h-full"
+                    />
+                </figure>
+                <!-- show pdf's -->
+                <div
+                    class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
+                    v-else-if="getFileType(materiale.nombre) == 'pdf'">
+                    <a
+                        href=""
+                        class="w-full h-full px-2 flex items-center gap-2 hover:underline">
+                        <Icon name="pdf" class="w-4 h-4 fill-primary" />
+                        <span class="font-bold text-sm text-primary">
+                            {{ materiale.nombre }}
+                        </span>
+                    </a>
+                </div>
+                <!-- show documents -->
+                <div
+                    v-else-if="getFileType(materiale.nombre) == 'office'"
+                    class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100">
+                    <a
+                        href=""
+                        class="w-full h-full px-2 flex items-center gap-2 hover:underline">
+                        <Icon name="office" class="w-4 h-4 fill-primary" />
+                        <span class="font-bold text-sm text-primary">{{
+                            materiale.nombre
+                        }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
         <!-- comments sectios -->
         <Comentarios
             class="mt-3 border-t"
@@ -223,8 +288,7 @@ const updateanuncios = () => {
                 <div class="py-2 border-t-3 flex gap-3 items-center">
                     <label
                         for="upload"
-                        class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                    >
+                        class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
                         <icon name="upload" class="w-4 h-4 fill-primary" />
                         <input
                             type="file"
@@ -235,32 +299,41 @@ const updateanuncios = () => {
                         />
                     </label>
                 </div>
-
                 <ul class="flex py-2 flex-wrap gap-3">
                     <li
                         v-for="(files, index) in uploadedFiles"
                         :key="index"
                         class="flex items-center h-12 border rounded-xl overflow-hidden">
                         <div
-                            class="flex h-full px-3 justify-center items-center gap-2 border-r">
-                            <span v-if="files.nombre"
+                            class="flex h-full px-3 justify-center items-center gap-2 border-r"
+                            v-if="files.nombre">
+                            <span
                                 class="text-xs lowercase font-bold text-primary">
                                 {{ files.nombre }}
                             </span>
-                            <span v-else
+                            <icon
+                                :name="getFileType(files.nombre)"
+                                class="w-4 h-4 fill-primary"
+                            />
+                        </div>
+                        <div
+                            class="flex h-full px-3 justify-center items-center gap-2 border-r"
+                            v-else>
+                            <span
                                 class="text-xs lowercase font-bold text-primary">
                                 {{ files.name }}
                             </span>
-                            <icon name="pdf" class="w-4 h-4 fill-primary" />
+                            <icon
+                                :name="getFileType(files.name)"
+                                class="w-4 h-4 fill-primary"
+                            />
                         </div>
                         <div
-                            class="w-10 h-full flex items-center justify-center"
-                        >
+                            class="w-10 h-full flex items-center justify-center">
                             <button
                                 class="h-full w-full flex justify-center items-center hover:bg-gray-100"
                                 type="button"
-                                @click="deleteFile(index)"
-                            >
+                                @click="deleteFile(index)">
                                 <icon name="close" class="w-2 fill-primary" />
                             </button>
                         </div>
@@ -271,8 +344,7 @@ const updateanuncios = () => {
                     <button
                         class="inline-block px-8 py-2 text-red-500 hover:underline"
                         type="button"
-                        @click="cancelProcess()"
-                    >
+                        @click="cancelProcess()">
                         Cancelar
                     </button>
                     <button
@@ -282,8 +354,7 @@ const updateanuncios = () => {
                             'bg-primary': !form.processing,
                         }"
                         type="submit"
-                        :disabled="form.processing"
-                    >
+                        :disabled="form.processing">
                         Actualizar
                     </button>
                 </div>

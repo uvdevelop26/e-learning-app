@@ -7,6 +7,8 @@ use App\Models\Anuncio;
 use App\Models\Clase;
 use App\Models\Materiale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 class AnuncioController extends Controller
 {
@@ -99,10 +101,9 @@ class AnuncioController extends Controller
 
     public function update(AnuncioRequest $request, $id)
     {
+        $anuncio = Anuncio::findOrFail($id);
 
         $clase = Clase::find($request->anunciable_id);
-
-        $materiales = $request->url;
 
         $descripcionArray = $request->descripcion;
 
@@ -115,11 +116,9 @@ class AnuncioController extends Controller
                 }
             }
         } else {
-            // Si la descripción no es un array, se asigna tal cual
+
             $textoDescripcion = $descripcionArray;
         }
-
-        $anuncio = Anuncio::findOrFail($id);
 
         $anuncio->update([
             'titulo' => $request->titulo,
@@ -129,8 +128,74 @@ class AnuncioController extends Controller
             'anunciable_type' => get_class($clase)
         ]);
 
-        if (empty($materiales)) {
+        /* the user has deleted all the all files and has'nt added new ones */
+        if (empty($request->url) && empty($request->nombre)) {
+            $materiales = $anuncio->materiales()->get();
+
+            foreach ($materiales as $key => $materiale) {
+                Storage::delete($materiale->url);
+            }
+
             $anuncio->materiales()->delete();
+
+            /* the user has deleted some of the old files but has'nt added new ones */
+        } elseif (empty($request->url) && !empty($request->nombre)) {
+
+            /* obtener y eliminar  los materiales eliminados */
+
+            $oldMateriales = $request->nombre;
+            $currentMateriales = $anuncio->materiales()->get();
+
+            $newMaterialesIds = collect($oldMateriales)->pluck('id')->toArray();
+
+            $deletedElements = [];
+            foreach ($currentMateriales as $material) {
+                if (!in_array($material->id, $newMaterialesIds)) {
+                    $deletedElements[] = $material;
+                }
+            }
+
+            if (!empty($deletedElements)) {
+                foreach ($deletedElements as $key => $deleted) {
+                    Storage::delete($deleted->url);
+                    $deleted->delete();
+                }
+            }
+            /* the user has adden new files an has could has deleted others */
+        } elseif (!empty($request->url) && !empty($request->nombre)) {
+
+            $oldMateriales = $request->nombre;
+            $newMateriales = $request->url;
+            $currentMateriales = $anuncio->materiales()->get();
+            $path = "";
+
+            $newMaterialesIds = collect($oldMateriales)->pluck('id')->toArray();
+
+            $deletedElements = [];
+            foreach ($currentMateriales as $material) {
+                if (!in_array($material->id, $newMaterialesIds)) {
+                    $deletedElements[] = $material;
+                }
+            }
+
+            if (!empty($deletedElements)) {
+                foreach ($deletedElements as $key => $deleted) {
+                    Storage::delete($deleted->url);
+                    $deleted->delete();
+                }
+            }
+
+            foreach ($newMateriales as $key => $materiale) {
+                $extension = $materiale->getClientOriginalExtension();
+                $filename = time() . $key . '.' . $extension;
+                $path = $materiale->storeAs('public/materiales', $filename);
+
+                Materiale::create([
+                    'nombre' => $materiale->getClientOriginalName(),
+                    'url' => $path,
+                    'anuncio_id' => $anuncio->id
+                ]);
+            }
         }
     }
 
@@ -139,6 +204,14 @@ class AnuncioController extends Controller
     {
         $anuncio = Anuncio::find($id);
 
+        $materiales = $anuncio->materiales;
+
         $anuncio->delete();
+
+        if (!empty($materiales)) {
+            foreach ($materiales as $key => $materiale) {
+                Storage::delete($materiale->url);
+            }
+        }
     }
 }

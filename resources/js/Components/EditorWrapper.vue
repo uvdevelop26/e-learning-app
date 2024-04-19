@@ -72,7 +72,7 @@ const getFileData = (myFile) => {
         name.endsWith(".png") ||
         name.endsWith(".gif")
     ) {
-        uploadedFiles.value.push({ extension: "image", data: file });
+        uploadedFiles.value.push({ extension: "picture", data: file });
         form.url.push(file);
     } else if (
         name.endsWith(".doc") ||
