@@ -15,6 +15,7 @@ import { usePage } from "@inertiajs/vue3";
 const props = defineProps({
     data: Object,
     clase_id: Number,
+    unidade_id: Number,
     errors: Object,
 });
 
@@ -24,6 +25,21 @@ const openModal = ref(false);
 const { emit } = getCurrentInstance();
 const { auth } = usePage().props;
 const uploadedFiles = ref(props.data.materiales.slice());
+const dataDescripcion = ref(null);
+
+
+
+const form = useForm({
+    _method: "PUT",
+    id: props.data.id,
+    titulo: props.data.titulo,
+    descripcion: props.data.descripcion,
+    user_id: auth.user.id,
+    anunciable_id: props.clase_id,
+    anunciable_type: "",
+    nombre: [],
+    url: [],
+});
 
 //quill editor options
 const options = {
@@ -32,7 +48,7 @@ const options = {
         toolbar: [
             ["bold", "italic", "underline", "strike"],
             ["blockquote", "code-block"],
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ header: [2, 3, 4, 5, false] }],
         ],
     },
 };
@@ -114,33 +130,23 @@ const deleteFile = (index) => {
 
 const getFileData = (myFile) => {
     const file = myFile.files[0];
-    /* charge the fake array */
     uploadedFiles.value.push(file);
-    //form.url.push(file);
-
-    /* console.log(uploadedFiles.value)
-    console.log(form.url) */
 };
 
 //Update and delete Anuncios
-const form = useForm({
-    _method: "PUT",
-    id: props.data.id,
-    titulo: props.data.titulo,
-    descripcion: props.data.descripcion,
-    user_id: auth.user.id,
-    anunciable_id: props.clase_id,
-    anunciable_type: "",
-    nombre: [],
-    url: [],
-});
 
 const update = () => {
     const newFiles = uploadedFiles.value.filter((item) => item.name);
     const oldFiles = uploadedFiles.value.filter((item) => item.id);
+    const anunciableId = props.clase_id ? props.clase_id : props.unidade_id;
+    const anunciableType = props.clase_id
+        ? "App\\Models\\Clase"
+        : "App\\Models\\Unidade";
 
     form.url = newFiles;
     form.nombre = oldFiles;
+    form.anunciable_id = anunciableId;
+    form.anunciable_type = anunciableType;
 
     form.post(route("anuncios.update", form), {
         preserveScroll: true,
@@ -150,7 +156,6 @@ const update = () => {
             emit("updateanuncios");
             sortMateriales();
             uploadedFiles.value = props.data.materiales.slice();
-            
         },
     });
 };
@@ -172,17 +177,32 @@ const updateanuncios = () => {
 //onMounted function
 onMounted(() => {
     sortMateriales();
+    /* const descripcion = dataDescripcion.value;
+    const headingTwo = descripcion.querySelectorAll("h2");
+    const headingThree = descripcion.querySelectorAll("h3");
+
+    headingTwo.forEach((item) => {
+        item.classList.add("text-lg");
+    });
+
+    headingThree.forEach((item) => {
+        item.classList.add("text-md");
+    }); */
 });
 </script>
 <template>
     <div class="w-full p-4 rounded-xl border shadow bg-white group">
-        <!-- header data -->
+        <!-- Text info and options -->
         <div class="flex items-center justify-between gap-4">
             <div class="w-full">
-                <h3 class="py-1 font-bold uppercase">
+                <h3 class="py-2 text-xl font-bold uppercase border-b-2 text-center mb-2">
                     {{ data.titulo }}
                 </h3>
-                <p class="text-sm">{{ data.descripcion }}</p>
+                <div
+                    class="text-sm leading-6"
+                    v-html="data.descripcion"
+                    ref="dataDescripcion"
+                ></div>
             </div>
             <dropdown class="self-start">
                 <template #trigger>
@@ -232,7 +252,9 @@ onMounted(() => {
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
                     v-else-if="getFileType(materiale.nombre) == 'pdf'">
                     <a
-                        href=""
+                        :href="route('materiales.download', materiale.id)"
+                        target="_blank"
+                        tabindex="-1"
                         class="w-full h-full px-2 flex items-center gap-2 hover:underline">
                         <Icon name="pdf" class="w-4 h-4 fill-primary" />
                         <span class="font-bold text-sm text-primary">
@@ -245,7 +267,9 @@ onMounted(() => {
                     v-else-if="getFileType(materiale.nombre) == 'office'"
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100">
                     <a
-                        href=""
+                        :href="route('materiales.download', materiale.id)"
+                        target="_blank"
+                        tabindex="-1"
                         class="w-full h-full px-2 flex items-center gap-2 hover:underline">
                         <Icon name="office" class="w-4 h-4 fill-primary" />
                         <span class="font-bold text-sm text-primary">{{
@@ -283,7 +307,7 @@ onMounted(() => {
                     style="height: 120px"
                     ref="editorRef"
                     v-model:content="form.descripcion"
-                    contentType="text"
+                    contentType="html"
                 />
                 <div class="py-2 border-t-3 flex gap-3 items-center">
                     <label

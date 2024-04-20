@@ -11,6 +11,7 @@ import Modal from "./Modal.vue";
 const props = defineProps({
     title: String,
     clase: Array,
+    unidade: Array,
     errors: Object,
 });
 
@@ -25,18 +26,18 @@ const form = useForm({
     titulo: "",
     descripcion: "",
     user_id: auth.user.id,
-    anunciable_id: props.clase.id,
+    anunciable_id: "",
     anunciable_type: "",
     nombre: [],
     url: [],
 });
 
+/* quill editor options */
 const options = {
     placeholder: "Escribe el contenido...",
     modules: {
         toolbar: [
             ["bold", "italic", "underline", "strike"],
-            ["blockquote", "code-block"],
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
         ],
     },
@@ -53,11 +54,12 @@ const cancelOperation = () => {
         form.titulo = "";
         open.value = false;
         props.errors.titulo = "";
-        uploadedFiles.value = []
-        form.url = []
+        uploadedFiles.value = [];
+        form.url = [];
     }, 300);
 };
 
+/* handle files */
 const getFileData = (myFile) => {
     const name = myFile.files[0].name;
     const file = myFile.files[0];
@@ -65,7 +67,6 @@ const getFileData = (myFile) => {
     if (name.endsWith(".pdf")) {
         uploadedFiles.value.push({ extension: "pdf", data: file });
         form.url.push(file);
-        
     } else if (
         name.endsWith(".jpeg") ||
         name.endsWith(".jpg") ||
@@ -84,8 +85,8 @@ const getFileData = (myFile) => {
     ) {
         uploadedFiles.value.push({ extension: "office", data: file });
         form.url.push(file);
-    }else{
-        console.log(file)
+    } else {
+        console.log(file);
     }
 };
 
@@ -94,7 +95,20 @@ const deleteFile = (index) => {
     form.url.splice(index, 1);
 };
 
+/* submit form */
 const submit = () => {
+    const anunciableId =
+        props.clase === null || props.clase == undefined
+            ? props.unidade.id
+            : props.clase.id;
+    const anunciableType =
+        props.clase === null || props.clase == undefined
+            ? "App\\Models\\Unidade"
+            : "App\\Models\\Clase";
+
+    form.anunciable_id = anunciableId;
+    form.anunciable_type = anunciableType;
+
     form.post(route("anuncios.store"), {
         preserveScroll: true,
         forceFormData: true,
@@ -128,6 +142,7 @@ const submit = () => {
                             placeholder="Ingresa el título del Anuncio"
                             v-model="form.titulo"
                             :error="errors.titulo"
+                            contentType="text"
                         />
                         <QuillEditor
                             theme="snow"
@@ -135,6 +150,7 @@ const submit = () => {
                             style="height: 120px"
                             ref="editorRef"
                             v-model:content="form.descripcion"
+                            contentType="html"
                         />
                         <div class="py-2 border-t-3 flex gap-3 items-center">
                             <label
@@ -161,7 +177,6 @@ const submit = () => {
                                     class="w-4 h-4 fill-primary"
                                 />
                             </button>
-                            <!-- -->
                         </div>
                         <ul class="flex py-2 flex-wrap gap-3">
                             <li
@@ -197,15 +212,17 @@ const submit = () => {
                         <div class="pt-4 border-t-2 flex justify-between">
                             <button
                                 class="inline-block px-8 py-2 text-red-500 hover:underline"
-                                @click="cancelOperation"
+                                @click="cancelOperation()"
                                 type="button">
                                 Cancelar
                             </button>
                             <button
-                                class="px-6 py-3 rounded text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-orange-400 focus:bg-orange-400"
+                                class="px-6 py-3 rounded text-white text-sm leading-4 font-bold whitespace-nowrap"
                                 :class="{
-                                    'bg-gray-400': form.processing,
-                                    'bg-primary': !form.processing,
+                                    'bg-gray-400 focus:bg-gray-400':
+                                        form.processing,
+                                    'bg-primary hover:bg-orange-400':
+                                        !form.processing,
                                 }"
                                 :disabled="form.processing"
                                 type="submit">

@@ -20,7 +20,7 @@ class AnuncioRequest extends FormRequest
             'descripcion' => 'nullable',
             'user_id' => 'required|numeric',
             'anunciable_id' => 'required|numeric',
-            'anunciable_type' => 'nullable',
+            'anunciable_type' => 'required',
             'nombre' => 'nullable|max:255',
             'url' => 'nullable|array|min:1',
         ];

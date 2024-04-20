@@ -46,11 +46,14 @@ class UnidadeController extends Controller
 
     public function show($id)
     {
-       
-        $unidade = Unidade::find($id);
+        $unidade = Unidade::findOrFail($id);
+
+        $unidadesYanuncios = Unidade::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales'])
+            ->findOrFail($unidade->id);
 
         return Inertia::render('Unidades/Show', [
-            'unidade' => $unidade
+         //   'unidade' => $unidade,
+            'unidadesYanuncios' => $unidadesYanuncios
         ]);
     }
 

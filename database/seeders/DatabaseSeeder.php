@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         Semestre::factory(8)->create();
         Materia::factory(10)->create();
         Clase::factory(5)->create();
-        Unidade::factory(4)->create();
+     //   Unidade::factory(4)->create();
   
     }
 }

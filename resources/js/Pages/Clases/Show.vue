@@ -10,8 +10,6 @@ import TextArea from "../../Components/TextArea.vue";
 import EditorWrapper from "../../Components/EditorWrapper.vue";
 import { ref, onMounted } from "vue";
 import { useForm } from "@inertiajs/vue3";
-import { usePage } from "@inertiajs/vue3";
-import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
     clase: Array,
@@ -168,7 +166,7 @@ onMounted(() => {
                             </div>
                         </a>
                     </div>
-                    <!-- opion persoma page -->
+                    <!-- opion persona page -->
                     <div
                         class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group hover:shadow-md">
                         <Link

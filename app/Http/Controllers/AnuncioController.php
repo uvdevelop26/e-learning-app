@@ -41,8 +41,6 @@ class AnuncioController extends Controller
     public function store(AnuncioRequest $request)
     {
 
-        $clase = Clase::find($request->anunciable_id);
-
         $materiales = $request->url;
 
         $descripcionArray = $request->descripcion;
@@ -65,7 +63,7 @@ class AnuncioController extends Controller
             'descripcion' => $textoDescripcion,
             'user_id' => $request->user_id,
             'anunciable_id' => $request->anunciable_id,
-            'anunciable_type' => get_class($clase)
+            'anunciable_type' => $request->anunciable_type
         ]);
 
         if (!empty($materiales)) {
@@ -103,7 +101,7 @@ class AnuncioController extends Controller
     {
         $anuncio = Anuncio::findOrFail($id);
 
-        $clase = Clase::find($request->anunciable_id);
+        //  $clase = Clase::find($request->anunciable_id);
 
         $descripcionArray = $request->descripcion;
 
@@ -125,7 +123,7 @@ class AnuncioController extends Controller
             'descripcion' => $textoDescripcion,
             'user_id' => $request->user_id,
             'anunciable_id' => $request->anunciable_id,
-            'anunciable_type' => get_class($clase)
+            'anunciable_type' => $request->anunciable_type,
         ]);
 
         /* the user has deleted all the all files and has'nt added new ones */
@@ -161,8 +159,8 @@ class AnuncioController extends Controller
                     $deleted->delete();
                 }
             }
-            /* the user has adden new files an has could has deleted others */
-        } elseif (!empty($request->url) && !empty($request->nombre)) {
+            /* the user has added new files an  could has deleted others */
+        } elseif (!empty($request->url) && !empty($request->nombre) || !empty($request->url) && empty($request->nombre)) {
 
             $oldMateriales = $request->nombre;
             $newMateriales = $request->url;
