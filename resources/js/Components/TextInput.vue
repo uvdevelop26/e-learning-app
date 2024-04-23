@@ -30,7 +30,7 @@ const disbledState = computed(()=>{
 
 <template>
     <div class="">
-        <label :for="id">{{ label }}</label>
+        <label :for="id" class="font-bold">{{ label }}</label>
         <input
             :type="type"
             ref="input"

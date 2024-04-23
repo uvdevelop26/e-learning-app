@@ -119,12 +119,12 @@ onMounted(() => {
 
         <template #header>
             <h2
-                class="font-semibold text-xl text-gray-800 flex justify-between items-center">
-                <span>
-                    {{ carrera.nombre }}
+                class="font-semibold text-xl flex justify-between items-center">
+                <span class="text-primary">
+                    Clase {{ props.clase.codigo }}
                 </span>
-                <button @click="showAddUnidades = !showAddUnidades" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-indigo-100 focus:bg-indigo-100">
-                    <icon name="plus" class="h-4 w-4 fill-primary" />
+                <button @click="showAddUnidades = !showAddUnidades" class="text-sm text-primary italic hover:text-opacity-90 hover:underline">
+                    + Agregar Unidad
                 </button>
             </h2>
         </template>
@@ -139,7 +139,7 @@ onMounted(() => {
                     Semestre {{ props.semestre.nombre }}
                 </div>
                 <div class="font-bold text-xl lg:text-2xl text-white">
-                    Clase {{ props.clase.codigo }}
+                     {{ props.carrera.nombre}}
                 </div>
             </div>
             <!-- Content Class -->
@@ -147,7 +147,7 @@ onMounted(() => {
                 <!-- Option pdf materia -->
                 <div class="flex gap-6 items-center lg:flex-col lg:items-start">
                     <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group hover:shadow-md">
+                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group">
                         <a
                             :href="`/download/${materia.id}`"
                             class="absolute top-0 left-0 right-0 bottom-0"
@@ -168,7 +168,7 @@ onMounted(() => {
                     </div>
                     <!-- opion persona page -->
                     <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group hover:shadow-md">
+                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group">
                         <Link
                             :href="route('clases.showPersonas', clase.id)"
                             class="absolute top-0 left-0 right-0 bottom-0"
@@ -224,7 +224,7 @@ onMounted(() => {
         <!-- modal New Unidades -->
         <modal :show="showAddUnidades">
             <template #headerModal>
-                <h3 class="text-lg">Agregar Unidad</h3>
+                <h3 class="px-2 text-xl text-primary font-bold">Agregar Unidad</h3>
             </template>
             <template #bodyModal>
                 <form @submit.prevent="submit">

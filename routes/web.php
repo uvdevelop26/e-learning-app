@@ -10,6 +10,7 @@ use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\MaterialeController;
 use App\Http\Controllers\SemestreController;
+use App\Http\Controllers\TareaController;
 use App\Http\Controllers\UnidadeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -136,6 +137,7 @@ Route::controller(UnidadeController::class)->middleware(['auth:sanctum', 'verifi
     Route::put('unidades/{unidad}', 'update')->name('unidades.update');
     Route::delete('unidades/{unidad}', 'destroy')->name('unidades.destroy');
     Route::get("unidades/{unidad}", 'show')->name("unidades.show");
+   /*  Route::get("unidades/{unidad}/tareas", "tareas")->name("unidades.tareas"); */
 });
 
 //comentarios
@@ -148,4 +150,9 @@ Route::controller(ComentarioController::class)->middleware(['auth:sanctum', 'ver
 //materiales
 Route::controller(MaterialeController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('download/{id}', 'download')->name('materiales.download');
+});
+
+//tareas
+Route::controller(TareaController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('tareas', 'store')->name('tareas.store');
 });

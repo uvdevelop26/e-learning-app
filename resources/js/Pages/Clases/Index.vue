@@ -23,10 +23,8 @@ const deleteClase = (id) => {
         <Head title="Clases" />
 
         <template #header>
-            <h2
-                class="font-semibold text-xl text-gray-800 flex justify-between items-center"
-            >
-                <span>Clases Impartidas</span>
+            <h2 class="font-semibold text-xl text-gray-800 flex items-center">
+                <span class="mr-3 text-primary">Clases Impartidas</span>
             </h2>
         </template>
         <div class="py-12 px-4 bg-gray-100 border lg:px-8 max-w-7xl">
@@ -39,8 +37,7 @@ const deleteClase = (id) => {
             </div>
             <div class="w-full overflow-x-auto">
                 <div
-                    class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6"
-                >
+                    class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6">
                     <!-- cards -->
                     <card v-for="clase in clases" :key="clase.id">
                         <template #cardHeader>
@@ -73,7 +70,9 @@ const deleteClase = (id) => {
                                     <div class="p-3">
                                         <Link
                                             class="inline-block py-2 font-bold w-full h-full text-primary hover:underline"
-                                            :href="route('clases.edit', clase.id)">
+                                            :href="
+                                                route('clases.edit', clase.id)
+                                            ">
                                             Editar
                                         </Link>
                                         <button
@@ -85,6 +84,12 @@ const deleteClase = (id) => {
                                     </div>
                                 </template>
                             </Dropdown>
+                        </template>
+                        <template #cardFooter>
+                            <div class="h-full flex px-4 items-center justify-end">
+                                <span class="text-xs text-gray-400 italic">{{ clase.alumnos.length }} Participante/s</span>
+                            </div>
+
                         </template>
                     </card>
                 </div>

@@ -11,6 +11,7 @@ import { ref, getCurrentInstance, onMounted } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
+import { format } from "date-fns";
 
 const props = defineProps({
     data: Object,
@@ -26,8 +27,9 @@ const { emit } = getCurrentInstance();
 const { auth } = usePage().props;
 const uploadedFiles = ref(props.data.materiales.slice());
 const dataDescripcion = ref(null);
-
-
+const formattedDate = ref(
+    format(new Date(props.data.created_at), "dd-MM-yyyy")
+);
 
 const form = useForm({
     _method: "PUT",
@@ -48,7 +50,7 @@ const options = {
         toolbar: [
             ["bold", "italic", "underline", "strike"],
             ["blockquote", "code-block"],
-            [{ header: [2, 3, 4, 5, false] }],
+            [{ header: [2, 3, 4, 5, 6, false] }],
         ],
     },
 };
@@ -177,6 +179,7 @@ const updateanuncios = () => {
 //onMounted function
 onMounted(() => {
     sortMateriales();
+
     /* const descripcion = dataDescripcion.value;
     const headingTwo = descripcion.querySelectorAll("h2");
     const headingThree = descripcion.querySelectorAll("h3");
@@ -186,7 +189,7 @@ onMounted(() => {
     });
 
     headingThree.forEach((item) => {
-        item.classList.add("text-md");
+        item.classList.add("text-base");
     }); */
 });
 </script>
@@ -195,9 +198,14 @@ onMounted(() => {
         <!-- Text info and options -->
         <div class="flex items-center justify-between gap-4">
             <div class="w-full">
-                <h3 class="py-2 text-xl font-bold uppercase border-b-2 text-center mb-2">
-                    {{ data.titulo }}
-                </h3>
+                <div class="flex py-4 justify-between">
+                    <h3 class="text-xl font-bold">
+                        {{ data.titulo }}
+                    </h3>
+                    <div class="text-xs text-gray-400 italic">
+                        {{ formattedDate }}
+                    </div>
+                </div>
                 <div
                     class="text-sm leading-6"
                     v-html="data.descripcion"
@@ -209,7 +217,8 @@ onMounted(() => {
                     <div class="text-right">
                         <button
                             :open="open"
-                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100">
+                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100"
+                        >
                             <icon
                                 name="trigger"
                                 class="inline-block w-[0.18rem] h-[0.18rem] fill-primary"
@@ -221,13 +230,15 @@ onMounted(() => {
                     <div class="p-3">
                         <button
                             class="inline-block text-left py-2 font-bold w-full h-full text-primary hover:underline"
-                            @click="setOpenModal()">
+                            @click="setOpenModal()"
+                        >
                             Editar
                         </button>
                         <button
                             class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
                             type="button"
-                            @click="deleteAnuncio()">
+                            @click="deleteAnuncio()"
+                        >
                             Eliminar
                         </button>
                     </div>
@@ -240,7 +251,8 @@ onMounted(() => {
                 <!-- show images -->
                 <figure
                     v-if="getFileType(materiale.nombre) == 'picture'"
-                    class="h-48 rounded-2xl border overflow-hidden md:h-64 lg:h-[28.5rem]">
+                    class="h-48 rounded-2xl border overflow-hidden md:h-64 lg:h-[28.5rem]"
+                >
                     <img
                         :src="imageUrl(materiale.url)"
                         :alt="materiale.nombre"
@@ -250,12 +262,14 @@ onMounted(() => {
                 <!-- show pdf's -->
                 <div
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
-                    v-else-if="getFileType(materiale.nombre) == 'pdf'">
+                    v-else-if="getFileType(materiale.nombre) == 'pdf'"
+                >
                     <a
                         :href="route('materiales.download', materiale.id)"
                         target="_blank"
                         tabindex="-1"
-                        class="w-full h-full px-2 flex items-center gap-2 hover:underline">
+                        class="w-full h-full px-2 flex items-center gap-2 hover:underline"
+                    >
                         <Icon name="pdf" class="w-4 h-4 fill-primary" />
                         <span class="font-bold text-sm text-primary">
                             {{ materiale.nombre }}
@@ -265,12 +279,14 @@ onMounted(() => {
                 <!-- show documents -->
                 <div
                     v-else-if="getFileType(materiale.nombre) == 'office'"
-                    class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100">
+                    class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
+                >
                     <a
                         :href="route('materiales.download', materiale.id)"
                         target="_blank"
                         tabindex="-1"
-                        class="w-full h-full px-2 flex items-center gap-2 hover:underline">
+                        class="w-full h-full px-2 flex items-center gap-2 hover:underline"
+                    >
                         <Icon name="office" class="w-4 h-4 fill-primary" />
                         <span class="font-bold text-sm text-primary">{{
                             materiale.nombre
@@ -297,6 +313,7 @@ onMounted(() => {
                 <text-input
                     class="pb-3 pr-6 w-full"
                     id="titulo"
+                    label="Título"
                     placeholder="Ingresa el título del Anuncio"
                     v-model="form.titulo"
                     :error="errors.titulo"
@@ -312,7 +329,8 @@ onMounted(() => {
                 <div class="py-2 border-t-3 flex gap-3 items-center">
                     <label
                         for="upload"
-                        class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
+                        class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
+                    >
                         <icon name="upload" class="w-4 h-4 fill-primary" />
                         <input
                             type="file"
@@ -327,12 +345,15 @@ onMounted(() => {
                     <li
                         v-for="(files, index) in uploadedFiles"
                         :key="index"
-                        class="flex items-center h-12 border rounded-xl overflow-hidden">
+                        class="flex items-center h-12 border rounded-xl overflow-hidden"
+                    >
                         <div
                             class="flex h-full px-3 justify-center items-center gap-2 border-r"
-                            v-if="files.nombre">
+                            v-if="files.nombre"
+                        >
                             <span
-                                class="text-xs lowercase font-bold text-primary">
+                                class="text-xs lowercase font-bold text-primary"
+                            >
                                 {{ files.nombre }}
                             </span>
                             <icon
@@ -342,9 +363,11 @@ onMounted(() => {
                         </div>
                         <div
                             class="flex h-full px-3 justify-center items-center gap-2 border-r"
-                            v-else>
+                            v-else
+                        >
                             <span
-                                class="text-xs lowercase font-bold text-primary">
+                                class="text-xs lowercase font-bold text-primary"
+                            >
                                 {{ files.name }}
                             </span>
                             <icon
@@ -353,11 +376,13 @@ onMounted(() => {
                             />
                         </div>
                         <div
-                            class="w-10 h-full flex items-center justify-center">
+                            class="w-10 h-full flex items-center justify-center"
+                        >
                             <button
                                 class="h-full w-full flex justify-center items-center hover:bg-gray-100"
                                 type="button"
-                                @click="deleteFile(index)">
+                                @click="deleteFile(index)"
+                            >
                                 <icon name="close" class="w-2 fill-primary" />
                             </button>
                         </div>
@@ -368,7 +393,8 @@ onMounted(() => {
                     <button
                         class="inline-block px-8 py-2 text-red-500 hover:underline"
                         type="button"
-                        @click="cancelProcess()">
+                        @click="cancelProcess()"
+                    >
                         Cancelar
                     </button>
                     <button
@@ -378,7 +404,8 @@ onMounted(() => {
                             'bg-primary': !form.processing,
                         }"
                         type="submit"
-                        :disabled="form.processing">
+                        :disabled="form.processing"
+                    >
                         Actualizar
                     </button>
                 </div>
@@ -386,3 +413,4 @@ onMounted(() => {
         </template>
     </Modal>
 </template>
+<style scoped></style>

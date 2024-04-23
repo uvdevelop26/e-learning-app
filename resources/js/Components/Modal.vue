@@ -101,9 +101,8 @@ const maxWidthClass = computed(() => {
                     <div
                         v-show="show"
                         class="mb-6 p-4 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
-                        :class="maxWidthClass"
-                    >
-                        <div class="py-2 border-b">
+                        :class="maxWidthClass">
+                        <div class="py-2 border-b rounded-md">
                             <slot name="headerModal" v-if="show" />
                         </div>
                         <div class="py-6" ref="body">

@@ -27,7 +27,7 @@ defineExpose({ focus: () => inputSelect.value.focus(), inputSelect });
 </script>
 <template>
     <div>
-        <label :for="id">{{ label }}</label>
+        <label :for="id" class="font-bold">{{ label }}</label>
         <select
             class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm cursor-pointer"
             :class="disbledState"

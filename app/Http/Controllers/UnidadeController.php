@@ -48,12 +48,12 @@ class UnidadeController extends Controller
     {
         $unidade = Unidade::findOrFail($id);
 
-        $unidadesYanuncios = Unidade::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales'])
+        $anunciosYtareas = Unidade::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales', 'tareas'])
             ->findOrFail($unidade->id);
 
         return Inertia::render('Unidades/Show', [
-         //   'unidade' => $unidade,
-            'unidadesYanuncios' => $unidadesYanuncios
+            //   'unidade' => $unidade,
+            'anunciosYtareas' => $anunciosYtareas
         ]);
     }
 
@@ -87,4 +87,16 @@ class UnidadeController extends Controller
 
         $unidade->delete();
     }
+
+    /* public function tareas($id)
+    {
+        $unidade = Unidade::findOrFail($id);
+
+        $tareas = $unidade->tareas()->get();
+
+        return Inertia::render('Unidades/Tareas', [
+            'tareas' => $tareas,
+            'unidade_id' => $id
+        ]);
+    } */
 }

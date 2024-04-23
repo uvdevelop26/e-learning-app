@@ -38,7 +38,7 @@ const options = {
     modules: {
         toolbar: [
             ["bold", "italic", "underline", "strike"],
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            [{ header: [2, 3, 4, 5, 6, false] }],
         ],
     },
 };
@@ -137,12 +137,11 @@ const submit = () => {
                 <div v-if="open">
                     <form @submit.prevent="submit">
                         <text-input
-                            class="pb-3 pr-6 w-full"
+                            class="pb-3 w-full"
                             id="titulo"
                             placeholder="Ingresa el título del Anuncio"
                             v-model="form.titulo"
                             :error="errors.titulo"
-                            contentType="text"
                         />
                         <QuillEditor
                             theme="snow"
@@ -226,7 +225,7 @@ const submit = () => {
                                 }"
                                 :disabled="form.processing"
                                 type="submit">
-                                Enviar
+                                Publicar
                             </button>
                         </div>
                     </form>

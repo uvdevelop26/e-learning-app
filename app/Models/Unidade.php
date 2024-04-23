@@ -23,6 +23,11 @@ class Unidade extends Model
         return $this->belongsTo(Unidade::class);
     }
 
+    public function tareas()
+    {
+        return $this->hasMany(Tarea::class);
+    }
+
     //relación uno a muchos polimórfica
 
     public function anuncios()

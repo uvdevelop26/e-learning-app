@@ -89,7 +89,7 @@ const submit = () => {
         <AppLayout title="Clases/create">
             <Head title="Clases/create" />
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800">
+                <h2 class="font-semibold text-xl text-primary">
                     Usuarios / Clases / Crear
                 </h2>
             </template>

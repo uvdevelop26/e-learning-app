@@ -19,9 +19,11 @@ class ClaseController extends Controller
 
     public function index()
     {
-        $clases = Clase::with('docente.persona', 'materia.semestre.carrera')
+        $clases = Clase::with('docente.persona', 'materia.semestre.carrera', 'alumnos')
             ->orderBy('id', 'desc')
             ->get();
+        
+        
         return Inertia::render('Clases/Index', ['clases' => $clases]);
     }
 
