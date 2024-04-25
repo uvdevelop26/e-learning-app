@@ -12,14 +12,10 @@ return new class extends Migration
         Schema::create('comentarios', function (Blueprint $table) {
             $table->id();
             $table->text('contenido');
-            $table->unsignedBigInteger('anuncio_id');
+            $table->unsignedBigInteger('comentable_id');
+            $table->string('comentable_type');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
-
-            $table->foreign('anuncio_id')
-                ->references('id')
-                ->on('anuncios')
-                ->onDelete('cascade');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')

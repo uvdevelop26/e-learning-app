@@ -137,7 +137,7 @@ Route::controller(UnidadeController::class)->middleware(['auth:sanctum', 'verifi
     Route::put('unidades/{unidad}', 'update')->name('unidades.update');
     Route::delete('unidades/{unidad}', 'destroy')->name('unidades.destroy');
     Route::get("unidades/{unidad}", 'show')->name("unidades.show");
-   /*  Route::get("unidades/{unidad}/tareas", "tareas")->name("unidades.tareas"); */
+    /*  Route::get("unidades/{unidad}/tareas", "tareas")->name("unidades.tareas"); */
 });
 
 //comentarios
@@ -155,4 +155,7 @@ Route::controller(MaterialeController::class)->middleware(['auth:sanctum', 'veri
 //tareas
 Route::controller(TareaController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('tareas', 'store')->name('tareas.store');
+    Route::put('tareas/{tarea}', 'update')->name('tareas.update');
+    Route::delete('tareas/{tarea}', 'destroy')->name('tareas.destroy');
+    Route::get("tareas/{tarea}", 'show')->name("tareas.show");
 });

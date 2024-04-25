@@ -13,17 +13,19 @@ class Comentario extends Model
 
     protected $fillable = [
         'contenido',
-        'anuncio_id',
+        'comentable_id',
+        'comentable_type',
         'user_id'
     ];
-
-    public function anuncio()
-    {
-        return $this->belongsTo(Anuncio::class);
-    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /* tabla polimórfica */
+    public function comentable()
+    {
+        return $this->morphTo();
     }
 }

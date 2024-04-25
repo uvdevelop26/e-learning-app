@@ -204,6 +204,8 @@ class AnuncioController extends Controller
 
         $materiales = $anuncio->materiales;
 
+        $anuncio->comentarios()->delete();
+
         $anuncio->delete();
 
         if (!empty($materiales)) {

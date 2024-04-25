@@ -24,4 +24,10 @@ class Tarea extends Model
     {
         return $this->belongsTo(Unidade::class);
     }
+
+    //relación de uno a muchos polimórfica con comentarios
+    public function comentarios()
+    {
+        return $this->morphMany(Comentario::class, 'comentable');
+    }
 }

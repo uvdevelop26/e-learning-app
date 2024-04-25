@@ -25,13 +25,15 @@ class ComentarioController extends Controller
 
         $request->validate([
             'contenido' => 'required',
-            'anuncio_id' => 'required',
+            'comentable_id' => 'required',
+            'comentable_type' => 'required',
             'user_id' => 'required'
         ]);
 
         Comentario::create([
             'contenido' => $request->contenido,
-            'anuncio_id' => $request->anuncio_id,
+            'comentable_id' => $request->comentable_id,
+            'comentable_type' => $request->comentable_type,
             'user_id' => $request->user_id
         ]);
     }
@@ -41,41 +43,30 @@ class ComentarioController extends Controller
     {
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comentario  $comentario
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Comentario $comentario)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Comentario  $comentario
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Comentario $comentario)
     {
 
         $request->validate([
             'contenido' => 'required',
-            'anuncio_id' => 'required',
+            'comentable_id' => 'required',
+            'comentable_type' => 'required',
             'user_id' => 'required'
         ]);
 
         $comentario->update([
             'contenido' => $request->contenido,
-            'anuncio_id' => $request->anuncio_id,
+            'comentable_id' => $request->comentable_id,
+            'comentable_type' => $request->comentable_type,
             'user_id' => $request->user_id
         ]);
     }
 
-   
+
     public function destroy($id)
     {
         $comentario = Comentario::find($id);

@@ -6,6 +6,7 @@ import EditorWrapper from "../../Components/EditorWrapper.vue";
 import Anuncio from "../../Components/Anuncio.vue";
 import Modal from "../../Components/Modal.vue";
 import AnuncioTareas from "../../Components/AnuncioTareas.vue";
+import Tareas from "../../Components/Tareas.vue";
 import TextInput from "../../Components/TextInput.vue";
 import { ref, onMounted } from "vue";
 import { useForm } from "@inertiajs/vue3";
@@ -22,7 +23,7 @@ const newAnunciosYtareas = ref(
     anunciosTareas.value.anuncios.concat(anunciosTareas.value.tareas)
 );
 const showAddTareas = ref(false);
-const editorRef = ref(null)
+const editorRef = ref(null);
 
 const form = useForm({
     titulo: "",
@@ -44,7 +45,6 @@ const options = {
 };
 
 const cancelOperation = () => {
-
     setTimeout(() => {
         if (editorRef.value) {
             const quill = editorRef.value.getQuill();
@@ -58,20 +58,15 @@ const cancelOperation = () => {
         form.puntos = "";
         (form.fecha_entrega = ""), (form.hora_entrega = "");
 
-        showAddTareas.value = false
+        showAddTareas.value = false;
     }, 300);
 };
 
-const submit = () => {
-    form.post(route("tareas.store"), {
-        preserveScroll: true,
-        /* forceFormData: true, */
-        onSuccess: () => {
-            /*  emit("newpost"); */
-            cancelOperation();
-        },
-    });
-};
+/* const updateanuncios = () => {
+    setTimeout(() => {
+        updatedata();
+    }, 600);
+}; */
 
 function updatedata() {
     anunciosTareas.value = props.anunciosYtareas;
@@ -81,6 +76,18 @@ function updatedata() {
     sortArray();
 }
 
+const submit = () => {
+    form.post(route("tareas.store"), {
+        preserveScroll: true,
+        /* forceFormData: true, */
+        onSuccess: () => {
+            /*  emit("newpost"); */
+            cancelOperation();
+            updatedata();
+        },
+    });
+};
+
 const newpost = () => {
     setTimeout(() => {
         updatedata();
@@ -88,6 +95,12 @@ const newpost = () => {
 };
 
 const updateanuncios = () => {
+    setTimeout(() => {
+        updatedata();
+    }, 600);
+};
+
+const updatetarea = () => {
     setTimeout(() => {
         updatedata();
     }, 600);
@@ -117,7 +130,8 @@ onMounted(() => {
                 </span>
                 <button
                     @click="showAddTareas = !showAddTareas"
-                    class="text-sm text-primary italic hover:text-opacity-90 hover:underline">
+                    class="text-sm text-primary italic hover:text-opacity-90 hover:underline"
+                >
                     + Agregar Tarea
                 </button>
             </h2>
@@ -128,15 +142,19 @@ onMounted(() => {
                 <!-- options  -->
                 <div class="flex gap-6 items-center lg:flex-col lg:items-start">
                     <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group">
+                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group"
+                    >
                         <Link
                             class="absolute top-0 left-0 right-0 bottom-0 cursor-pointer"
                             target="_blank"
-                            tabindex="-1">
+                            tabindex="-1"
+                        >
                             <div
-                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2">
+                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2"
+                            >
                                 <span
-                                    class="block pb-3 group-hover:text-primary">
+                                    class="block pb-3 group-hover:text-primary"
+                                >
                                     Tareas
                                 </span>
                                 <icon
@@ -175,19 +193,21 @@ onMounted(() => {
                     />
                     <template
                         v-for="(data, index) in newAnunciosYtareas"
-                        :key="index">
+                        :key="index"
+                    >
                         <component
                             v-if="data.instruccion"
-                            :tarea="data"
-                            :is="AnuncioTareas"
+                            :data="data"
+                            :is="Tareas"
                             :errors="errors"
+                            @updatetarea="updatetarea"
                         />
                         <component
                             v-else
                             :data="data"
                             :is="Anuncio"
                             :errors="errors"
-                            :clase_id="data.clase_id"
+                            :unidade_id="anunciosYtareas.id"
                             @updateanuncios="updateanuncios"
                         />
                     </template>
@@ -224,7 +244,8 @@ onMounted(() => {
                     <div class="py-2 flex gap-3 items-center">
                         <label
                             for="upload"
-                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
+                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
+                        >
                             <icon name="upload" class="w-4 h-4 fill-primary" />
                             <input
                                 type="file"
@@ -236,12 +257,14 @@ onMounted(() => {
                         </label>
                         <button
                             type="button"
-                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
+                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
+                        >
                             <icon name="link" class="w-4 h-4 fill-primary" />
                         </button>
                     </div>
                     <div
-                        class="py-2 flex flex-wrap gap-3 items-center justify-between lg:justify-start">
+                        class="py-2 flex flex-wrap gap-3 items-center justify-between lg:justify-start"
+                    >
                         <text-input
                             class="pb-3 w-full lg:w-72"
                             id="puntaje"
@@ -272,7 +295,8 @@ onMounted(() => {
                         <button
                             class="inline-block px-8 py-2 text-red-500 hover:underline"
                             @click="cancelOperation()"
-                            type="button">
+                            type="button"
+                        >
                             Cancelar
                         </button>
                         <button
@@ -284,7 +308,8 @@ onMounted(() => {
                                     !form.processing,
                             }"
                             :disabled="form.processing"
-                            type="submit">
+                            type="submit"
+                        >
                             Agregar Tarea
                         </button>
                     </div>

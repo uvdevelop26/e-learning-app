@@ -2,7 +2,6 @@
 import Icon from "./Icon.vue";
 import Dropdown from "./Dropdown.vue";
 import Comentarios from "./Comentarios.vue";
-//import Materiales from "./Materiales.vue";
 import Modal from "./Modal.vue";
 import TextInput from "./TextInput.vue";
 import { QuillEditor } from "@vueup/vue-quill";
@@ -217,8 +216,7 @@ onMounted(() => {
                     <div class="text-right">
                         <button
                             :open="open"
-                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100"
-                        >
+                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100">
                             <icon
                                 name="trigger"
                                 class="inline-block w-[0.18rem] h-[0.18rem] fill-primary"
@@ -230,15 +228,13 @@ onMounted(() => {
                     <div class="p-3">
                         <button
                             class="inline-block text-left py-2 font-bold w-full h-full text-primary hover:underline"
-                            @click="setOpenModal()"
-                        >
+                            @click="setOpenModal()">
                             Editar
                         </button>
                         <button
                             class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
                             type="button"
-                            @click="deleteAnuncio()"
-                        >
+                            @click="deleteAnuncio()">
                             Eliminar
                         </button>
                     </div>
@@ -251,8 +247,7 @@ onMounted(() => {
                 <!-- show images -->
                 <figure
                     v-if="getFileType(materiale.nombre) == 'picture'"
-                    class="h-48 rounded-2xl border overflow-hidden md:h-64 lg:h-[28.5rem]"
-                >
+                    class="h-48 rounded-2xl border overflow-hidden md:h-64 lg:h-[28.5rem]">
                     <img
                         :src="imageUrl(materiale.url)"
                         :alt="materiale.nombre"
@@ -262,14 +257,12 @@ onMounted(() => {
                 <!-- show pdf's -->
                 <div
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
-                    v-else-if="getFileType(materiale.nombre) == 'pdf'"
-                >
+                    v-else-if="getFileType(materiale.nombre) == 'pdf'">
                     <a
                         :href="route('materiales.download', materiale.id)"
                         target="_blank"
                         tabindex="-1"
-                        class="w-full h-full px-2 flex items-center gap-2 hover:underline"
-                    >
+                        class="w-full h-full px-2 flex items-center gap-2 hover:underline">
                         <Icon name="pdf" class="w-4 h-4 fill-primary" />
                         <span class="font-bold text-sm text-primary">
                             {{ materiale.nombre }}
@@ -279,14 +272,12 @@ onMounted(() => {
                 <!-- show documents -->
                 <div
                     v-else-if="getFileType(materiale.nombre) == 'office'"
-                    class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
-                >
+                    class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100">
                     <a
                         :href="route('materiales.download', materiale.id)"
                         target="_blank"
                         tabindex="-1"
-                        class="w-full h-full px-2 flex items-center gap-2 hover:underline"
-                    >
+                        class="w-full h-full px-2 flex items-center gap-2 hover:underline">
                         <Icon name="office" class="w-4 h-4 fill-primary" />
                         <span class="font-bold text-sm text-primary">{{
                             materiale.nombre
@@ -306,7 +297,7 @@ onMounted(() => {
     <!-- modal -->
     <Modal :show="openModal">
         <template #headerModal>
-            <h3 class="text-lg">Editar Anuncio</h3>
+            <h3 class="px-2 text-xl text-primary font-bold">Editar Anuncio</h3>
         </template>
         <template #bodyModal>
             <form @submit.prevent="update">
@@ -329,8 +320,7 @@ onMounted(() => {
                 <div class="py-2 border-t-3 flex gap-3 items-center">
                     <label
                         for="upload"
-                        class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                    >
+                        class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
                         <icon name="upload" class="w-4 h-4 fill-primary" />
                         <input
                             type="file"
@@ -345,15 +335,12 @@ onMounted(() => {
                     <li
                         v-for="(files, index) in uploadedFiles"
                         :key="index"
-                        class="flex items-center h-12 border rounded-xl overflow-hidden"
-                    >
+                        class="flex items-center h-12 border rounded-xl overflow-hidden">
                         <div
                             class="flex h-full px-3 justify-center items-center gap-2 border-r"
-                            v-if="files.nombre"
-                        >
+                            v-if="files.nombre">
                             <span
-                                class="text-xs lowercase font-bold text-primary"
-                            >
+                                class="text-xs lowercase font-bold text-primary">
                                 {{ files.nombre }}
                             </span>
                             <icon
@@ -363,11 +350,9 @@ onMounted(() => {
                         </div>
                         <div
                             class="flex h-full px-3 justify-center items-center gap-2 border-r"
-                            v-else
-                        >
+                            v-else>
                             <span
-                                class="text-xs lowercase font-bold text-primary"
-                            >
+                                class="text-xs lowercase font-bold text-primary">
                                 {{ files.name }}
                             </span>
                             <icon
@@ -376,13 +361,11 @@ onMounted(() => {
                             />
                         </div>
                         <div
-                            class="w-10 h-full flex items-center justify-center"
-                        >
+                            class="w-10 h-full flex items-center justify-center">
                             <button
                                 class="h-full w-full flex justify-center items-center hover:bg-gray-100"
                                 type="button"
-                                @click="deleteFile(index)"
-                            >
+                                @click="deleteFile(index)">
                                 <icon name="close" class="w-2 fill-primary" />
                             </button>
                         </div>
@@ -393,8 +376,7 @@ onMounted(() => {
                     <button
                         class="inline-block px-8 py-2 text-red-500 hover:underline"
                         type="button"
-                        @click="cancelProcess()"
-                    >
+                        @click="cancelProcess()">
                         Cancelar
                     </button>
                     <button
@@ -404,8 +386,7 @@ onMounted(() => {
                             'bg-primary': !form.processing,
                         }"
                         type="submit"
-                        :disabled="form.processing"
-                    >
+                        :disabled="form.processing">
                         Actualizar
                     </button>
                 </div>

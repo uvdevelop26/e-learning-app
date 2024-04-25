@@ -24,7 +24,6 @@ class UnidadeController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'numero' => 'required',
             'tema' => 'required',
@@ -37,10 +36,6 @@ class UnidadeController extends Controller
             'objetivos' => $request->objetivos,
             'clase_id' => $request->clase_id
         ]);
-
-
-        /*
-        $clase->unidades()->attach($unidade->id); */
     }
 
 
@@ -52,7 +47,6 @@ class UnidadeController extends Controller
             ->findOrFail($unidade->id);
 
         return Inertia::render('Unidades/Show', [
-            //   'unidade' => $unidade,
             'anunciosYtareas' => $anunciosYtareas
         ]);
     }

@@ -9,6 +9,7 @@ import { router } from "@inertiajs/vue3";
 const props = defineProps({
     comentarios: Array,
     anuncio_id: Number,
+    tarea_id: Number,
 });
 
 const hiddeComments = ref(true);
@@ -21,7 +22,8 @@ const comentIndex = ref(null);
 
 const form = useForm({
     contenido: "",
-    anuncio_id: "",
+    comentable_id: "",
+    comentable_type: "",
     user_id: auth.user.id,
 });
 
@@ -29,7 +31,8 @@ const formEdit = useForm({
     _method: "PUT",
     id: "",
     contenido: "",
-    anuncio_id: props.anuncio_id,
+    comentable_id: "",
+    comentable_type: "",
     user_id: auth.user.id,
 });
 
@@ -43,14 +46,6 @@ watchEffect(() => {
     }
 });
 
-/* watchEffect(() => {
-    const contenido = formEdit.contenido;
-
-    if (contenido === "") {
-        buttonEditDisabled.value = true;
-    }
-}); */
-
 const setEditData = (data, index) => {
     comentIndex.value = index;
     formEdit.id = data.id;
@@ -62,7 +57,13 @@ const setEditData = (data, index) => {
 };
 
 const submit = () => {
-    form.anuncio_id = props.anuncio_id;
+    const comentableId = props.anuncio_id ? props.anuncio_id : props.tarea_id;
+    const comentableType = props.anuncio_id
+        ? "App\\Models\\Anuncio"
+        : "App\\Models\\Tarea";
+
+    form.comentable_id = comentableId;
+    form.comentable_type = comentableType;
 
     form.post(route("comentarios.store"), {
         preserveScroll: true,
@@ -74,7 +75,14 @@ const submit = () => {
 };
 
 const update = () => {
-    formEdit.anuncio_id = props.anuncio_id;
+    //formEdit.anuncio_id = props.anuncio_id;
+    const comentableId = props.anuncio_id ? props.anuncio_id : props.tarea_id;
+    const comentableType = props.anuncio_id
+        ? "App\\Models\\Anuncio"
+        : "App\\Models\\Tarea";
+
+    formEdit.comentable_id = comentableId;
+    formEdit.comentable_type = comentableType;
 
     formEdit.post(route("comentarios.update", formEdit), {
         preserveScroll: true,
@@ -104,7 +112,7 @@ const deleteData = (id) => {
             <button class="flex gap-2" @click="hiddeComments = !hiddeComments">
                 <icon name="comments" class="fill-primary w-4 h-4" />
                 <span class="text-xs font-bold text-primary hover:underline">
-                    {{ `${comentarios.length} comentarios de clase` }}
+                    {{ `${comentarios.length} comentario/s` }}
                 </span>
             </button>
         </div>
@@ -152,9 +160,9 @@ const deleteData = (id) => {
                             <button
                                 class="px-6 py-3 rounded text-white text-sm leading-4 font-bold whitespace-nowrap hover:bg-orange-400 focus:bg-orange-400"
                                 :class="{
-                                'bg-gray-400': form.processing,
-                                'bg-primary': !form.processing,
-                                    }"
+                                    'bg-gray-400': form.processing,
+                                    'bg-primary': !form.processing,
+                                }"
                                 type="submit"
                                 :disabled="form.processing">
                                 Actualizar
@@ -168,8 +176,7 @@ const deleteData = (id) => {
                         <div class="text-right">
                             <button
                                 :open="open"
-                                class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100"
-                            >
+                                class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100">
                                 <icon
                                     name="trigger"
                                     class="inline-block w-[0.18rem] h-[0.18rem] fill-primary"

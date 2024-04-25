@@ -25,11 +25,6 @@ class Anuncio extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function comentarios()
-    {
-        return $this->hasMany(Comentario::class);
-    }
-
     public function materiales()
     {
         return $this->hasMany(Materiale::class);
@@ -39,5 +34,11 @@ class Anuncio extends Model
     public function anunciable()
     {
         return $this->morphTo();
+    }
+
+    //relación uno a muchos polimórfica con comentarios
+    public function comentarios()
+    {
+        return $this->morphMany(Comentario::class, 'comentable');
     }
 }

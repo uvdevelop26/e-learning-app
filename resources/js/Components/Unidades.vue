@@ -33,13 +33,12 @@ const cancelProcess = () => {
 };
 
 const setOpenModal = () => {
-    form.id = props.data.id,
-    form.numero = props.data.numero,
-    form.tema = props.data.tema,
-    form.objetivos = props.data.objetivos,
-    form.clase_id = props.clase_id,
-
-    openModal.value = true
+    form.id = props.data.id;
+    form.numero = props.data.numero;
+    form.tema = props.data.tema;
+    form.objetivos = props.data.objetivos;
+    form.clase_id = props.clase_id;
+    openModal.value = true;
 };
 
 const update = () => {
@@ -54,14 +53,16 @@ const update = () => {
 </script>
 <template>
     <div
-        class="w-full p-4 rounded-xl border shadow bg-white group hover:shadow-md">
+        class="w-full p-4 rounded-xl border shadow bg-white group hover:shadow-md"
+    >
         <div class="flex items-center justify-between gap-4">
             <!-- data -->
             <div class="w-full">
                 <h3 class="font-bold uppercase">
                     <Link
                         class="block py-2 group-hover:text-primary"
-                        :href="route('unidades.show', data.id)">
+                        :href="route('unidades.show', data.id)"
+                    >
                         Unidad Número {{ data.numero }} -
                         {{ data.tema }}
                     </Link>
@@ -73,7 +74,8 @@ const update = () => {
                     <div class="text-right">
                         <button
                             :open="open"
-                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100">
+                            class="flex pb-2 justify-center items-center h-7 w-7 rounded-full hover:bg-indigo-100 focus:bg-indigo-100"
+                        >
                             <icon
                                 name="trigger"
                                 class="inline-block w-[0.18rem] h-[0.18rem] fill-primary"
@@ -96,7 +98,7 @@ const update = () => {
     <!-- modal -->
     <modal :show="openModal">
         <template #headerModal>
-            <h3 class="text-lg">Editar Unidad</h3>
+            <h3 class="px-2 text-xl text-primary font-bold">Editar Unidad</h3>
         </template>
         <template #bodyModal>
             <form @submit.prevent="update">
@@ -126,11 +128,13 @@ const update = () => {
                     </text-area>
                 </div>
                 <div
-                    class="flex items-center justify-between pt-4 bg-gray-50 border-t border-gray-100">
+                    class="flex items-center justify-between pt-4 bg-gray-50 border-t border-gray-100"
+                >
                     <button
                         class="px-3 text-red-500 hover:underline"
                         type="button"
-                        @click="cancelProcess">
+                        @click="cancelProcess()"
+                    >
                         Cancelar
                     </button>
                     <button
@@ -140,7 +144,8 @@ const update = () => {
                             'bg-primary': !form.processing,
                         }"
                         type="submit"
-                        :disabled="form.processing">
+                        :disabled="form.processing"
+                    >
                         Actualizar
                     </button>
                 </div>
