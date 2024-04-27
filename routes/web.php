@@ -6,6 +6,7 @@ use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\MaterialeController;
@@ -36,16 +37,12 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+Route::controller(DashboardController::class)
+    ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])
+    ->group(function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/dashboard/users', 'users')->name('dashboard.users');
 });
-
 
 //docentes
 Route::controller(DocenteController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {

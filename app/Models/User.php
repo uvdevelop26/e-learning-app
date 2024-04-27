@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function administradores()
     {
-        return $this->hasMany(Docente::class);
+        return $this->hasMany(Administradore::class);
     }
 
     public function anuncios()

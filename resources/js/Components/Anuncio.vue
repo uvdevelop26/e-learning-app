@@ -211,7 +211,7 @@ onMounted(() => {
                     ref="dataDescripcion"
                 ></div>
             </div>
-            <dropdown class="self-start">
+            <dropdown class="self-start" v-if="$page.props.userRole.role.rol !== 'alumno'">
                 <template #trigger>
                     <div class="text-right">
                         <button

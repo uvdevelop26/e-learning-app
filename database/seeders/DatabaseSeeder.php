@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         Persona::factory(20)->create();
         $this->call(RoleSeeder::class);
         $this->call(EstadoSeeder::class);
-        User::factory(10)->create();
+        User::factory(50)->create();
         Docente::factory(10)->create();
         Administradore::factory(4)->create();
         Carrera::factory(4)->create();

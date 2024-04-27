@@ -13,7 +13,7 @@ const props = defineProps({
     materias: Array,
     semestres: Array,
     carreras: Array,
-    estados: Array
+    estados: Array,
 });
 
 const form = useForm({
@@ -21,12 +21,12 @@ const form = useForm({
     materia_id: "",
     carrera_id: "",
     semestre_id: "",
-    estado_id: ""
+    estado_id: "",
 });
 
 const semesters = props.semestres;
 
-const filteredSemesters = ref(null)
+const filteredSemesters = ref(null);
 
 const materias = props.materias;
 
@@ -37,15 +37,15 @@ watchEffect(() => {
 
     if (isNaN(carreraId)) {
         filteredSemesters.value = null;
-        form.materia_id = null
-        form.semestre_id = null
+        form.materia_id = null;
+        form.semestre_id = null;
     } else {
         filteredSemesters.value = semesters.filter(
-            (semester) => semester.carrera_id === carreraId 
+            (semester) => semester.carrera_id === carreraId
         );
 
-        form.semestre_id = null
-        form.materia_id = null
+        form.semestre_id = null;
+        form.materia_id = null;
     }
 });
 
@@ -54,13 +54,13 @@ watchEffect(() => {
 
     if (isNaN(semestreId)) {
         filteredMaterias.value = null;
-        form.materia_id = null
+        form.materia_id = null;
     } else {
         filteredMaterias.value = materias.filter(
-            (materia) => materia.semestre_id === semestreId 
+            (materia) => materia.semestre_id === semestreId
         );
 
-        form.materia_id = null
+        form.materia_id = null;
     }
 });
 
@@ -68,14 +68,15 @@ watchEffect(() => {
     const materiaId = parseInt(form.materia_id);
     const randomNumber = Math.floor(Math.random() * 100);
 
-    if(isNaN(materiaId)){
-        form.codigo = null
-    } else{
-        const prefixCode = materias.filter((materia) => materia.id === materiaId);
+    if (isNaN(materiaId)) {
+        form.codigo = null;
+    } else {
+        const prefixCode = materias.filter(
+            (materia) => materia.id === materiaId
+        );
 
         form.codigo = prefixCode[0].codigo + randomNumber;
     }
-
 });
 
 const submit = () => {
@@ -97,19 +98,22 @@ const submit = () => {
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="submit">
                         <div
-                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md">
+                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
+                        >
                             <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Carrera"
                                 id="carrera"
                                 v-model="form.carrera_id"
-                                :error="errors.carrera_id">
+                                :error="errors.carrera_id"
+                            >
                                 <option :value="null" />
                                 <option
                                     v-for="carrera in carreras"
                                     :key="carrera.id"
                                     :value="carrera.id"
-                                    class="capitalize">
+                                    class="capitalize"
+                                >
                                     {{ carrera.nombre }}
                                 </option>
                             </select-input>
@@ -118,13 +122,15 @@ const submit = () => {
                                 label="Semestre"
                                 id="semestre"
                                 v-model="form.semestre_id"
-                                :error="errors.semestre_id">
+                                :error="errors.semestre_id"
+                            >
                                 <option :value="null" />
                                 <option
                                     v-for="semestre in filteredSemesters"
                                     :key="semestre.id"
                                     :value="semestre.id"
-                                    class="capitalize">
+                                    class="capitalize"
+                                >
                                     {{ semestre.nombre }}
                                 </option>
                             </select-input>
@@ -133,13 +139,15 @@ const submit = () => {
                                 label="Materia"
                                 v-model="form.materia_id"
                                 id="materia"
-                                :error="errors.materia_id">
+                                :error="errors.materia_id"
+                            >
                                 <option :value="null" />
                                 <option
                                     v-for="materia in filteredMaterias"
                                     :key="materia.id"
                                     :value="materia.id"
-                                    class="capitalize">
+                                    class="capitalize"
+                                >
                                     {{ materia.nombre }}
                                 </option>
                             </select-input>
@@ -148,13 +156,15 @@ const submit = () => {
                                 label="Estado"
                                 id="estado"
                                 v-model="form.estado_id"
-                                :error="errors.estado_id">
+                                :error="errors.estado_id"
+                            >
                                 <option :value="null" />
                                 <option
                                     v-for="estado in estados"
                                     :key="estado.id"
                                     :value="estado.id"
-                                    class="capitalize">
+                                    class="capitalize"
+                                >
                                     {{ estado.estado }}
                                 </option>
                             </select-input>
@@ -165,10 +175,11 @@ const submit = () => {
                                 id="telefono"
                                 :error="errors.codigo"
                                 disabled
-                            />                       
-                        </div>               
+                            />
+                        </div>
                         <div
-                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
+                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
+                        >
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"

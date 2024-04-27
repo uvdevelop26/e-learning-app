@@ -123,7 +123,7 @@ onMounted(() => {
                 <span class="text-primary">
                     Clase {{ props.clase.codigo }}
                 </span>
-                <button @click="showAddUnidades = !showAddUnidades" class="text-sm text-primary italic hover:text-opacity-90 hover:underline">
+                <button @click="showAddUnidades = !showAddUnidades" class="text-sm text-primary italic hover:text-opacity-90 hover:underline" v-if="$page.props.userRole.role.rol !== 'alumno'">
                     + Agregar Unidad
                 </button>
             </h2>
@@ -195,6 +195,7 @@ onMounted(() => {
                         :clase="clase"
                         :errors="errors"
                         @newpost="newpost"
+                        v-if="$page.props.userRole.role.rol !== 'alumno'"
                     />
                     <!-- Unidades links or class anuncios -->
                     <template

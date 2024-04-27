@@ -19,11 +19,11 @@ class ClaseController extends Controller
 
     public function index()
     {
-        $clases = Clase::with('docente.persona', 'materia.semestre.carrera', 'alumnos')
+        $clases = Clase::with('docente.persona', 'materia.semestre.carrera', 'alumnos', 'estado')
             ->orderBy('id', 'desc')
             ->get();
-        
-        
+
+
         return Inertia::render('Clases/Index', ['clases' => $clases]);
     }
 
@@ -45,14 +45,20 @@ class ClaseController extends Controller
 
     public function store(Request $request)
     {
-        $docente_id = Auth::id();
+        $role = Auth::user()->role()->first()->rol;
+
+        $docente_id = null;
+
+        if ($role === "docente") {
+            $docente_id = Auth::user()->docentes()->first()->id;
+        }
 
         $request->validate([
             'codigo' => 'required',
             'carrera_id' => 'required',
             'semestre_id' => 'required',
             'materia_id' => 'required',
-            'estado_id' => 'required'
+            'estado_id' => 'required',
         ]);
 
         Clase::create([
@@ -75,10 +81,6 @@ class ClaseController extends Controller
 
         $anunciosYunidades = Clase::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales', 'unidades'])
             ->findOrFail($clase->id);
-
-        //$anunciosYmateriales = Clase::with('anuncios.materiales')->findOrFail($clase->id);
-
-
 
         return Inertia::render('Clases/Show', [
             'clase' => [
@@ -127,7 +129,13 @@ class ClaseController extends Controller
 
     public function update(Request $request, Clase $clase)
     {
-        $docente_id = Auth::id();
+        $role = Auth::user()->role()->first()->rol;
+
+        $docente_id = null;
+
+        if ($role === "docente") {
+            $docente_id = Auth::user()->docentes()->first()->id;
+        }
 
         $request->validate([
             'codigo' => 'required',

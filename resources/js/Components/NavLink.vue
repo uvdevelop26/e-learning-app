@@ -18,14 +18,14 @@ const props = defineProps({
 <template>
     <button
         v-if="as == 'button'"
-        class="block py-3 px-2 font-medium hover:bg-indigo-50 items-center border-transparent leading-5 focus:outline-none focus:border-indigo-400 transition duration-150 ease-in-out"
+        class="block py-3 px-2 text-primary font-bold items-center border-transparent leading-5 transition duration-150 ease-in-out"
     >
         <slot />
     </button>
     <Link
         v-else
         :href="href"
-        class="block py-3 px-2 font-medium hover:bg-indigo-50 items-center border-transparent leading-5 focus:outline-none focus:border-indigo-400 transition duration-150 ease-in-out"
+        class="flex py-3 px-2 gap-2 text-primary font-bold  items-center border-transparen leading-5 transition duration-150 ease-in-out"
     >
         <slot />
     </Link>
