@@ -42,6 +42,7 @@ Route::controller(DashboardController::class)
     ->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
         Route::get('/dashboard/users', 'users')->name('dashboard.users');
+        Route::get('/dashboard/menuData', 'menuData')->name('dashboard.menuData');
 });
 
 //docentes

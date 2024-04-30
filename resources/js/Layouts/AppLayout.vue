@@ -7,17 +7,16 @@ import Dropdown from "../Components/Dropdown.vue";
 import NavLink from "@/Components/NavLink.vue";
 import MenuNav from "../Components/MenuNav.vue";
 import { usePage } from "@inertiajs/vue3";
-import menu from "../data/menu.js"
+import menu from "../data/menu.js";
 
 const props = defineProps({
     title: String,
 });
 
-const { auth } = usePage().props;
+//
 
 const isMobile = ref(null);
 let mql = null;
-
 
 const getUserRole = (role, index) => {
     return menu[index].role.includes(role);
@@ -31,11 +30,61 @@ const handleMqlChange = (e) => {
     isMobile.value = e.matches;
 };
 
+const getDataMenu = async () => {
+    try {
+        const data = await fetch("http://127.0.0.1:8000/dashboard/menuData");
+
+        if (!data.ok) {
+            throw Error("not data available");
+        }
+        const response = data.json();
+
+        return response;
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+const pushDataOnMenu = async () => {
+    try {
+        const menuData = await getDataMenu();
+
+        let submenu = [];
+
+        if (menuData.role == "alumno") {
+            if (menuData.clases.length) {
+                menuData.clases.forEach((item) => {
+                    submenu.push({
+                        id: `${item.id}`,
+                        name: `${item.codigo} ${item.materia.nombre}`,
+                        href: `/clases/${item.id}`,
+                    });
+                    menu[3].submenu = submenu;
+                });
+            }
+        } else if (menuData.role == "docente") {
+            if (menuData.clases.length) {
+                menuData.clases.forEach((item) => {
+                    submenu.push({
+                        id: `${item.id}`,
+                        name: `${item.codigo} ${item.materia.nombre}`,
+                        href: `/clases/${item.id}`,
+                    });
+                    menu[2].submenu = submenu;
+                });
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
 onMounted(() => {
     mql = window.matchMedia("(min-width: 1024px)");
     isMobile.value = mql.matches;
 
     mql.addEventListener("change", handleMqlChange);
+
+    pushDataOnMenu();
 });
 
 onUnmounted(() => {
@@ -62,7 +111,8 @@ const logout = () => {
                         </Link>
                         <button
                             class="cursor-pointer lg:hidden"
-                            @click="isMobile = !isMobile">
+                            @click="isMobile = !isMobile"
+                        >
                             <Icon name="hamburger" />
                         </button>
                     </div>
@@ -73,21 +123,33 @@ const logout = () => {
                             <ul class="pt-2">
                                 <template
                                     v-for="(links, index) in menu"
-                                    :key="links.id">
+                                    :key="links.id"
+                                >
                                     <li
                                         class="capitalize"
-                                        v-if="getUserRole($page.props.userRole.role.rol, index)">
+                                        v-if="
+                                            getUserRole(
+                                                $page.props.userRole.role.rol,
+                                                index
+                                            )
+                                        "
+                                    >
                                         <NavLink
                                             :href="links.href"
                                             v-if="!links.submenu"
-                                            :class="{'bg-secondary text-white': $page.url.startsWith(links.href),}">
+                                            :class="{
+                                                'bg-secondary text-white':
+                                                    $page.url == links.href,
+                                            }"
+                                        >
                                             {{ links.name }}
                                         </NavLink>
                                         <NavLink
                                             as="button"
                                             v-else
                                             class="flex gap-2 capitalize w-full"
-                                            @click="handleSubmenu(index)">
+                                            @click="handleSubmenu(index)"
+                                        >
                                             <Icon
                                                 class="h-2 w-2 fill-primary"
                                                 :name="
@@ -153,7 +215,8 @@ const logout = () => {
                                                     "
                                                 />
                                                 <span
-                                                    class="text-white font-bold text-sm group-hover:text-primary lg:text-xs">
+                                                    class="text-white font-bold text-sm group-hover:text-primary lg:text-xs"
+                                                >
                                                     {{
                                                         $page.props.auth.user
                                                             .email
@@ -170,17 +233,22 @@ const logout = () => {
                                         <div class="pl-3 py-2">
                                             <form
                                                 method="POST"
-                                                @submit.prevent="logout">
+                                                @submit.prevent="logout"
+                                            >
                                                 <button
                                                     type="submit"
-                                                    class="inline-block text-left py-2 w-full font-bold text-black hover:text-primary hover:underline">
+                                                    class="inline-block text-left py-2 w-full font-bold text-black hover:text-primary hover:underline"
+                                                >
                                                     Cerrar Sesión
                                                 </button>
                                             </form>
                                             <div>
                                                 <Link
-                                                    :href="route('profile.show')"
-                                                    class="inline-block py-2 w-full font-bold text-black hover:text-primary hover:underline">
+                                                    :href="
+                                                        route('profile.show')
+                                                    "
+                                                    class="inline-block py-2 w-full font-bold text-black hover:text-primary hover:underline"
+                                                >
                                                     Perfil
                                                 </Link>
                                             </div>
@@ -194,11 +262,13 @@ const logout = () => {
                 <!-- Page  -->
                 <div
                     class="bg-gray-100 lg:pt-10 lg:flex-1 lg:h-screen lg:overflow-y-auto"
-                    scroll-region>
+                    scroll-region
+                >
                     <!-- Page Header -->
                     <header
                         v-if="$slots.header"
-                        class="bg-white w-full shadow lg:fixed lg:top-0 z-50">
+                        class="bg-white w-full shadow lg:fixed lg:top-0 z-50"
+                    >
                         <div class="max-w-7xl py-5 px-12">
                             <slot name="header" />
                         </div>

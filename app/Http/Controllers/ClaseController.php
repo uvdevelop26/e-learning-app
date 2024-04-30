@@ -45,14 +45,6 @@ class ClaseController extends Controller
 
     public function store(Request $request)
     {
-        $role = Auth::user()->role()->first()->rol;
-
-        $docente_id = null;
-
-        if ($role === "docente") {
-            $docente_id = Auth::user()->docentes()->first()->id;
-        }
-
         $request->validate([
             'codigo' => 'required',
             'carrera_id' => 'required',
@@ -61,6 +53,15 @@ class ClaseController extends Controller
             'estado_id' => 'required',
         ]);
 
+
+        $role = Auth::user()->role()->first()->rol;
+
+        $docente_id = null;
+
+        if ($role === "docente") {
+            $docente_id = Auth::user()->docentes()->first()->id;
+        }
+        
         Clase::create([
             'codigo' => $request->codigo,
             'materia_id' => $request->materia_id,

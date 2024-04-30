@@ -12,17 +12,17 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DocenteFactory extends Factory
 {
-    
+
     public function definition()
     {
         $persona_id = Persona::all()->random()->id;
-        $user_id = User::where("role_id", 2)->get();
+        $user_ids = User::where("role_id", 2)->pluck('id')->toArray();
         $estado_id = Estado::all()->random()->id;
 
         return [
             'profesion' => $this->faker->jobTitle(),
             'persona_id' => $persona_id,
-            'user_id' => $this->faker->randomElement($user_id)->id,
+            'user_id' => $this->faker->randomElement(array_unique($user_ids)),
             'estado_id' => $estado_id
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
 use App\Models\Clase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +54,41 @@ class DashboardController extends Controller
             ];
 
             return response()->json($administradore_data);
+        }
+    }
+
+    public function menuData()
+    {
+        $user_role = Auth::user()->role()->first()->rol;
+
+        if ($user_role == "docente") {
+
+            $docente_id = Auth::user()->docentes()->first()->id;
+
+            $clases = Clase::where('docente_id', $docente_id)->with('materia')->get();
+
+            $docente_data = [
+                'clases' => $clases,
+                'role' => $user_role
+            ];
+
+            return response()->json($docente_data);
+        } else if ($user_role == "alumno") {
+
+            $alumno_id = Auth::user()->alumnos()->first()->id;
+
+            $alumno = Alumno::find($alumno_id);
+
+            $clases = $alumno->clases()->with('materia')->get();
+
+            $alumno_data = [  
+                'role' => $user_role,
+                'clases' => $clases
+            ];
+
+            return response()->json($alumno_data);
+        } else if ($user_role == "administrador") {
+            return response()->json(null);
         }
     }
 }

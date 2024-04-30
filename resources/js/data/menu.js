@@ -16,6 +16,20 @@ import { reactive } from 'vue';
         role: ["alumno", "docente", "administrador"],
     },
     {
+        id: 5,
+        name: "Clases que Impartes",
+        href: "..",
+        submenu: [],
+        role: ["docente"],
+    },
+    {
+        id: 5,
+        name: "Mis Clases",
+        href: "..",
+        submenu: [],
+        role: ["alumno"],
+    },
+    {
         id: 2,
         name: "usuarios",
         href: "..",
@@ -28,7 +42,7 @@ import { reactive } from 'vue';
         role: ["administrador"],
     },
     {
-        id: 3,
+        id: 4,
         name: "académicos",
         href: "...",
         submenu: [

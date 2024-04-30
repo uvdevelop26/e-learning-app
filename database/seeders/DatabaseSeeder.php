@@ -24,18 +24,17 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(DepartamentoSeeder::class);
         $this->call(CiudadeSeeder::class);
-        Persona::factory(20)->create();
+        Persona::factory(50)->create();
         $this->call(RoleSeeder::class);
         $this->call(EstadoSeeder::class);
-        User::factory(50)->create();
-        Docente::factory(10)->create();
-        Administradore::factory(4)->create();
+        // User::factory(20)->create();
+        // Docente::factory(8)->create();
+        //  Administradore::factory(4)->create();
         Carrera::factory(4)->create();
-        Alumno::factory(20)->create();
+        // Alumno::factory(10)->create();
+        $this->call(PermissionSeeder::class);
         Semestre::factory(8)->create();
         Materia::factory(10)->create();
-        Clase::factory(5)->create();
-     //   Unidade::factory(4)->create();
-  
+        Clase::factory(3)->create();
     }
 }
