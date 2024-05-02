@@ -59,27 +59,6 @@ const deleteClase = (id) => {
 
 onMounted(fetchClases);
 
-/*onMounted(async () => {
-   try {
-        const data = await getUserRole();
-
-        if (data.role == "docente") {
-            showClases.value = props.clases.filter(
-                (item) => item.docente_id == data.id
-            );
-        } else if (data.role == "alumno") {
-            showClases.value = props.clases.filter((item) => {
-                if (item.alumnos.length !== 0) {
-                    return item.alumnos[0].id == data.id;
-                }
-            });
-        } else if (data.role == "administrador") {
-            showClases.value = props.clases;
-        }
-    } catch (error) {
-        console.error("Error fetching user role:", error);
-    } 
-});*/
 </script>
 
 <template>
@@ -87,16 +66,18 @@ onMounted(fetchClases);
         <Head title="Clases" />
 
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 flex items-center">
-                <span class="mr-3 text-primary">Clases Impartidas</span>
+            <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                    <Icon name="clases" class="w-3 h-3 fill-white" />
+                </div>           
+                Todas las Clases
             </h2>
         </template>
         <div class="py-12 px-4 bg-gray-100 lg:px-8 max-w-7xl">
             <!-- create button -->
             <div
                 class="flex items-center mb-6"
-                v-if="$page.props.userRole.role.rol === 'docente'"
-            >
+                v-if="$page.props.userRole.role.rol === 'docente'">
                 <Link class="btn-indigo" href="/clases/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Clase</span>
@@ -104,34 +85,26 @@ onMounted(fetchClases);
             </div>
             <div class="w-full overflow-x-auto">
                 <div
-                    class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6"
-                >
+                    class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6">
                     <!-- cards -->
                     <template v-for="clase in showClases" :key="clase.id">
                         <card>
                             <template #cardHeader>
                                 <Link
                                     class="inline-block pb-4 w-full group"
-                                    :href="route('clases.show', clase.id)"
-                                >
+                                    :href="route('clases.show', clase.id)">
                                     <span
-                                        class="block text-3xl text-white font-bold capitalize group-hover:underline"
-                                    >
+                                        class="block text-3xl text-white font-bold capitalize group-hover:underline">
                                         {{ clase.materia.nombre }}
                                     </span>
                                     <span
-                                        class="block text-md font-md text-white"
-                                    >
+                                        class="block text-md font-md text-white">
                                         {{ clase.codigo }}
                                     </span>
                                 </Link>
                                 <Dropdown
                                     class="self-start"
-                                    v-if="
-                                        $page.props.userRole.role.rol !==
-                                        'alumno'
-                                    "
-                                >
+                                    v-if="$page.props.userRole.role.rol !== 'alumno'">
                                     <template #trigger>
                                         <div
                                             class="pt-2 pr-1 pb-1 overflow-hidden flex items-center justify-end"

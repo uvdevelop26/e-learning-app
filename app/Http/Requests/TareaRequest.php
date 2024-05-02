@@ -21,7 +21,11 @@ class TareaRequest extends FormRequest
             'fecha_entrega' => 'required',
             'hora_entrega' => 'nullable',
             'puntos' => 'nullable|numeric',
-            'unidade_id' => 'nullable'
+            'unidade_id' => 'nullable',
+            'nombre' => 'nullable|array',
+            'url' => 'nullable|array',
+            'materiable_id' => 'nullable|numeric',
+            'materiable_type' => 'required'
         ];
     }
 }

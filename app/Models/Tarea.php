@@ -25,9 +25,19 @@ class Tarea extends Model
         return $this->belongsTo(Unidade::class);
     }
 
-    //relación de uno a muchos polimórfica con comentarios
+    public function entregas()
+    {
+        return $this->hasMany(Entrega::class);
+    }
+
+    //relación de uno a muchos polimórfica 
     public function comentarios()
     {
         return $this->morphMany(Comentario::class, 'comentable');
+    }
+
+    public function materiales()
+    {
+        return $this->morphMany(MaterialeTarea::class, 'materiable');
     }
 }

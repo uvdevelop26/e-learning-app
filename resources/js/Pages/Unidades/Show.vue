@@ -16,6 +16,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 const props = defineProps({
     anunciosYtareas: Array,
     errors: Object,
+    clase_id: Number,
 });
 
 const anunciosTareas = ref(props.anunciosYtareas);
@@ -24,14 +25,21 @@ const newAnunciosYtareas = ref(
 );
 const showAddTareas = ref(false);
 const editorRef = ref(null);
+const uploadedFiles = ref([]);
 
 const form = useForm({
+    /* datos de la tarea */
     titulo: "",
     instruccion: "",
     fecha_entrega: "",
     hora_entrega: "",
     puntos: "",
     unidade_id: props.anunciosYtareas.id,
+    /* datos de los materiales */
+    nombre: [],
+    url: [],
+    materiable_id: "",
+    materiable_type: "",
 });
 
 const options = {
@@ -56,17 +64,14 @@ const cancelOperation = () => {
         props.errors.titulo = "";
         props.errors.fecha_entrega = "";
         form.puntos = "";
-        (form.fecha_entrega = ""), (form.hora_entrega = "");
+        form.fecha_entrega = "";
+        form.hora_entrega = "";
+        uploadedFiles.value = [];
+        form.url = [];
 
         showAddTareas.value = false;
     }, 300);
 };
-
-/* const updateanuncios = () => {
-    setTimeout(() => {
-        updatedata();
-    }, 600);
-}; */
 
 function updatedata() {
     anunciosTareas.value = props.anunciosYtareas;
@@ -76,12 +81,50 @@ function updatedata() {
     sortArray();
 }
 
+const getFileData = (myFile) => {
+    const name = myFile.files[0].name;
+    const file = myFile.files[0];
+
+    if (name.endsWith(".pdf")) {
+        uploadedFiles.value.push({ extension: "pdf", data: file });
+        form.url.push(file);
+    } else if (
+        name.endsWith(".jpeg") ||
+        name.endsWith(".jpg") ||
+        name.endsWith(".png") ||
+        name.endsWith(".gif")
+    ) {
+        uploadedFiles.value.push({ extension: "picture", data: file });
+        form.url.push(file);
+    } else if (
+        name.endsWith(".doc") ||
+        name.endsWith(".docx") ||
+        name.endsWith(".xls") ||
+        name.endsWith(".xlsx") ||
+        name.endsWith(".ppt") ||
+        name.endsWith(".pptx")
+    ) {
+        uploadedFiles.value.push({ extension: "office", data: file });
+        form.url.push(file);
+    } else {
+        console.log(file);
+    }
+};
+
+const deleteFile = (index) => {
+    uploadedFiles.value.splice(index, 1);
+    form.url.splice(index, 1);
+};
+
 const submit = () => {
+    const materiableType = "App\\Models\\Tarea";
+
+    form.materiable_type = materiableType;
+
     form.post(route("tareas.store"), {
         preserveScroll: true,
-        /* forceFormData: true, */
+        forceFormData: true,
         onSuccess: () => {
-            /*  emit("newpost"); */
             cancelOperation();
             updatedata();
         },
@@ -130,8 +173,7 @@ onMounted(() => {
                 </span>
                 <button
                     @click="showAddTareas = !showAddTareas"
-                    class="text-sm text-primary italic hover:text-opacity-90 hover:underline"
-                >
+                    class="text-sm text-primary italic hover:text-opacity-90 hover:underline">
                     + Agregar Tarea
                 </button>
             </h2>
@@ -142,16 +184,13 @@ onMounted(() => {
                 <!-- options  -->
                 <div class="flex gap-6 items-center lg:flex-col lg:items-start">
                     <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group"
-                    >
+                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group">
                         <Link
                             class="absolute top-0 left-0 right-0 bottom-0 cursor-pointer"
                             target="_blank"
-                            tabindex="-1"
-                        >
+                            tabindex="-1">
                             <div
-                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2"
-                            >
+                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2">
                                 <span
                                     class="block pb-3 group-hover:text-primary"
                                 >
@@ -193,11 +232,12 @@ onMounted(() => {
                     />
                     <template
                         v-for="(data, index) in newAnunciosYtareas"
-                        :key="index"
-                    >
+                        :key="index">
                         <component
                             v-if="data.instruccion"
                             :data="data"
+                            :clase_id="props.clase_id"
+                            :unidade_id="props.anunciosYtareas.id"
                             :is="Tareas"
                             :errors="errors"
                             @updatetarea="updatetarea"
@@ -241,6 +281,7 @@ onMounted(() => {
                         v-model:content="form.instruccion"
                         :error="errors.instruccion"
                     />
+                    <!-- upload materiales -->
                     <div class="py-2 flex gap-3 items-center">
                         <label
                             for="upload"
@@ -262,6 +303,43 @@ onMounted(() => {
                             <icon name="link" class="w-4 h-4 fill-primary" />
                         </button>
                     </div>
+                    <!-- show materiales uploaded -->
+                    <ul class="flex py-2 flex-wrap gap-3">
+                        <li
+                            v-for="(files, index) in uploadedFiles"
+                            :key="index"
+                            class="flex items-center h-12 border rounded-xl overflow-hidden"
+                        >
+                            <div
+                                class="flex h-full px-3 justify-center items-center gap-2 border-r"
+                            >
+                                <span
+                                    class="text-xs lowercase font-bold text-primary"
+                                >
+                                    {{ files.data.name }}
+                                </span>
+                                <icon
+                                    :name="files.extension"
+                                    class="w-4 h-4 fill-primary"
+                                />
+                            </div>
+                            <div
+                                class="w-10 h-full flex items-center justify-center"
+                            >
+                                <button
+                                    class="h-full w-full flex justify-center items-center hover:bg-gray-100"
+                                    type="button"
+                                    @click="deleteFile(index)"
+                                >
+                                    <icon
+                                        name="close"
+                                        class="w-2 fill-primary"
+                                    />
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- other inputs -->
                     <div
                         class="py-2 flex flex-wrap gap-3 items-center justify-between lg:justify-start"
                     >

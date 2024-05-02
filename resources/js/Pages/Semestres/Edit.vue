@@ -73,8 +73,11 @@ const deleteSemestre = () => {
             <Head title="Semestres" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Carreras / {{ props.semestre.nombre }}
+                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                    <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="edit" class="w-3 h-3 fill-white" />
+                    </div>
+                    Académicos / Semestres /  {{ props.semestre.nombre }}
                 </h2>
             </template>
 
@@ -82,22 +85,19 @@ const deleteSemestre = () => {
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="update">
                         <div
-                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md">
                             <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Carrera"
                                 v-model="form.carrera_id"
                                 id="carrera_id"
-                                :error="errors.carrera_id"
-                            >
+                                :error="errors.carrera_id">
                                 <option :value="null" />
                                 <option
                                     v-for="carrera in carreras"
                                     :key="carrera.id"
                                     :value="carrera.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ carrera.nombre }}
                                 </option>
                             </select-input>
@@ -106,15 +106,13 @@ const deleteSemestre = () => {
                                 label="Nombre"
                                 v-model="form.nombre"
                                 id="nombre"
-                                :error="errors.nombre"
-                            >
+                                :error="errors.nombre">
                                 <option :value="null" />
                                 <option
                                     v-for="name in nameSemestres"
                                     :key="name"
                                     :value="name"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ name }}
                                 </option>
                             </select-input>
@@ -132,14 +130,12 @@ const deleteSemestre = () => {
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Descripción"
                                 v-model="form.descripcion"
-                                :error="errors.descripcion"
-                            >
+                                :error="errors.descripcion">
                             </text-area>
                         </div>
 
                         <div
-                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
-                        >
+                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
                             
                             <loading-button
                                 :loading="form.processing"
@@ -155,7 +151,3 @@ const deleteSemestre = () => {
     </div>
 </template>
 
-<!--        
-                       
-
-                    -->

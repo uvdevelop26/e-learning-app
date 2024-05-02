@@ -73,9 +73,11 @@ const deleteUser = () => {
             <Head title="Administradores" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Administrador /
-                    {{ props.administradore.persona[0].nombre }}
+                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                    <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="edit" class="w-3 h-3 fill-white" />
+                    </div>
+                    Usuarios / Administrador / {{ props.administradore.persona[0].nombre }} {{ props.administradore.persona[0].apellido }}
                 </h2>
             </template>
 
@@ -83,8 +85,7 @@ const deleteUser = () => {
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="update">
                         <div
-                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md">
                             <text-input
                                 type="text"
                                 class="pb-8 pr-6 w-full lg:w-1/2"

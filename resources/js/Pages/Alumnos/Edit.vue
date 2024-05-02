@@ -76,16 +76,18 @@ const deleteUser = () => {
             <Head title="Alumnos/edit" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Alumnos / {{ props.alumno.persona[0].nombre }}
+                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                    <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="edit" class="w-3 h-3 fill-white" />
+                    </div>
+                    Usuarios / Alumnos / {{ props.alumno.persona[0].nombre }} {{ props.alumno.persona[0].apellido }}
                 </h2>
             </template>
             <div class="py-12 px-4 lg:px-8 max-w-7xl">
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="update">
                         <div
-                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md">
                             <text-input
                                 type="text"
                                 class="pb-8 pr-6 w-full lg:w-1/2"
@@ -115,8 +117,7 @@ const deleteUser = () => {
                                 label="Sexo"
                                 v-model="form.sexo"
                                 id="sexo"
-                                :error="errors.sexo"
-                            >
+                                :error="errors.sexo">
                                 <option :value="null" />
                                 <option value="femenino">Femenino</option>
                                 <option value="masculino">Masculino</option>
@@ -140,15 +141,13 @@ const deleteUser = () => {
                                 label="Departamento"
                                 id="departamento"
                                 v-model="form.departamento_id"
-                                :error="errors.departamento_id"
-                            >
+                                :error="errors.departamento_id">
                                 <option :value="null" />
                                 <option
                                     v-for="departamento in departamentos"
                                     :key="departamento.id"
                                     :value="departamento.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ departamento.nombre }}
                                 </option>
                             </select-input>
@@ -157,22 +156,19 @@ const deleteUser = () => {
                                 label="Ciudad"
                                 v-model="form.ciudade_id"
                                 id="ciudade_id"
-                                :error="errors.ciudade_id"
-                            >
+                                :error="errors.ciudade_id">
                                 <option :value="null" />
                                 <option
                                     v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ ciudade.nombre }}
                                 </option>
                             </select-input>
                         </div>
                         <div
-                            class="bg-white flex flex-wrap mt-12 -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap mt-12 -mb-8 -mr-6 p-8 shadow rounded-md">
                             <text-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Email"
@@ -186,15 +182,13 @@ const deleteUser = () => {
                                 label="Carrera"
                                 v-model="form.carrera_id"
                                 id="carrera_id"
-                                :error="errors.carrera_id"
-                            >
+                                :error="errors.carrera_id">
                                 <option :value="null" />
                                 <option
                                     v-for="carrera in carreras"
                                     :key="carrera.id"
                                     :value="carrera.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ carrera.nombre }}
                                 </option>
                             </select-input>
@@ -220,15 +214,13 @@ const deleteUser = () => {
                                 label="Estado"
                                 v-model="form.estado_id"
                                 id="ciudade_id"
-                                :error="errors.estado_id"
-                            >
+                                :error="errors.estado_id">
                                 <option :value="null" />
                                 <option
                                     v-for="estado in estados"
                                     :key="estado.id"
                                     :value="estado.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ estado.estado }}
                                 </option>
                             </select-input>
@@ -237,28 +229,24 @@ const deleteUser = () => {
                                 label="Rol"
                                 v-model="form.role_id"
                                 id="role_id"
-                                disabled
-                            >
+                                disabled>
                                 <option :value="null" />
                                 <option
                                     v-for="rol in roles"
                                     :key="rol.id"
                                     :value="rol.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ rol.rol }}
                                 </option>
                             </select-input>
                         </div>
                         <div
-                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
-                        >
+                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
                             <button
                                 class="text-red-600 hover:underline"
                                 tabindex="-1"
                                 type="button"
-                                @click="deleteUser"
-                            >
+                                @click="deleteUser">
                                 Eliminar Usuario
                             </button>
                             <loading-button

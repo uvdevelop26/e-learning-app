@@ -1,4 +1,8 @@
-<script setup></script>
+<script setup>
+import { onMounted } from 'vue';
+
+
+</script>
 <template>
     <div
         class="bg-white h-72 w-full max-w-80 flex flex-col justify-between border rounded-xl shadow-md cursor-pointer hover:shadow-lg overflow-hidden">

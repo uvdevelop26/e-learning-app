@@ -76,8 +76,11 @@ const deleteUser = ()=>{
             <Head title="Docentes" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800">
-                    Usuarios / Docentes / {{ props.docente.persona[0].nombre }}
+                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                    <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="edit" class="w-3 h-3 fill-white" />
+                    </div>
+                    Usuarios / Docentes / {{ props.docente.persona[0].nombre }} {{ props.docente.persona[0].apellido }}
                 </h2>
             </template>
 

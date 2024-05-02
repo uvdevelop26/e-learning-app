@@ -70,7 +70,10 @@ const submit = () => {
             <Head title="Carreras" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800">
+                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                    <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="plus" class="w-2 h-2 fill-white" />
+                    </div> 
                     Académicos / Materias / Crear
                 </h2>
             </template>
@@ -79,22 +82,19 @@ const submit = () => {
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="submit">
                         <div
-                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md">
                             <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Carrera"
                                 id="carrera"
                                 v-model="form.carrera_id"
-                                :error="errors.carrera_id"
-                            >
+                                :error="errors.carrera_id">
                                 <option :value="null" />
                                 <option
                                     v-for="carrera in carreras"
                                     :key="carrera.id"
                                     :value="carrera.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ carrera.nombre }}
                                 </option>
                             </select-input>
@@ -103,8 +103,7 @@ const submit = () => {
                                 label="Semestre"
                                 id="semestre"
                                 v-model="form.semestre_id"
-                                :error="errors.semestre_id"
-                            >
+                                :error="errors.semestre_id">
                                 <option :value="null" />
                                 <option
                                     v-for="semestre in filteredSemestres"

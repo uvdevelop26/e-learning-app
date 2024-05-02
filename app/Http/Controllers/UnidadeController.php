@@ -39,22 +39,20 @@ class UnidadeController extends Controller
     }
 
 
-    public function show($id)
+    public function show($clase, $unidade)
     {
-        $unidade = Unidade::findOrFail($id);
+      
+        $unidade = Unidade::findOrFail($unidade);
 
         $anunciosYtareas = Unidade::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales', 'tareas'])
             ->findOrFail($unidade->id);
 
         return Inertia::render('Unidades/Show', [
-            'anunciosYtareas' => $anunciosYtareas
+            'anunciosYtareas' => $anunciosYtareas,
+            'clase_id' => $clase
         ]);
     }
 
-    /*   public function edit(Unidade $unidade)
-    {
-        return $unidade;
-    } */
 
     public function update(Request $request, $id)
     {

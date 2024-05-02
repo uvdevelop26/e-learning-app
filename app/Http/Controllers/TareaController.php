@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TareaRequest;
+use App\Models\MaterialeTarea;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class TareaController extends Controller
@@ -24,6 +26,8 @@ class TareaController extends Controller
 
     public function store(TareaRequest $request)
     {
+        $materiales = $request->url;
+
         $instruccionArray = $request->instruccion;
 
         $textoInstruccion = '';
@@ -47,38 +51,43 @@ class TareaController extends Controller
             'puntos' => $request->puntos,
             'unidade_id' => $request->unidade_id
         ]);
+
+        if(!empty($materiales)){
+            $path = "";
+
+            foreach ($materiales as $key => $materiale) {
+                $extension = $materiale->getClientOriginalExtension();
+                $filename = time() . $key . '.' . $extension;
+                $path = $materiale->storeAs('public/tareas', $filename);
+
+                MaterialeTarea::create([
+                    'nombre' => $materiale->getClientOriginalName(),
+                    'url' => $path,
+                    'materiable_id' => $tarea->id,
+                    'materiable_type' => $request->materiable_type
+                ]);
+            }
+        }
     }
 
 
-    public function show($id)
+    public function show($clase, $unidad, $tarea)
     {
 
-        $tarea = Tarea::with(['comentarios.user.alumnos.persona'])
-            ->findOrFail($id);
+        $tareaYmateriales = Tarea::with(['comentarios.user.alumnos.persona', 'materiales', 'entregas.user', 'entregas.materiales'])
+            ->findOrFail($tarea);
+        
 
         return Inertia::render('Tareas/Show', [
-            'tarea' => $tarea
+            'tareaYmateriales' => $tareaYmateriales
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(TareaRequest $request, $id)
     {
         $tarea = Tarea::findOrFail($id);
@@ -106,6 +115,76 @@ class TareaController extends Controller
             'puntos' => $request->puntos,
             'unidade_id' => $request->unidade_id
         ]);
+
+         /* the user has deleted all the all files and has'nt added new ones */
+         if (empty($request->url) && empty($request->nombre)) {
+            $materiales = $tarea->materiales()->get();
+
+            foreach ($materiales as $key => $materiale) {
+                Storage::delete($materiale->url);
+            }
+
+            $tarea->materiales()->delete();
+
+        }  elseif (empty($request->url) && !empty($request->nombre)) {
+
+            /* obtener y eliminar  los materiales eliminados */
+
+            $oldMateriales = $request->nombre;
+            $currentMateriales = $tarea->materiales()->get();
+
+            $newMaterialesIds = collect($oldMateriales)->pluck('id')->toArray();
+
+            $deletedElements = [];
+            foreach ($currentMateriales as $material) {
+                if (!in_array($material->id, $newMaterialesIds)) {
+                    $deletedElements[] = $material;
+                }
+            }
+
+            if (!empty($deletedElements)) {
+                foreach ($deletedElements as $key => $deleted) {
+                    Storage::delete($deleted->url);
+                    $deleted->delete();
+                }
+            }
+            /* the user has added new files an  could has deleted others */
+        }elseif (!empty($request->url) && !empty($request->nombre) || !empty($request->url) && empty($request->nombre)) {
+
+            $oldMateriales = $request->nombre;
+            $newMateriales = $request->url;
+            $currentMateriales = $tarea->materiales()->get();
+            $path = "";
+
+            $newMaterialesIds = collect($oldMateriales)->pluck('id')->toArray();
+
+            $deletedElements = [];
+            foreach ($currentMateriales as $material) {
+                if (!in_array($material->id, $newMaterialesIds)) {
+                    $deletedElements[] = $material;
+                }
+            }
+
+            if (!empty($deletedElements)) {
+                foreach ($deletedElements as $key => $deleted) {
+                    Storage::delete($deleted->url);
+                    $deleted->delete();
+                }
+            }
+
+            foreach ($newMateriales as $key => $materiale) {
+                $extension = $materiale->getClientOriginalExtension();
+                $filename = time() . $key . '.' . $extension;
+                $path = $materiale->storeAs('public/materiales', $filename);
+
+                MaterialeTarea::create([
+                    'nombre' => $materiale->getClientOriginalName(),
+                    'url' => $path,
+                    'materiable_id' => $request->materiable_id,
+                    'materiable_type' => $request->materiable_type
+                ]);
+            }
+        }
     }
 
     /**

@@ -25,7 +25,7 @@ const props = defineProps({
     <Link
         v-else
         :href="href"
-        class="flex py-3 px-2 gap-2 text-primary font-bold  items-center border-transparen leading-5 transition duration-150 ease-in-out"
+        class="flex py-3 px-2 gap-2 text-primary font-bold  items-center border-transparen leading-5 transition duration-150 ease-in-out hover:bg-indigo-100"
     >
         <slot />
     </Link>

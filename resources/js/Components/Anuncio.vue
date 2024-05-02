@@ -178,18 +178,6 @@ const updateanuncios = () => {
 //onMounted function
 onMounted(() => {
     sortMateriales();
-
-    /* const descripcion = dataDescripcion.value;
-    const headingTwo = descripcion.querySelectorAll("h2");
-    const headingThree = descripcion.querySelectorAll("h3");
-
-    headingTwo.forEach((item) => {
-        item.classList.add("text-lg");
-    });
-
-    headingThree.forEach((item) => {
-        item.classList.add("text-base");
-    }); */
 });
 </script>
 <template>

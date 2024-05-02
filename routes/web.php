@@ -8,6 +8,7 @@ use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\EntregaController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\MaterialeController;
 use App\Http\Controllers\SemestreController;
@@ -43,7 +44,7 @@ Route::controller(DashboardController::class)
         Route::get('/dashboard', 'index')->name('dashboard');
         Route::get('/dashboard/users', 'users')->name('dashboard.users');
         Route::get('/dashboard/menuData', 'menuData')->name('dashboard.menuData');
-});
+    });
 
 //docentes
 Route::controller(DocenteController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -118,6 +119,17 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
     Route::get("clases/{clase}/personas", 'showPersonas')->name("clases.showPersonas");
     Route::post('clases/asign-alumnos', 'asignAlumnos')->name('clases.asignAlumnos');
     Route::delete('clases/revoke-alumnos/{clase}', 'revokeAlumno')->name('clases.revokeAlumno');
+
+
+
+    Route::prefix('clases/{clase}/unidades')->controller(UnidadeController::class)->group(function () {
+        Route::get('{unidad}', 'show')->name('clases.unidades.show');
+        // Aquí puedes definir más rutas para las unidades si lo necesitas
+    });
+
+    Route::prefix('clases/{clase}/unidades/{unidad}/tareas')->controller(TareaController::class)->group(function () {
+        Route::get('{tarea}', 'show')->name('clases.unidades.tareas.show');
+    });
 });
 
 
@@ -134,7 +146,7 @@ Route::controller(UnidadeController::class)->middleware(['auth:sanctum', 'verifi
     Route::get('unidades/{unidad}/edit', 'edit')->name('unidades.edit');
     Route::put('unidades/{unidad}', 'update')->name('unidades.update');
     Route::delete('unidades/{unidad}', 'destroy')->name('unidades.destroy');
-    Route::get("unidades/{unidad}", 'show')->name("unidades.show");
+    //Route::get("unidades/{unidad}", 'show')->name("unidades.show");
     /*  Route::get("unidades/{unidad}/tareas", "tareas")->name("unidades.tareas"); */
 });
 
@@ -155,5 +167,9 @@ Route::controller(TareaController::class)->middleware(['auth:sanctum', 'verified
     Route::post('tareas', 'store')->name('tareas.store');
     Route::put('tareas/{tarea}', 'update')->name('tareas.update');
     Route::delete('tareas/{tarea}', 'destroy')->name('tareas.destroy');
-    Route::get("tareas/{tarea}", 'show')->name("tareas.show");
+});
+
+//entregas
+Route::controller(EntregaController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('entregas', 'store')->name('entregas.store');
 });

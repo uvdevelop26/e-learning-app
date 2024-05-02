@@ -77,7 +77,10 @@ const deleteMateria = () => {
             <Head title="Carreras" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800">
+                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                    <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="edit" class="w-3 h-3 fill-white" />
+                    </div>
                     Académicos / Materias / {{ materia.nombre }}
                 </h2>
             </template>
@@ -86,8 +89,7 @@ const deleteMateria = () => {
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="update">
                         <div
-                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md">
                             <select-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Carrera"

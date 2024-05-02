@@ -106,7 +106,7 @@ const deleteAlumno = (id) => {
         <template #header>
             <h2
                 class="font-semibold flex justify-between items-center">
-                <span class="text-xl text-primary">Personas / clase {{ clase.codigo }}</span>
+                <span class="text-xl text-primary capitalize">clase {{ clase.codigo }} / Personas</span> 
             </h2>
         </template>
         <div class="py-12 px-4 lg:px-8 max-w-7xl">

@@ -64,7 +64,10 @@ const submit = () => {
             <Head title="Docentes/create" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800">
+                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                    <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="user_plus" class="w-3 h-3 fill-white" />
+                    </div> 
                     Usuarios / Administradores / Crear
                 </h2>
             </template>

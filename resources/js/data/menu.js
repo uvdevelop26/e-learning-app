@@ -12,7 +12,7 @@ import { reactive } from 'vue';
         id: 3,
         name: "Todas las Clases",
         href: "/clases",
-        icon: "homework",
+        icon: "clases",
         role: ["alumno", "docente", "administrador"],
     },
     {

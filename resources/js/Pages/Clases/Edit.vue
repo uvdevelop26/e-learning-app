@@ -95,8 +95,11 @@ const update = () => {
             <Head title="Clases/create" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-primary">
-                    Usuarios / Docentes / Editar
+                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                    <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="edit" class="w-3 h-3 fill-white" />
+                    </div>
+                    Clases / Editar
                 </h2>
             </template>
             <div class="py-12 px-4 lg:px-8 max-w-7xl">

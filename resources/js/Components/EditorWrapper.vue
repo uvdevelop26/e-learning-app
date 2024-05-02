@@ -151,6 +151,7 @@ const submit = () => {
                             v-model:content="form.descripcion"
                             contentType="html"
                         />
+                        <!-- upload materiales -->
                         <div class="py-2 border-t-3 flex gap-3 items-center">
                             <label
                                 for="upload"
@@ -177,6 +178,7 @@ const submit = () => {
                                 />
                             </button>
                         </div>
+                        <!-- show materiales -->
                         <ul class="flex py-2 flex-wrap gap-3">
                             <li
                                 v-for="(files, index) in uploadedFiles"

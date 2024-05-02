@@ -35,7 +35,10 @@ watchEffect(() => {
         <Head title="Carreras" />
 
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800">
+            <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                    <Icon name="homework" class="w-2 h-2 fill-white" />
+                </div>
                 Académicos / Materias
             </h2>
         </template>

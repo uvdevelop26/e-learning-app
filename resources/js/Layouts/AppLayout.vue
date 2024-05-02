@@ -111,8 +111,7 @@ const logout = () => {
                         </Link>
                         <button
                             class="cursor-pointer lg:hidden"
-                            @click="isMobile = !isMobile"
-                        >
+                            @click="isMobile = !isMobile">
                             <Icon name="hamburger" />
                         </button>
                     </div>
@@ -123,64 +122,40 @@ const logout = () => {
                             <ul class="pt-2">
                                 <template
                                     v-for="(links, index) in menu"
-                                    :key="links.id"
-                                >
+                                    :key="links.id">
                                     <li
                                         class="capitalize"
-                                        v-if="
-                                            getUserRole(
-                                                $page.props.userRole.role.rol,
-                                                index
-                                            )
-                                        "
-                                    >
+                                        v-if="getUserRole($page.props.userRole.role.rol, index)">
                                         <NavLink
                                             :href="links.href"
                                             v-if="!links.submenu"
-                                            :class="{
-                                                'bg-secondary text-white':
-                                                    $page.url == links.href,
-                                            }"
-                                        >
-                                            {{ links.name }}
+                                            :class="{'bg-secondary text-white hover:bg-secondary': $page.url == links.href,}">
+                                            <Icon :name="links.icon" class="w-4 h-4 fill-primary" :class="{'fill-white': $page.url == links.href}" />
+                                            {{ links.name }}              
                                         </NavLink>
                                         <NavLink
                                             as="button"
                                             v-else
                                             class="flex gap-2 capitalize w-full"
-                                            @click="handleSubmenu(index)"
-                                        >
-                                            <Icon
-                                                class="h-2 w-2 fill-primary"
-                                                :name="
-                                                    toggle_submenu
-                                                        ? ''
-                                                        : 'cheveron-down'
-                                                "
-                                            />
+                                            @click="handleSubmenu(index)">
+                                            <span class="flex w-4 h-4 items-center justify-center rounded-full bg-primary">
+                                                <Icon
+                                                    class="h-2 w-2 fill-white"
+                                                    :name="links.toggle_submenu ? 'cheveron-up' : 'cheveron-down'"
+                                                />
+                                             </span>
                                             {{ links.name }}
                                         </NavLink>
                                         <transition name="submenu-slice">
-                                            <ul
-                                                v-if="
-                                                    links.submenu &&
-                                                    links.toggle_submenu
-                                                "
-                                                class="pl-3 bg-white"
-                                            >
+                                            <ul v-if="links.submenu && links.toggle_submenu"
+                                                class="pl-3 bg-white">
                                                 <li
                                                     v-for="submenu in links.submenu"
-                                                    class="capitalize border-l-2"
-                                                >
+                                                    class="capitalize border-l-2">
                                                     <NavLink
                                                         :href="submenu.href"
-                                                        :class="{
-                                                            'bg-secondary text-white':
-                                                                $page.url.startsWith(
-                                                                    submenu.href
-                                                                ),
-                                                        }"
-                                                    >
+                                                        class="text-sm"
+                                                        :class="{'bg-secondary text-white hover:bg-secondary': $page.url.startsWith(submenu.href),}">
                                                         {{ submenu.name }}
                                                     </NavLink>
                                                 </li>
@@ -196,31 +171,19 @@ const logout = () => {
                                 <Dropdown
                                     :width="'40'"
                                     class="w-fit"
-                                    :align="'right-right'"
-                                >
+                                    :align="'right-right'">
                                     <template #trigger>
                                         <div class="pt-2 w-fit">
                                             <button
-                                                class="flex items-center justify-evenly rounded-2xl bg-primary w-56 h-12 group hover:bg-white hover:border-primary hover:border lg:w-52"
-                                            >
+                                                class="flex items-center justify-evenly rounded-2xl bg-primary w-56 h-12 group hover:bg-white hover:border-primary hover:border lg:w-52">
                                                 <img
                                                     class="h-9 w-9 rounded-full object-cover lg:h-8 lg:w-8"
-                                                    :src="
-                                                        $page.props.auth.user
-                                                            .profile_photo_url
-                                                    "
-                                                    :alt="
-                                                        $page.props.auth.user
-                                                            .email
-                                                    "
+                                                    :src="$page.props.auth.user.profile_photo_url"
+                                                    :alt="$page.props.auth.user.email"
                                                 />
                                                 <span
-                                                    class="text-white font-bold text-sm group-hover:text-primary lg:text-xs"
-                                                >
-                                                    {{
-                                                        $page.props.auth.user
-                                                            .email
-                                                    }}
+                                                    class="text-white font-bold text-sm group-hover:text-primary lg:text-xs">
+                                                    {{ $page.props.auth.user.email }}
                                                 </span>
                                                 <icon
                                                     name="cheveron-right"
@@ -233,22 +196,17 @@ const logout = () => {
                                         <div class="pl-3 py-2">
                                             <form
                                                 method="POST"
-                                                @submit.prevent="logout"
-                                            >
+                                                @submit.prevent="logout">
                                                 <button
                                                     type="submit"
-                                                    class="inline-block text-left py-2 w-full font-bold text-black hover:text-primary hover:underline"
-                                                >
+                                                    class="inline-block text-left py-2 w-full font-bold text-black hover:text-primary hover:underline">
                                                     Cerrar Sesión
                                                 </button>
                                             </form>
                                             <div>
                                                 <Link
-                                                    :href="
-                                                        route('profile.show')
-                                                    "
-                                                    class="inline-block py-2 w-full font-bold text-black hover:text-primary hover:underline"
-                                                >
+                                                    :href="route('profile.show')"
+                                                    class="inline-block py-2 w-full font-bold text-black hover:text-primary hover:underline">
                                                     Perfil
                                                 </Link>
                                             </div>
@@ -262,13 +220,11 @@ const logout = () => {
                 <!-- Page  -->
                 <div
                     class="bg-gray-100 lg:pt-10 lg:flex-1 lg:h-screen lg:overflow-y-auto"
-                    scroll-region
-                >
+                    scroll-region>
                     <!-- Page Header -->
                     <header
                         v-if="$slots.header"
-                        class="bg-white w-full shadow lg:fixed lg:top-0 z-50"
-                    >
+                        class="bg-white w-full shadow lg:fixed lg:top-0 z-50">
                         <div class="max-w-7xl py-5 px-12">
                             <slot name="header" />
                         </div>
