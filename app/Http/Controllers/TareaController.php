@@ -52,7 +52,7 @@ class TareaController extends Controller
             'unidade_id' => $request->unidade_id
         ]);
 
-        if(!empty($materiales)){
+        if (!empty($materiales)) {
             $path = "";
 
             foreach ($materiales as $key => $materiale) {
@@ -74,9 +74,13 @@ class TareaController extends Controller
     public function show($clase, $unidad, $tarea)
     {
 
-        $tareaYmateriales = Tarea::with(['comentarios.user.alumnos.persona', 'materiales', 'entregas.user', 'entregas.materiales'])
+        $tareaYmateriales = Tarea::with([
+            'comentarios.user.alumnos.persona',
+            'materiales', 'entregas.user',
+            'entregas.materiales'
+        ])
             ->findOrFail($tarea);
-        
+
 
         return Inertia::render('Tareas/Show', [
             'tareaYmateriales' => $tareaYmateriales
@@ -116,8 +120,8 @@ class TareaController extends Controller
             'unidade_id' => $request->unidade_id
         ]);
 
-         /* the user has deleted all the all files and has'nt added new ones */
-         if (empty($request->url) && empty($request->nombre)) {
+        /* the user has deleted all the all files and has'nt added new ones */
+        if (empty($request->url) && empty($request->nombre)) {
             $materiales = $tarea->materiales()->get();
 
             foreach ($materiales as $key => $materiale) {
@@ -125,8 +129,7 @@ class TareaController extends Controller
             }
 
             $tarea->materiales()->delete();
-
-        }  elseif (empty($request->url) && !empty($request->nombre)) {
+        } elseif (empty($request->url) && !empty($request->nombre)) {
 
             /* obtener y eliminar  los materiales eliminados */
 
@@ -149,7 +152,7 @@ class TareaController extends Controller
                 }
             }
             /* the user has added new files an  could has deleted others */
-        }elseif (!empty($request->url) && !empty($request->nombre) || !empty($request->url) && empty($request->nombre)) {
+        } elseif (!empty($request->url) && !empty($request->nombre) || !empty($request->url) && empty($request->nombre)) {
 
             $oldMateriales = $request->nombre;
             $newMateriales = $request->url;

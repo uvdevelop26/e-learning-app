@@ -172,4 +172,5 @@ Route::controller(TareaController::class)->middleware(['auth:sanctum', 'verified
 //entregas
 Route::controller(EntregaController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('entregas', 'store')->name('entregas.store');
+    Route::put('entregas/{entrega}', 'update')->name('entregas.update');
 });

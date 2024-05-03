@@ -107,12 +107,10 @@ onMounted(fetchClases);
                                     v-if="$page.props.userRole.role.rol !== 'alumno'">
                                     <template #trigger>
                                         <div
-                                            class="pt-2 pr-1 pb-1 overflow-hidden flex items-center justify-end"
-                                        >
+                                            class="pt-2 pr-1 pb-1 overflow-hidden flex items-center justify-end">
                                             <button
                                                 :open="open"
-                                                class="flex h-6 w-6 pt-1 rounded-full justify-center overflow-hidden z-10 group hover:ring-1 hover:ring-white focus:ring-1 focus:ring-white"
-                                            >
+                                                class="flex h-6 w-6 pt-1 rounded-full justify-center overflow-hidden z-10 group hover:ring-1 hover:ring-white focus:ring-1 focus:ring-white">
                                                 <icon
                                                     name="trigger"
                                                     class="w-[0.2rem] h-[0.2rem] fill-white"
@@ -124,24 +122,14 @@ onMounted(fetchClases);
                                         <div class="p-3">
                                             <Link
                                                 class="inline-block py-2 font-bold w-full h-full text-primary hover:underline"
-                                                :href="
-                                                    route(
-                                                        'clases.edit',
-                                                        clase.id
-                                                    )
-                                                "
-                                                v-if="
-                                                    $page.props.userRole.role
-                                                        .rol === 'docente'
-                                                "
-                                            >
+                                                :href="route('clases.edit',clase.id)"
+                                                v-if="$page.props.userRole.role.rol === 'docente'">
                                                 Editar
                                             </Link>
                                             <button
                                                 class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
                                                 type="button"
-                                                @click="deleteClase(clase.id)"
-                                            >
+                                                @click="deleteClase(clase.id)">
                                                 Eliminar
                                             </button>
                                         </div>
@@ -150,11 +138,9 @@ onMounted(fetchClases);
                             </template>
                             <template #cardFooter>
                                 <div
-                                    class="h-full flex px-4 items-center justify-between"
-                                >
+                                    class="h-full flex px-4 items-center justify-between">
                                     <span
-                                        class="text-xs font-bold text-primary italic capitalize"
-                                    >
+                                        class="text-xs font-bold text-primary italic capitalize">
                                         {{ clase.estado.estado }}
                                     </span>
                                     <span class="text-xs text-gray-400 italic">

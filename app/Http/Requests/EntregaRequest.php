@@ -20,7 +20,7 @@ class EntregaRequest extends FormRequest
             'puntaje' => 'nullable|numeric',
             'tarea_id' => 'required|numeric',
             'user_id' => 'required|numeric',
-            'url' => 'required|array',
+            'url' => 'nullable|array',
             'nombre' => 'nullable|array',
             'materiable_id' => 'nullable|numeric',
             'materiable_type' => 'required' 
