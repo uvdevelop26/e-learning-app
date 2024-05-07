@@ -7,6 +7,7 @@ use App\Http\Controllers\CarreraController;
 use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DevolucioneController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\EntregaController;
 use App\Http\Controllers\MateriaController;
@@ -124,11 +125,14 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
 
     Route::prefix('clases/{clase}/unidades')->controller(UnidadeController::class)->group(function () {
         Route::get('{unidad}', 'show')->name('clases.unidades.show');
-        // Aquí puedes definir más rutas para las unidades si lo necesitas
     });
 
     Route::prefix('clases/{clase}/unidades/{unidad}/tareas')->controller(TareaController::class)->group(function () {
         Route::get('{tarea}', 'show')->name('clases.unidades.tareas.show');
+    });
+
+    Route::prefix('clases/{clase}/unidades/{unidad}/tareas/{tarea}')->controller(EntregaController::class)->group(function () {
+        Route::get('entregas', 'show')->name('clases.unidades.tareas.entregas.show');
     });
 });
 
@@ -173,4 +177,10 @@ Route::controller(TareaController::class)->middleware(['auth:sanctum', 'verified
 Route::controller(EntregaController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('entregas', 'store')->name('entregas.store');
     Route::put('entregas/{entrega}', 'update')->name('entregas.update');
+});
+
+//devoluciones
+Route::controller(DevolucioneController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('devoluciones', 'store')->name('devoluciones.store');
+    Route::delete('devoluciones/{devolucione}', 'destroy')->name('devoluciones.destroy');
 });

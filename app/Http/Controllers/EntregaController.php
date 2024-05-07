@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EntregaRequest;
+use App\Models\Clase;
 use App\Models\Entrega;
 use App\Models\MaterialeTarea;
+use App\Models\Tarea;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EntregaController extends Controller
 {
 
     public function index()
     {
-        //
+        // return Inertia::render('Entregas/')
     }
 
 
@@ -54,9 +57,16 @@ class EntregaController extends Controller
     }
 
 
-    public function show($id)
+    public function show($clase, $unidad, $tarea)
     {
-        //
+        $tareaAsignada = Tarea::find($tarea);
+        $totalAlumnos = Clase::find($clase)->alumnos()->count();
+        $entregas = Entrega::where('tarea_id', $tarea)->with('user.alumnos.persona', 'materiales', 'devoluciones')->get();
+        return Inertia::render('Entregas/Show', [
+            'entregas' => $entregas,
+            'tareaAsignada' => $tareaAsignada,
+            'totalAlumnos' => $totalAlumnos
+        ]);
     }
 
 

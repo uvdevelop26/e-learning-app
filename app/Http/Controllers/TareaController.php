@@ -83,7 +83,9 @@ class TareaController extends Controller
 
 
         return Inertia::render('Tareas/Show', [
-            'tareaYmateriales' => $tareaYmateriales
+            'tareaYmateriales' => $tareaYmateriales,
+            'clase_id' => $clase,
+            'unidade_id' => $unidad
         ]);
     }
 

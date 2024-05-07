@@ -78,11 +78,6 @@ const deleteTarea = () => {
                 </template>
                 <template #content>
                     <div class="p-3">
-                        <!-- <button
-                            class="inline-block text-left py-2 font-bold w-full h-full text-primary hover:underline"
-                            @click="setOpenModal()">
-                            Editar
-                        </button> -->
                         <button
                             class="inline-block py-2 text-left font-bold w-full h-full text-primary hover:underline"
                             type="button"

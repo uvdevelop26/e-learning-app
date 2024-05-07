@@ -192,8 +192,7 @@ onMounted(() => {
                             <div
                                 class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2">
                                 <span
-                                    class="block pb-3 group-hover:text-primary"
-                                >
+                                    class="block pb-3 group-hover:text-primary">
                                     Tareas
                                 </span>
                                 <icon
@@ -203,25 +202,6 @@ onMounted(() => {
                             </div>
                         </Link>
                     </div>
-                    <!-- opion persona page -->
-                    <!--  <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group hover:shadow-md">
-                        <Link
-                            class="absolute top-0 left-0 right-0 bottom-0"
-                            tabindex="-1">
-                            <div
-                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2">
-                                <span
-                                    class="block pb-3 group-hover:text-primary">
-                                    Personas
-                                </span>
-                                <icon
-                                    name="user"
-                                    class="w-6 h-6 mx-auto fill-black group-hover:fill-primary"
-                                />
-                            </div>
-                        </Link>
-                    </div> -->
                 </div>
                 <div class="w-full flex flex-col gap-6">
                     <editor-wrapper
@@ -285,8 +265,7 @@ onMounted(() => {
                     <div class="py-2 flex gap-3 items-center">
                         <label
                             for="upload"
-                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                        >
+                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
                             <icon name="upload" class="w-4 h-4 fill-primary" />
                             <input
                                 type="file"
@@ -298,8 +277,7 @@ onMounted(() => {
                         </label>
                         <button
                             type="button"
-                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                        >
+                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
                             <icon name="link" class="w-4 h-4 fill-primary" />
                         </button>
                     </div>
@@ -308,14 +286,11 @@ onMounted(() => {
                         <li
                             v-for="(files, index) in uploadedFiles"
                             :key="index"
-                            class="flex items-center h-12 border rounded-xl overflow-hidden"
-                        >
+                            class="flex items-center h-12 border rounded-xl overflow-hidden">
                             <div
-                                class="flex h-full px-3 justify-center items-center gap-2 border-r"
-                            >
+                                class="flex h-full px-3 justify-center items-center gap-2 border-r">
                                 <span
-                                    class="text-xs lowercase font-bold text-primary"
-                                >
+                                    class="text-xs lowercase font-bold text-primary">
                                     {{ files.data.name }}
                                 </span>
                                 <icon
@@ -324,13 +299,11 @@ onMounted(() => {
                                 />
                             </div>
                             <div
-                                class="w-10 h-full flex items-center justify-center"
-                            >
+                                class="w-10 h-full flex items-center justify-center">
                                 <button
                                     class="h-full w-full flex justify-center items-center hover:bg-gray-100"
                                     type="button"
-                                    @click="deleteFile(index)"
-                                >
+                                    @click="deleteFile(index)">
                                     <icon
                                         name="close"
                                         class="w-2 fill-primary"
@@ -341,8 +314,7 @@ onMounted(() => {
                     </ul>
                     <!-- other inputs -->
                     <div
-                        class="py-2 flex flex-wrap gap-3 items-center justify-between lg:justify-start"
-                    >
+                        class="py-2 flex flex-wrap gap-3 items-center justify-between lg:justify-start">
                         <text-input
                             class="pb-3 w-full lg:w-72"
                             id="puntaje"
@@ -373,8 +345,7 @@ onMounted(() => {
                         <button
                             class="inline-block px-8 py-2 text-red-500 hover:underline"
                             @click="cancelOperation()"
-                            type="button"
-                        >
+                            type="button">
                             Cancelar
                         </button>
                         <button
@@ -386,8 +357,7 @@ onMounted(() => {
                                     !form.processing,
                             }"
                             :disabled="form.processing"
-                            type="submit"
-                        >
+                            type="submit">
                             Agregar Tarea
                         </button>
                     </div>

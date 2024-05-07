@@ -192,7 +192,7 @@ const update = () => {
 onMounted(filterEntregas);
 </script>
 <template>
-    <div class="w-full p-4 rounded-xl border shadow bg-white group lg:w-2/5">
+    <div class="w-full p-4 rounded-xl border shadow bg-white group">
         <!-- text info and options -->
         <div class="flex items-center justify-between gap-4">
             <div class="w-full">

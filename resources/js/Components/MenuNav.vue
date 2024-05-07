@@ -49,6 +49,7 @@ defineProps({
    opacity: 0;
 }
 
+
 @media(min-width: 1024px) {
 
     .slice-enter-active,

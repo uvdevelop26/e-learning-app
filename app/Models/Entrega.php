@@ -32,4 +32,9 @@ class Entrega extends Model
     {
         return $this->morphMany(MaterialeTarea::class, 'materiable');
     }
+
+    public function devoluciones()
+    {
+        return $this->hasMany(Devolucione::class);
+    }
 }

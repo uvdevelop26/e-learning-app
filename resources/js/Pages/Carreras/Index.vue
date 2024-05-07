@@ -49,7 +49,7 @@ watchEffect(() => {
                 class="mr-4 w-full max-w-md"
                 @reset="reset">
                 
-            </search-filter> 
+                </search-filter> 
                 <Link class="btn-indigo" href="/carreras/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Carrera</span>
@@ -57,8 +57,7 @@ watchEffect(() => {
             </div>
             <div class="w-full bg-white overflow-x-auto rounded-md shadow">
                 <table
-                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md"
-                >
+                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md">
                     <thead>
                         <tr class="text-left font-bold">
                             <th class="pb-4 pt-6 px-6">Código</th>
@@ -71,21 +70,18 @@ watchEffect(() => {
                         <tr
                             v-for="carrera in carreras"
                             :key="carrera.id"
-                            class="hover:bg-gray-100 focus-within:bg-gray-100"
-                        >
-                        <td class="border-t">
+                            class="hover:bg-gray-100 focus-within:bg-gray-100">
+                            <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="route('carreras.edit', carrera.id)"
-                                >
+                                    :href="route('carreras.edit', carrera.id)">
                                     {{ carrera.codigo }}
                                 </Link>
                             </td>
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="route('carreras.edit', carrera.id)"
-                                >
+                                    :href="route('carreras.edit', carrera.id)">
                                     {{ carrera.nombre }}
                                 </Link>
                             </td>
@@ -93,8 +89,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('carreras.edit', carrera.id)"
-                                >
+                                    :href="route('carreras.edit', carrera.id)">
                                     <div>{{ carrera.duracion }}</div>
                                 </Link>
                             </td>
@@ -103,8 +98,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('carreras.edit', carrera.id)"
-                                >
+                                    :href="route('carreras.edit', carrera.id)">
                                     <div>{{ carrera.descripcion }}</div>
                                 </Link>
                             </td>
@@ -112,8 +106,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-4"
                                     tabindex="-1"
-                                    :href="route('carreras.edit', carrera.id)"
-                                >
+                                    :href="route('carreras.edit', carrera.id)">
                                     <icon
                                         name="cheveron-right"
                                         class="block w-6 h-6 fill-gray-400"
