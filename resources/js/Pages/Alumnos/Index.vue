@@ -7,6 +7,7 @@ import SearchFilter from "../../Components/SearchFilter.vue";
 import { reactive, watchEffect } from "vue";
 import { pickBy } from "lodash";
 import { router } from "@inertiajs/vue3";
+import gsap from "gsap";
 
 const props = defineProps({
     alumnos: Array,
@@ -27,6 +28,24 @@ watchEffect(() => {
         route("alumnos.index", Object.keys(query).length ? query : {})
     );
 });
+
+/* animation */
+const beforeEnter = (el) => {
+    el.style.transform = "translateX(-60px)";
+    el.style.opacity = 0;
+};
+
+const enter = (el, done) => {
+    gsap.to(el, {
+        duration: 0.4,
+        x: 0,
+        opacity: 1,
+        onComplete: done,
+        delay: el.dataset.index * 0.2
+    });
+};
+
+
 </script>
 
 <template>
@@ -67,11 +86,12 @@ watchEffect(() => {
                             <th class="pb-4 pt-6 px-6">Estado</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <transition-group tag="tbody" appear @before-enter="beforeEnter" @enter="enter">
                         <tr
-                            v-for="alumno in alumnos.data"
+                            v-for="(alumno, index) in alumnos.data"
                             v-if="alumnos.data.length"
                             :key="alumno.id"
+                            :data-index="index"
                             class="hover:bg-gray-100 focus-within:bg-gray-100">
                             <td class="border-t">
                                 <Link
@@ -149,7 +169,7 @@ watchEffect(() => {
                                 No se encuentran resultados
                             </span>
                         </tr>
-                    </tbody>
+                    </transition-group tag="tbody">
                 </table>
             </div>
             <pagination class="mt-6" :links="alumnos.links" />

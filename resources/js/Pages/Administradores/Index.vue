@@ -6,6 +6,7 @@ import SearchFilter from "../../Components/SearchFilter.vue";
 import { reactive, watchEffect } from "vue";
 import { pickBy } from "lodash";
 import { router } from "@inertiajs/vue3";
+import gsap from "gsap";
 
 const props = defineProps({
     administradores: Array,
@@ -26,6 +27,22 @@ watchEffect(() => {
         route("administradores.index", Object.keys(query).length ? query : {})
     );
 });
+/* animation */
+const beforeEnter = (el) => {
+    el.style.transform = "translateX(-60px)";
+    el.style.opacity = 0;
+};
+
+const enter = (el, done) => {
+    gsap.to(el, {
+        duration: 0.4,
+        x: 0,
+        opacity: 1,
+        onComplete: done,
+        delay: el.dataset.index * 0.2
+    });
+};
+
 </script>
 
 <template>
@@ -56,8 +73,7 @@ watchEffect(() => {
             </div>
             <div class="w-full bg-white overflow-x-auto rounded-md shadow">
                 <table
-                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md"
-                >
+                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md">
                     <thead>
                         <tr class="text-left font-bold">
                             <th class="pb-4 pt-6 px-6">Nombre</th>
@@ -69,22 +85,16 @@ watchEffect(() => {
                             <th class="pb-4 pt-6 px-6">Estado</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <transition-group tag="tbody" appear @before-enter="beforeEnter" @enter="enter">
                         <tr
-                            v-for="administradore in administradores"
+                            v-for="(administradore, index) in administradores"
                             :key="administradore.id"
-                            class="hover:bg-gray-100 focus-within:bg-gray-100"
-                        >
+                            :data-index="index"
+                            class="hover:bg-gray-100 focus-within:bg-gray-100">
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="
-                                        route(
-                                            'administradores.edit',
-                                            administradore.id
-                                        )
-                                    "
-                                >
+                                    :href="route('administradores.edit', administradore.id)">
                                     {{ administradore.persona.nombre }}
                                     {{ administradore.persona.apellido }}
                                 </Link>
@@ -93,13 +103,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="
-                                        route(
-                                            'administradores.edit',
-                                            administradore.id
-                                        )
-                                    "
-                                >
+                                    :href="route('administradores.edit', administradore.id)">
                                     <div>
                                         {{ administradore.persona.ci_numero }}
                                     </div>
@@ -109,13 +113,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="
-                                        route(
-                                            'administradores.edit',
-                                            administradore.id
-                                        )
-                                    "
-                                >
+                                    :href="route('administradores.edit', administradore.id)">
                                     <div>
                                         {{ administradore.persona.telefono }}
                                     </div>
@@ -125,13 +123,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="
-                                        route(
-                                            'administradores.edit',
-                                            administradore.id
-                                        )
-                                    "
-                                >
+                                    :href="route('administradores.edit', administradore.id)">
                                     <div>
                                         {{ administradore.persona.direccion }}
                                     </div>
@@ -141,13 +133,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="
-                                        route(
-                                            'administradores.edit',
-                                            administradore.id
-                                        )
-                                    "
-                                >
+                                    :href="route('administradores.edit', administradore.id)">
                                     <div>{{ administradore.cargo }}</div>
                                 </Link>
                             </td>
@@ -155,13 +141,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="
-                                        route(
-                                            'administradores.edit',
-                                            administradore.id
-                                        )
-                                    "
-                                >
+                                    :href="route('administradores.edit', administradore.id)">
                                     <div>{{ administradore.user.email }}</div>
                                 </Link>
                             </td>
@@ -169,13 +149,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="
-                                        route(
-                                            'administradores.edit',
-                                            administradore.id
-                                        )
-                                    "
-                                >
+                                    :href="route('administradores.edit', administradore.id)">
                                     <div>
                                         {{ administradore.estado.estado }}
                                     </div>
@@ -185,13 +159,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-4"
                                     tabindex="-1"
-                                    :href="
-                                        route(
-                                            'administradores.edit',
-                                            administradore.id
-                                        )
-                                    "
-                                >
+                                    :href="route('administradores.edit', administradore.id)">
                                     <icon
                                         name="cheveron-right"
                                         class="block w-6 h-6 fill-gray-400"
@@ -199,7 +167,7 @@ watchEffect(() => {
                                 </Link>
                             </td>
                         </tr>
-                    </tbody>
+                    </transition-group>
                 </table>
             </div>
         </div>

@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('devoluciones', function (Blueprint $table) {
             $table->id();
             $table->text('recomendacion')->nullable();
-            $table->tinyInteger('devuelto');
+            $table->tinyInteger('devuelto')->nullable();
             $table->unsignedBigInteger('entrega_id');
             $table->foreign('entrega_id')
                 ->references('id')

@@ -77,7 +77,8 @@ class TareaController extends Controller
         $tareaYmateriales = Tarea::with([
             'comentarios.user.alumnos.persona',
             'materiales', 'entregas.user',
-            'entregas.materiales'
+            'entregas.materiales',
+            'entregas.devoluciones.materiales'
         ])
             ->findOrFail($tarea);
 
@@ -202,6 +203,16 @@ class TareaController extends Controller
     {
         $tarea = Tarea::findOrFail($id);
 
+        $materiales = $tarea->materiales;
+
+        $tarea->comentarios()->delete();
+
         $tarea->delete();
+
+        if (!empty($materiales)) {
+            foreach ($materiales as $key => $materiale) {
+                Storage::delete($materiale->url);
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ import { reactive, watchEffect } from "vue";
 import { pickBy } from "lodash";
 import { router } from "@inertiajs/vue3";
 import SearchFilter from "../../Components/SearchFilter.vue";
+import gsap from "gsap";
 
 const props = defineProps({
     docentes: Array,
@@ -26,6 +27,22 @@ watchEffect(() => {
         route("docentes.index", Object.keys(query).length ? query : {})
     );
 });
+
+/* animation */
+const beforeEnter = (el) => {
+    el.style.transform = "translateX(-60px)";
+    el.style.opacity = 0;
+};
+
+const enter = (el, done) => {
+    gsap.to(el, {
+        duration: 0.4,
+        x: 0,
+        opacity: 1,
+        onComplete: done,
+        delay: el.dataset.index * 0.2
+    });
+};
 
 
 </script>
@@ -58,8 +75,7 @@ watchEffect(() => {
             </div>
             <div class="w-full bg-white overflow-x-auto rounded-md shadow">
                 <table
-                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md"
-                >
+                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md">
                     <thead>
                         <tr class="text-left font-bold">
                             <th class="pb-4 pt-6 px-6">Nombre</th>
@@ -71,17 +87,16 @@ watchEffect(() => {
                             <th class="pb-4 pt-6 px-6">Estado</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <transition-group tag="tbody" appear @before-enter="beforeEnter" @enter="enter">
                         <tr
-                            v-for="docente in docentes"
+                            v-for="(docente, index) in docentes"
                             :key="docente.id"
-                            class="hover:bg-gray-100 focus-within:bg-gray-100"
-                        >
+                            :data-index="index"
+                            class="hover:bg-gray-100 focus-within:bg-gray-100">
                             <td class="border-t">
                                 <Link
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    :href="route('docentes.edit', docente.id)"
-                                >
+                                    :href="route('docentes.edit', docente.id)">
                                     {{ docente.persona.nombre }}
                                     {{ docente.persona.apellido }}
                                 </Link>
@@ -90,8 +105,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
-                                >
+                                    :href="route('docentes.edit', docente.id)">
                                     <div>{{ docente.persona.ci_numero }}</div>
                                 </Link>
                             </td>
@@ -99,8 +113,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
-                                >
+                                    :href="route('docentes.edit', docente.id)">
                                     <div>{{ docente.persona.telefono }}</div>
                                 </Link>
                             </td>
@@ -108,8 +121,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
-                                >
+                                    :href="route('docentes.edit', docente.id)">
                                     <div>{{ docente.persona.direccion }}</div>
                                 </Link>
                             </td>
@@ -117,8 +129,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
-                                >
+                                    :href="route('docentes.edit', docente.id)">
                                     <div>{{ docente.profesion}}</div>
                                 </Link>
                             </td>
@@ -126,8 +137,7 @@ watchEffect(() => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
-                                >
+                                    :href="route('docentes.edit', docente.id)">
                                     <div>{{ docente.user.email }}</div>
                                 </Link>
                             </td>
@@ -153,7 +163,7 @@ watchEffect(() => {
                                 </Link>
                             </td>
                         </tr>
-                    </tbody>
+                    </transition-group>
                 </table>
             </div>
         </div>

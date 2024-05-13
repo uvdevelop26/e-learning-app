@@ -3,7 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
 import Modal from "../../Components/Modal.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import TextInput from "../../Components/TextInput.vue";
 import { QuillEditor } from "@vueup/vue-quill";
@@ -20,6 +20,7 @@ const props = defineProps({
 const openModal = ref(false);
 const editorRef = ref(null);
 const uploadedFiles = ref([]);
+const devolucionState = ref(null)
 
 const form = useForm({
     /* recomendacion table */
@@ -111,6 +112,16 @@ const setOpenModal = (id) => {
     }, 200);
 };
 
+const setDevueltoState = (entrega) =>{
+    if(entrega.devoluciones.length === 0 ){
+        return false;
+    }else if(entrega.devoluciones[0].devuelto == 0){
+        return false;
+    }else {
+        return true;
+    }
+}
+
 const cancelOperation = () => {
     setTimeout(() => {
         if (editorRef.value) {
@@ -153,6 +164,11 @@ const deleteDevolucion = (data) => {
         console.log("no");
     }
 };
+
+
+
+
+
 </script>
 <template>
     <AppLayout>
@@ -264,24 +280,25 @@ const deleteDevolucion = (data) => {
                                                 </span>
                                                 <span
                                                     v-if="devoluciones.devuelto == 0"
-                                                    class="text-primary">
-                                                pendiente
+                                                    class="text-primary font-bold capitalize">
+                                                      pendiente
                                                 </span>
                                             </div>
                                         </div>
                                         <div
                                             v-else
                                             class="text-primary font-bold capitalize">
-                                            pendiente
+                                            sin devolver
                                         </div>
                                     </div>
                                 </td>
                                 <td class="border-t py-4">
                                     <div class="flex items-center gap-2">
                                         <button
-                                            class="text-primary hover:underline"
+                                            :class="setDevueltoState(entrega) ? 'text-gray-400' : 'text-primary hover:underline'"
                                             type="button"
-                                            @click="setOpenModal(entrega.id)">
+                                            @click="setOpenModal(entrega.id)"
+                                            :disabled="setDevueltoState(entrega)">
                                             Devolver
                                         </button>
                                         <button
@@ -321,8 +338,7 @@ const deleteDevolucion = (data) => {
                     <div class="py-2 flex gap-3 items-center">
                         <label
                             for="upload"
-                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                        >
+                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
                             <icon name="upload" class="w-4 h-4 fill-primary" />
                             <input
                                 type="file"
@@ -334,8 +350,7 @@ const deleteDevolucion = (data) => {
                         </label>
                         <button
                             type="button"
-                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                        >
+                            class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100">
                             <icon name="link" class="w-4 h-4 fill-primary" />
                         </button>
                     </div>
@@ -343,14 +358,11 @@ const deleteDevolucion = (data) => {
                         <li
                             v-for="(files, index) in uploadedFiles"
                             :key="index"
-                            class="flex items-center h-12 border rounded-xl overflow-hidden"
-                        >
+                            class="flex items-center h-12 border rounded-xl overflow-hidden">
                             <div
-                                class="flex h-full px-3 justify-center items-center gap-2 border-r"
-                            >
+                                class="flex h-full px-3 justify-center items-center gap-2 border-r">
                                 <span
-                                    class="text-xs lowercase font-bold text-primary"
-                                >
+                                    class="text-xs lowercase font-bold text-primary">
                                     {{ files.data.name }}
                                 </span>
                                 <icon
@@ -359,13 +371,11 @@ const deleteDevolucion = (data) => {
                                 />
                             </div>
                             <div
-                                class="w-10 h-full flex items-center justify-center"
-                            >
+                                class="w-10 h-full flex items-center justify-center">
                                 <button
                                     class="h-full w-full flex justify-center items-center hover:bg-gray-100"
                                     type="button"
-                                    @click="deleteFile(index)"
-                                >
+                                    @click="deleteFile(index)">
                                     <icon
                                         name="close"
                                         class="w-2 fill-primary"
@@ -375,8 +385,7 @@ const deleteDevolucion = (data) => {
                         </li>
                     </ul>
                     <div
-                        class="py-2 flex flex-wrap gap-3 items-center justify-between lg:justify-start"
-                    >
+                        class="py-2 flex flex-wrap gap-3 items-center justify-between lg:justify-start">
                         <text-input
                             class="pb-3 w-full lg:w-72"
                             id="puntaje"
@@ -388,8 +397,7 @@ const deleteDevolucion = (data) => {
                         <div>
                             <label
                                 for="completado"
-                                class="font-bold flex gap-2 items-center"
-                            >
+                                class="font-bold flex gap-2 items-center">
                                 Completado
                                 <input
                                     type="checkbox"
@@ -404,8 +412,7 @@ const deleteDevolucion = (data) => {
                         <button
                             class="inline-block px-8 py-2 text-red-500 hover:underline"
                             @click="cancelOperation()"
-                            type="button"
-                        >
+                            type="button">
                             Cancelar
                         </button>
                         <button
@@ -417,8 +424,7 @@ const deleteDevolucion = (data) => {
                                     !form.processing,
                             }"
                             :disabled="form.processing"
-                            type="submit"
-                        >
+                            type="submit">
                             Devolver
                         </button>
                     </div>

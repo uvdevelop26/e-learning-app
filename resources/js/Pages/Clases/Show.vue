@@ -120,9 +120,13 @@ onMounted(() => {
         <template #header>
             <h2
                 class="font-semibold text-xl flex justify-between items-center">
-                <span class="text-primary">
+                <div class="text-primary flex items-center gap-2">
+                    <div
+                    class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                         <Icon name="homework" class="w-2 h-2 fill-white" />
+                    </div>
                     Clase {{ props.clase.codigo }}
-                </span>
+                </div>
                 <button @click="showAddUnidades = !showAddUnidades" class="text-sm text-primary italic hover:text-opacity-90 hover:underline" v-if="$page.props.userRole.role.rol !== 'alumno'">
                     + Agregar Unidad
                 </button>
@@ -131,7 +135,7 @@ onMounted(() => {
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
             <!-- Header class info -->
             <div
-                class="h-56 bg-primary rounded-2xl flex flex-col items-center justify-center">
+                class="h-56 bg-gradient-to-tr from-primary via-secondary to-primary rounded-2xl flex flex-col items-center justify-center">
                 <h3 class="pt-2 font-bold text-3xl lg:text-5xl text-white">
                     {{ props.materia.nombre }}
                 </h3>

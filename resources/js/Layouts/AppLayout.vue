@@ -13,8 +13,6 @@ const props = defineProps({
     title: String,
 });
 
-//
-
 const isMobile = ref(null);
 let mql = null;
 

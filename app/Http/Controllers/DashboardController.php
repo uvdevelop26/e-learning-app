@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumno;
 use App\Models\Clase;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -12,11 +13,19 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $user_id = Auth::user()->id;
+
+        $user = User::with(['alumnos.persona', 'docentes.persona', 'administradores.persona'])
+            ->find($user_id);
+            
         $clasesActivas = Clase::with('materia', 'estado', 'alumnos')->whereHas('estado', function ($query) {
             $query->where('estado', 'activo');
         })->get();
 
-        return Inertia::render('Dashboard', ['clasesActivas' => $clasesActivas]);
+        return Inertia::render('Dashboard', [
+            'clasesActivas' => $clasesActivas,
+            'user' => $user
+        ]);
     }
 
     public function users()
@@ -81,7 +90,7 @@ class DashboardController extends Controller
 
             $clases = $alumno->clases()->with('materia')->get();
 
-            $alumno_data = [  
+            $alumno_data = [
                 'role' => $user_role,
                 'clases' => $clases
             ];

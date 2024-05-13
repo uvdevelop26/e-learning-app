@@ -134,8 +134,18 @@ const deleteData = (id) => {
                 </div>
                 <!-- Name and Comment content -->
                 <div class="mr-auto w-full whitespace-normal">
-                    <p class="pb-1 font-bold text-xs capitalize">
+                    <p class="pb-1 font-bold text-xs capitalize" v-if="comentario.user.alumnos[0]">
                         {{ comentario.user.alumnos[0].persona.nombre }}
+                        {{ comentario.user.alumnos[0].persona.apellido }}
+                    </p>
+                    <p class="pb-1 font-bold text-xs capitalize" v-else-if="comentario.user.docentes[0]">
+                        {{ comentario.user.docentes[0].persona.nombre }}
+                        {{ comentario.user.docentes[0].persona.apellido }}
+
+                    </p>
+                    <p class="pb-1 font-bold text-xs capitalize" v-else-if="comentario.user.administradores[0]">
+                        {{ comentario.user.administradores[0].persona.nombre }}
+                        {{ comentario.user.administradores[0].persona.apellido }}
                     </p>
                     <p
                         class="text-xs whitespace-normal"

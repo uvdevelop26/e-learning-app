@@ -61,7 +61,7 @@ class ClaseController extends Controller
         if ($role === "docente") {
             $docente_id = Auth::user()->docentes()->first()->id;
         }
-        
+
         Clase::create([
             'codigo' => $request->codigo,
             'materia_id' => $request->materia_id,
@@ -80,8 +80,12 @@ class ClaseController extends Controller
         $semestre = Semestre::find($materia->semestre_id);
         $carrera = Carrera::find($semestre->carrera_id);
 
-        $anunciosYunidades = Clase::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales', 'unidades'])
-            ->findOrFail($clase->id);
+        $anunciosYunidades = Clase::with([
+            'anuncios.comentarios.user.alumnos.persona',
+            'anuncios.comentarios.user.docentes.persona',
+            'anuncios.comentarios.user.administradores.persona',
+            'anuncios.materiales', 'unidades'
+        ])->findOrFail($clase->id);
 
         return Inertia::render('Clases/Show', [
             'clase' => [

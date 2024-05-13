@@ -17,7 +17,7 @@ class DevolucioneRequest extends FormRequest
     {
         return [
             'recomendacion' => 'nullable',
-            'devuelto' => 'required',
+            'devuelto' => 'nullable',
             'entrega_id' => 'required|numeric',
             'puntaje' => 'nullable',
             'nombre' => 'nullable|array',
