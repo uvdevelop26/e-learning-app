@@ -47,7 +47,7 @@ class CarreraController extends Controller
             'descripcion' => $request->duracion
         ]);
 
-        return Redirect::route("carreras.index");
+        return Redirect::route("carreras.index")->with('success', 'Carrera Registrada Exitosamente');
     }
 
 
@@ -89,7 +89,7 @@ class CarreraController extends Controller
             'descripcion' => $request->descripcion
         ]);
 
-        return Redirect::route("carreras.index");
+        return Redirect::route("carreras.index")->with('success', 'Carrera Actualizada Exitosamente');
     }
 
 

@@ -43,15 +43,12 @@ watchEffect(() => {
 
     if (isNaN(carreraId)) {
         filteredSemesters.value = null;
-        /* form.materia_id = null
-        form.semestre_id = null */
+
     } else {
         filteredSemesters.value = semesters.filter(
             (semester) => semester.carrera_id === carreraId
         );
 
-        /*  form.semestre_id = null
-        form.materia_id = null */
     }
 });
 
@@ -60,7 +57,6 @@ watchEffect(() => {
 
     if (isNaN(semestreId)) {
         filteredMaterias.value = null;
-        /*   form.materia_id = null */
     } else {
         filteredMaterias.value = materias.filter(
             (materia) => materia.semestre_id === semestreId

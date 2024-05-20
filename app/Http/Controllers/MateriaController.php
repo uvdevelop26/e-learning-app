@@ -67,7 +67,7 @@ class MateriaController extends Controller
             'semestre_id' => $request->semestre_id
         ]);
 
-        return Redirect::route("materias.index");
+        return Redirect::route("materias.index")->with('success', 'Materia Registrada Exitosamente');
     }
 
 
@@ -131,7 +131,7 @@ class MateriaController extends Controller
         ]);
 
 
-        return Redirect::route("materias.index");
+        return Redirect::route("materias.index")->with('success', 'Materia Actualizada Exitosamente');
     }
 
     public function destroy($id)

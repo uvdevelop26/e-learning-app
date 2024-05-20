@@ -63,7 +63,7 @@ const deleteTarea = () => {
                 </h3>
             </div>
             <!-- dropdown -->
-            <dropdown>
+            <dropdown v-if="$page.props.userRole.role.rol !== 'alumno'">
                 <template #trigger>
                     <div class="text-right">
                         <button

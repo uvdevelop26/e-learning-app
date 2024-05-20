@@ -11,6 +11,7 @@ import { router } from "@inertiajs/vue3";
 import { useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
 import { format } from "date-fns";
+import { getFileType, imageUrl } from "../data/handleFiles";
 
 const props = defineProps({
     data: Object,
@@ -97,32 +98,6 @@ const cancelProcess = () => {
 };
 
 //handle files
-
-const getFileType = (filename) => {
-    if (filename.endsWith(".pdf")) {
-        return "pdf";
-    } else if (
-        filename.endsWith(".jpeg") ||
-        filename.endsWith(".jpg") ||
-        filename.endsWith(".png") ||
-        filename.endsWith(".gif")
-    ) {
-        return "picture";
-    } else if (
-        filename.endsWith(".doc") ||
-        filename.endsWith(".docx") ||
-        filename.endsWith(".xls") ||
-        filename.endsWith(".xlsx") ||
-        filename.endsWith(".ppt") ||
-        filename.endsWith(".pptx")
-    ) {
-        return "office";
-    }
-};
-
-const imageUrl = (url) => {
-    return "/" + url.replace("public/", "storage/");
-};
 
 const deleteFile = (index) => {
     uploadedFiles.value.splice(index, 1);

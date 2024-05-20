@@ -36,12 +36,14 @@ class UnidadeController extends Controller
             'objetivos' => $request->objetivos,
             'clase_id' => $request->clase_id
         ]);
+
+        return redirect()->back()->with('success', 'Unidad Registrada Exitosamente');
     }
 
 
     public function show($clase, $unidade)
     {
-      
+
         $unidade = Unidade::findOrFail($unidade);
 
         $anunciosYtareas = Unidade::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales', 'tareas'])

@@ -79,7 +79,7 @@ class AlumnoController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route('alumnos.index');
+        return Redirect::route('alumnos.index')->with('success', 'Alumno Registrado Exitosamente');
     }
 
 
@@ -154,7 +154,7 @@ class AlumnoController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route('alumnos.index');
+        return Redirect::route('alumnos.index')->with('success', 'Alumno Actualizado Exitosamente');
     }
 
 

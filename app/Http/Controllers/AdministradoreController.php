@@ -75,7 +75,7 @@ class AdministradoreController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route('administradores.index');
+        return Redirect::route('administradores.index')->with('success', 'Administrador Registrado Exitosamente');
     }
 
     
@@ -148,7 +148,7 @@ class AdministradoreController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route('administradores.index');
+        return Redirect::route('administradores.index')->with('success', 'Administrador Actualizado Exitosamente');
     }
 
     

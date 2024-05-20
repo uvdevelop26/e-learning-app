@@ -13,18 +13,32 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        /* info user */
         $user_id = Auth::user()->id;
-
         $user = User::with(['alumnos.persona', 'docentes.persona', 'administradores.persona'])
             ->find($user_id);
-            
+
+        /* tareas to the calendar */
+        $userTareas = [];
+
+        $alumno = Auth::user()->alumnos()->first();
+        $docente = Auth::user()->docentes()->first();
+
+        if (!empty($alumno)) {
+            $userTareas = $alumno->clases()->with('unidades.tareas')->get();
+        } else if (!empty($docente)) {
+            $userTareas = $docente->clases()->with('unidades.tareas')->get();
+        }
+
+        /* clases actuales */
         $clasesActivas = Clase::with('materia', 'estado', 'alumnos')->whereHas('estado', function ($query) {
             $query->where('estado', 'activo');
         })->get();
 
         return Inertia::render('Dashboard', [
             'clasesActivas' => $clasesActivas,
-            'user' => $user
+            'user' => $user,
+            'userTareas' => $userTareas
         ]);
     }
 

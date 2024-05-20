@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { Head, Link, router } from "@inertiajs/vue3";
 import Icon from "../Components/Icon.vue";
 import ApplicationMark from "@/Components/ApplicationMark.vue";
@@ -8,13 +8,20 @@ import NavLink from "@/Components/NavLink.vue";
 import MenuNav from "../Components/MenuNav.vue";
 import { usePage } from "@inertiajs/vue3";
 import menu from "../data/menu.js";
+import FlashMessage from "../Components/FlashMessage.vue";
 
 const props = defineProps({
     title: String,
 });
 
+const { props: pageProps } = usePage();
+
+
 const isMobile = ref(null);
 let mql = null;
+const flashMessage = ref("");
+
+const successMessage = computed(() => pageProps.flash.success);
 
 const getUserRole = (role, index) => {
     return menu[index].role.includes(role);
@@ -76,6 +83,12 @@ const pushDataOnMenu = async () => {
     }
 };
 
+const hideFlashMessage = () => {
+    setTimeout(() => {
+        flashMessage.value = "";
+    }, 5000);
+};
+
 onMounted(() => {
     mql = window.matchMedia("(min-width: 1024px)");
     isMobile.value = mql.matches;
@@ -83,6 +96,11 @@ onMounted(() => {
     mql.addEventListener("change", handleMqlChange);
 
     pushDataOnMenu();
+
+    if (successMessage.value) {
+        flashMessage.value = successMessage.value;
+        hideFlashMessage();
+    }
 });
 
 onUnmounted(() => {
@@ -127,25 +145,31 @@ const logout = () => {
                                         <NavLink
                                             :href="links.href"
                                             v-if="!links.submenu"
-                                            :class="{'bg-secondary text-white hover:bg-secondary': $page.url == links.href,}">
-                                            <Icon :name="links.icon" class="w-4 h-4 fill-primary" :class="{'fill-white': $page.url == links.href}" />
-                                            {{ links.name }}              
+                                            :class="{
+                                                'bg-secondary text-white hover:bg-secondary': $page.url == links.href,}">
+                                            <Icon
+                                                :name="links.icon"
+                                                class="w-4 h-4 fill-primary"
+                                                :class="{'fill-white': $page.url == links.href,}"
+                                            />
+                                            {{ links.name }}
                                         </NavLink>
                                         <NavLink
                                             as="button"
                                             v-else
                                             class="flex gap-2 capitalize w-full"
                                             @click="handleSubmenu(index)">
-                                            <span class="flex w-4 h-4 items-center justify-center rounded-full bg-primary">
+                                            <span
+                                                class="flex w-4 h-4 items-center justify-center rounded-full bg-primary">
                                                 <Icon
                                                     class="h-2 w-2 fill-white"
-                                                    :name="links.toggle_submenu ? 'cheveron-up' : 'cheveron-down'"
-                                                />
-                                             </span>
+                                                    :name="links.toggle_submenu ? 'cheveron-up' : 'cheveron-down' "/>
+                                            </span>
                                             {{ links.name }}
                                         </NavLink>
                                         <transition name="submenu-slice">
-                                            <ul v-if="links.submenu && links.toggle_submenu"
+                                            <ul
+                                                v-if="links.submenu && links.toggle_submenu"
                                                 class="pl-3 bg-white">
                                                 <li
                                                     v-for="submenu in links.submenu"
@@ -153,7 +177,9 @@ const logout = () => {
                                                     <NavLink
                                                         :href="submenu.href"
                                                         class="text-sm"
-                                                        :class="{'bg-secondary text-white hover:bg-secondary': $page.url.startsWith(submenu.href),}">
+                                                        :class="{
+                                                            'bg-secondary text-white hover:bg-secondary':
+                                                                $page.url.startsWith(submenu.href),}">
                                                         {{ submenu.name }}
                                                     </NavLink>
                                                 </li>
@@ -222,10 +248,11 @@ const logout = () => {
                     <!-- Page Header -->
                     <header
                         v-if="$slots.header"
-                        class="bg-white w-full shadow lg:fixed lg:top-0 z-50">
+                        class="bg-white w-full shadow relative lg:fixed lg:top-0 z-50">
                         <div class="max-w-7xl py-5 px-12">
                             <slot name="header" />
                         </div>
+                        <FlashMessage :success="flashMessage" />
                     </header>
                     <!-- Page Content -->
                     <main>

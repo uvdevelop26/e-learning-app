@@ -9,8 +9,6 @@ const props = defineProps({
 const materialesNew = ref(props.materiales);
 
 
-
-
 onMounted(() => {
     materialesNew.value.sort((a, b) => {
         // Si 'a' es una foto y 'b' no lo es, colocamos 'a' antes que 'b'

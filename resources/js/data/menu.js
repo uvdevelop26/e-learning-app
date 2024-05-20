@@ -9,28 +9,28 @@ import { reactive } from 'vue';
         role: ["alumno", "docente", "administrador"],
     },
     {
-        id: 3,
+        id: 2,
         name: "Todas las Clases",
         href: "/clases",
         icon: "clases",
         role: ["alumno", "docente", "administrador"],
     },
     {
-        id: 5,
+        id: 3,
         name: "Clases que Impartes",
         href: "..",
         submenu: [],
         role: ["docente"],
     },
     {
-        id: 5,
+        id: 4,
         name: "Mis Clases",
         href: "..",
         submenu: [],
         role: ["alumno"],
     },
     {
-        id: 2,
+        id: 5,
         name: "usuarios",
         href: "..",
         submenu: [
@@ -42,7 +42,7 @@ import { reactive } from 'vue';
         role: ["administrador"],
     },
     {
-        id: 4,
+        id: 6,
         name: "académicos",
         href: "...",
         submenu: [

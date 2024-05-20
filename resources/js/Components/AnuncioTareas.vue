@@ -1,5 +1,4 @@
 <script setup>
-import { format } from "date-fns";
 import Dropdown from "./Dropdown.vue";
 import Comentarios from "./Comentarios.vue";
 import Modal from "./Modal.vue";
@@ -8,7 +7,8 @@ import { useForm } from "@inertiajs/vue3";
 import { QuillEditor } from "@vueup/vue-quill";
 import TextInput from "./TextInput.vue";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { ref, onMounted, getCurrentInstance } from "vue";
+import { ref } from "vue";
+import { getFileType } from "../data/handleFiles";
 
 const props = defineProps({
     tarea: Object,
@@ -46,28 +46,6 @@ const form = useForm({
     materiable_id: "",
     materiable_type: "",
 });
-
-const getFileType = (filename) => {
-    if (filename.endsWith(".pdf")) {
-        return "pdf";
-    } else if (
-        filename.endsWith(".jpeg") ||
-        filename.endsWith(".jpg") ||
-        filename.endsWith(".png") ||
-        filename.endsWith(".gif")
-    ) {
-        return "picture";
-    } else if (
-        filename.endsWith(".doc") ||
-        filename.endsWith(".docx") ||
-        filename.endsWith(".xls") ||
-        filename.endsWith(".xlsx") ||
-        filename.endsWith(".ppt") ||
-        filename.endsWith(".pptx")
-    ) {
-        return "office";
-    }
-};
 
 const deleteFile = (index) => {
     uploadedFiles.value.splice(index, 1);

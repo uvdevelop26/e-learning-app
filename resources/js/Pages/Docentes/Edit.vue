@@ -62,7 +62,6 @@ const update = () => {
 };
 
 const deleteUser = ()=>{
-
     form.delete(route("docentes.destroy", form.id),{
         preserveScroll: true
     })

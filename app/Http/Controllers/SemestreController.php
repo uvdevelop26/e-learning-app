@@ -51,7 +51,7 @@ class SemestreController extends Controller
             'carrera_id' => $request->carrera_id
         ]);
 
-        return Redirect::route("semestres.index");
+        return Redirect::route("semestres.index")->with('success', 'Semestre Registrado Exitosamente');
     }
 
 
@@ -94,7 +94,7 @@ class SemestreController extends Controller
             'carrera_id' => $request->carrera_id
         ]);
 
-        return Redirect::route("semestres.index");
+        return Redirect::route("semestres.index")->with('success', 'Semestre Actualizado Exitosamente');
     }
 
     

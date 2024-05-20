@@ -69,7 +69,7 @@ class ClaseController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route("clases.index");
+        return Redirect::route("clases.index")->with('success', 'Clase Registrada Exitosamente');
     }
 
 
@@ -157,7 +157,7 @@ class ClaseController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route("clases.index");
+        return Redirect::route("clases.index")->with('success', 'Clase Actualizada Exitosamente');
     }
 
 

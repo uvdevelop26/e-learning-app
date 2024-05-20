@@ -49,9 +49,6 @@ const cancelOperation = () => {
         form.puntos = "";
         (form.fecha_entrega = ""), (form.hora_entrega = "");
 
-        /*     
-        uploadedFiles.value = [];
-        form.url = []; */
     }, 300);
 };
 

@@ -131,7 +131,7 @@ const submit = () => {
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
                                 type="submit">
-                                Crear Carrera
+                                Crear Semestre
                             </loading-button>
                         </div>
                     </form>

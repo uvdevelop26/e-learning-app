@@ -160,7 +160,7 @@ const deleteAlumno = (id) => {
         <!-- modal -->
         <modal :show="show">
             <template #headerModal>
-                <h3 class="text-lg">Agregar Alumno</h3>
+                <h3 class="px-2 text-xl text-primary font-bold">Agregar Alumno</h3>
             </template>
             <template #bodyModal>
                 <div>

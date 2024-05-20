@@ -73,7 +73,7 @@ class DocenteController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route('docentes.index');
+        return Redirect::route('docentes.index')->with('success', 'Docente Registrado Exitosamente');
     }
 
 
@@ -144,7 +144,7 @@ class DocenteController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route('docentes.index');
+        return Redirect::route('docentes.index')->with('success', 'Docente Actualizado Exitosamente');
     }
 
     
