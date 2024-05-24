@@ -1,13 +1,16 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
+import { useForm } from "@inertiajs/vue3";
+import { watchEffect, ref } from "vue";
 import TextInput from "../../Components/TextInput.vue";
 import Icon from "../../Components/Icon.vue";
 import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
-import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
-import { watchEffect, ref } from "vue";
+import DangerButton from "../../Components/DangerButton.vue"
+import SecondaryButton from "../../Components/SecondaryButton.vue"
+import Modal from "../../Components/Modal.vue"
 
 const props = defineProps({
     materia: Array,
@@ -32,6 +35,17 @@ const form = useForm({
 const semesters = props.semestres;
 
 const filteredSemestres = ref(null);
+const filename = ref("");
+
+const showConfirm = ref(false);
+
+const handleFileUpload = (event) =>{
+    const file = event.target.files[0];
+    form.plan_estudio = file;
+    filename.value = file.name;
+    /* form.plan_estudio = event.target.files[0];
+    filename.value = */
+} 
 
 watchEffect(() => {
     let carreraId = parseInt(form.carrera_id);
@@ -68,6 +82,9 @@ const update = () => {
 const deleteMateria = () => {
     form.delete(route("materias.destroy", form.id), {
         preserveScroll: true,
+        onSuccess: () => {
+            showConfirm.value = false
+        }
     });
 };
 </script>
@@ -95,15 +112,13 @@ const deleteMateria = () => {
                                 label="Carrera"
                                 id="carrera"
                                 v-model="form.carrera_id"
-                                :error="errors.carrera_id"
-                            >
+                                :error="errors.carrera_id">
                                 <option :value="null" />
                                 <option
                                     v-for="carrera in carreras"
                                     :key="carrera.id"
                                     :value="carrera.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ carrera.nombre }}
                                 </option>
                             </select-input>
@@ -112,8 +127,7 @@ const deleteMateria = () => {
                                 label="Semestre"
                                 id="semestre"
                                 v-model="form.semestre_id"
-                                :error="errors.semestre_id"
-                            >
+                                :error="errors.semestre_id">
                                 <option :value="null" />
                                 <option
                                     v-for="semestre in filteredSemestres"
@@ -150,7 +164,24 @@ const deleteMateria = () => {
                                 id="horas_semanales"
                                 :error="errors.horas_semanales"
                             />
-                            <text-input
+                            <div class="py-2 border-t-3 flex gap-3 items-center">
+                                <label
+                                    for="upload"
+                                    class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100 relative">
+                                    <icon name="upload" class="w-4 h-4 fill-primary" />
+                                    <input
+                                        type="file"
+                                        id="upload"
+                                        class="opacity-0 absolute -z-10"
+                                        accept=".pdf, .jpeg, .jpg, .png, .gif, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
+                                        @input="handleFileUpload($event)"
+                                    />
+                                   <span class="absolute w-28 font-bold -top-8 left-0">Plan de estudio</span>
+                                </label>
+                                <div class="text-sm lowercase">{{ filename }}</div>
+                                <div v-if="errors.plan_estudio">{{ errors.plan_estudio }}</div>
+                            </div>
+                            <!-- <text-input
                                 type="file"
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Plan de Estudio"
@@ -158,34 +189,49 @@ const deleteMateria = () => {
                                     form.plan_estudio = $event.target.files[0]"
                                 id="duracion"
                                 :error="errors.plan_estudio"
-                            />
+                            /> -->
                             <text-area
                                 id="descripcion"
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Descripción"
                                 v-model="form.descripcion"
-                                :error="errors.descripcion"
-                            >
+                                :error="errors.descripcion">
                             </text-area>
                         </div>
 
                         <div
-                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
-                        >
-                        <button
+                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
+                            <button
                                 class="text-red-600 hover:underline"
                                 tabindex="-1"
                                 type="button"
-                                @click="deleteMateria"
-                            >
+                                @click="showConfirm = !showConfirm">
                                 Eliminar Materia
                             </button>
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
-                                type="submit"
-                                >Actualizar Materia
+                                type="submit">
+                                Actualizar Materia
                             </loading-button>
+                            <Modal :show="showConfirm" maxWidth="md">
+                                <template #headerModal>
+                                   <h2 class="flex items-center justify-center">
+                                    <span class="font-bold text-lg text-primary mr-2">¿Desea Eliminar esta Materia?</span>                         
+                                    <Icon name="trash" class="w-4 h-4 fill-primary" />
+                                   </h2> 
+                                </template>
+                                <template #bodyModal>
+                                    <div class="flex justify-center space-x-8">
+                                        <DangerButton @click="deleteMateria">
+                                            Eliminar
+                                        </DangerButton>
+                                        <SecondaryButton @click="showConfirm = !showConfirm">
+                                            Cancelar
+                                        </SecondaryButton>
+                                    </div>
+                                </template>
+                            </Modal>
                         </div>
                     </form>
                 </div>

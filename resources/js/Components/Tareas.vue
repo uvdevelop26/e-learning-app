@@ -1,13 +1,9 @@
 <script setup>
-import { ref, getCurrentInstance } from "vue";
+import { ref, getCurrentInstance, computed, watch } from "vue";
 import Dropdown from "./Dropdown.vue";
-import TextInput from "./TextInput.vue";
-import TextArea from "./TextArea.vue";
-import Modal from "./Modal.vue";
 import Icon from "./Icon.vue";
 import { Link } from "@inertiajs/vue3";
-import { useForm } from "@inertiajs/vue3";
-import { format } from "date-fns";
+import { format, differenceInCalendarDays  } from "date-fns";
 import { router } from "@inertiajs/vue3";
 
 
@@ -18,22 +14,28 @@ const props = defineProps({
     unidade_id: Number
 });
 
-const form = useForm({
-    _method: "PUT",
-    id: "",
-    titulo: "",
-    instruccion: "",
-    fecha_entrega: "",
-    hora_entrega: "",
-    puntos: "",
-    unidade_id: "",
-});
 
 const open = ref(false);
-const openModal = ref(false);
+/* const currentDate = ref(new Date()); */
 const formattedDate = ref(
     format(new Date(props.data.fecha_entrega), "dd-MM-yyyy")
 );
+/* 
+const daysRemaining = computed(() => {
+  return differenceInCalendarDays(new Date(props.data.fecha_entrega), currentDate.value);
+}); */
+
+/* const updateCurrentDate = () => {
+  currentDate.value = new Date();
+}; */
+
+/* setInterval(updateCurrentDate, 24 * 60 * 60 * 1000); */
+
+/* watch(currentDate, () => {
+  console.log('Fecha actual actualizada:', currentDate.value);
+  console.log('Días restantes:', daysRemaining.value);
+}); */
+
 const { emit } = getCurrentInstance();
 
 
@@ -53,17 +55,21 @@ const deleteTarea = () => {
         <div class="flex items-center justify-between gap-4">
             <!-- data -->
             <div class="w-full">
-                <h3 class="font-bold uppercase">
+                <h3 class="font-bold capitalize">
                     <Link
                         :href="route('clases.unidades.tareas.show', { clase: clase_id, unidad: unidade_id, tarea: data.id })"
                         class="block py-2 group-hover:text-primary">
-                        Tarea {{ data.titulo }} - Fecha entrega
-                        {{ data.fecha_entrega }}
+                        <span>Tarea {{ data.titulo }}</span> &nbsp;
+                        <span class="text-sm text-gray-500">
+                           Fecha de Entrega - {{ formattedDate }} - {{ data.hora_entrega }}hs.
+                          <!--  <span class="text-green-400">quedan {{ daysRemaining }} días restantes</span>  -->
+                        </span>
+                        
                     </Link>
                 </h3>
             </div>
             <!-- dropdown -->
-            <dropdown v-if="$page.props.userRole.role.rol !== 'alumno'">
+            <dropdown v-if="$page.props.userRole.role !== 'alumno'">
                 <template #trigger>
                     <div class="text-right">
                         <button
@@ -89,6 +95,5 @@ const deleteTarea = () => {
             </dropdown>
         </div>
     </div>
-    <!-- Modal -->
     
 </template>

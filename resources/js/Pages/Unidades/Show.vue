@@ -180,9 +180,9 @@ onMounted(() => {
         </template>
         <div class="py-9 px-4 lg:px-8 max-w-7xl">
             <!-- content -->
-            <div class="mt-6 flex flex-col gap-6 lg:flex-row">
+            <div class="mt-6 flex flex-col gap-6 lg:flex-row max-w-6xl mx-auto">
                 <!-- options  -->
-                <div class="flex gap-6 items-center lg:flex-col lg:items-start">
+                <!-- <div class="flex gap-6 items-center lg:flex-col lg:items-start">
                     <div
                         class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group">
                         <Link
@@ -202,10 +202,12 @@ onMounted(() => {
                             </div>
                         </Link>
                     </div>
-                </div>
+                </div> -->
                 <div class="w-full flex flex-col gap-6">
                     <editor-wrapper
-                        title="Anuncia algo a tu clase.."
+                        :title="$page.props.userRole.role === 'alumno' 
+                        ? 'Publica en la Clase' 
+                        : 'Anuncia algo a tu clase'"
                         :unidade="anunciosYtareas"
                         :errors="errors"
                         @newpost="newpost"

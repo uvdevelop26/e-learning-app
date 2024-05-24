@@ -233,8 +233,9 @@ const deleteDevolucion = (data) => {
                                     <div class="flex flex-col gap-2">
                                         <div v-for="materiales in entrega.materiales">
                                             <a
-                                                :href="materiales.url"
-                                                class="lowercase flex items-center gap-2 text-xs text-primary font-bold hover:underline">
+                                                :href="route('materialeTareas.download', materiales.id)"
+                                                class="lowercase flex items-center gap-2 text-xs text-primary font-bold hover:underline"
+                                                target="_blank">
                                                 <Icon :name="getFileType(materiales.nombre)"
                                                     class="w-4 h-4 fill-primary"
                                                 />

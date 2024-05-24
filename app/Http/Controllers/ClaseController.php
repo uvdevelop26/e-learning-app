@@ -69,7 +69,7 @@ class ClaseController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route("clases.index")->with('success', 'Clase Registrada Exitosamente');
+        return Redirect::route("clases.index")->with('success', 'Clase creada Exitosamente');
     }
 
 
@@ -157,7 +157,7 @@ class ClaseController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route("clases.index")->with('success', 'Clase Actualizada Exitosamente');
+        return Redirect::route("clases.index");
     }
 
 
@@ -167,7 +167,7 @@ class ClaseController extends Controller
 
         $clase->delete();
 
-        return Redirect::route("clases.index");
+        return redirect()->back()->with('success', 'Clase Eliminada Exitosamente');
     }
 
     public function showPersonas(Clase $clase)

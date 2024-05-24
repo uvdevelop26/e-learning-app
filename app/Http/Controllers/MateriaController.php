@@ -145,7 +145,7 @@ class MateriaController extends Controller
 
         $materia->delete();
 
-        return Redirect::route("materias.index");
+        return Redirect::route("materias.index")->with('success', 'Materia Eliminada Exitosamente');
     }
 
     public function download($id)
@@ -158,6 +158,6 @@ class MateriaController extends Controller
             abort(404);
         }
 
-        return response()->download($path, 'plan_estudio_' . $materia->nombre . '.pdf');
+        return response()->download($path, 'plan_estudio_' . $materia->nombre);
     }
 }

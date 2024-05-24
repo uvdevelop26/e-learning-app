@@ -115,7 +115,7 @@ const enter = (el, done) => {
 
                             <td class="border-t max-w-80">
                                 <a
-                                    :href="`/download/${materia.id}`"
+                                    :href="`materias/download/${materia.id}`"
                                     class="flex items-center px-6 py-4 whitespace-normal"
                                     target="_blank"
                                     tabindex="-1">

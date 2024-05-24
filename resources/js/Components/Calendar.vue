@@ -29,32 +29,6 @@ const INITIAL_EVENTS = [
     },
 ];
 
-/* const handleDateSelect = (selectInfo) => {
-    let title = prompt("Ingresa un nuevo envento");
-    let calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-        calendarApi.addEvent({
-            id: createEventId(),
-            title,
-            start: selectInfo.startStr,
-            end: selectInfo.endStr,
-            allDay: selectInfo.allDay,
-        });
-    }
-}; */
-
-/* const handleEventClick = (clickInfo) => {
-    if (
-        confirm(
-            `Está seguro que desea eliminar el evento '${clickInfo.event.title}'`
-        )
-    ) {
-        clickInfo.event.remove();
-    }
-}; */
 
 const handleEvents = (events) => {
     currentEvents.value = events;
@@ -113,12 +87,11 @@ const handleWeekendsToggle = () => {
     calendarOptions.value.weekends = !calendarOptions.value.weekends;
 };
 
-//onMounted(convertirTareasAEventos);
+
 </script>
 <template>
     <div
-        class="flex flex-col gap-4 min-h-full text-sm lg:flex-row-reverse lg:text-base"
-    >
+        class="flex flex-col gap-4 min-h-full text-sm lg:flex-row-reverse lg:text-base">
         <div class="p-8 lg:flex-grow bg-white rounded-2xl shadow-md">
             <FullCalendar class="demo-app-calendar" :options="calendarOptions">
                 <template v-slot:eventContent="arg">
@@ -127,8 +100,7 @@ const handleWeekendsToggle = () => {
             </FullCalendar>
         </div>
         <div
-            class="px-4 pt-14 leading-6 bg-gradient-to-tr from-primary via-secondary to-secondary text-white rounded-2xl lg:w-[28%]"
-        >
+            class="px-4 pt-14 leading-6 bg-gradient-to-tr from-primary via-secondary to-secondary text-white rounded-2xl lg:w-[28%]">
             <section class="pb-14 text-sm">
                 <h2 class="font-bold underline">Instrucciones</h2>
                 <ul>

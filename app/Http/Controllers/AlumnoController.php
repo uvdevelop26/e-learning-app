@@ -162,8 +162,10 @@ class AlumnoController extends Controller
     {
         $alumno = Alumno::find($id);
 
-        $alumno->delete();
+        $userAlumno = User::find($alumno->user_id);
 
-        return Redirect::route('alumnos.index');
+        $userAlumno->delete();
+
+        return Redirect::route('alumnos.index')->with('success', 'Alumno Eliminado Exitosamente');
     }
 }

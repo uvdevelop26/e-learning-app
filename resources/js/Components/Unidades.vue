@@ -57,9 +57,9 @@ const update = () => {
         <div class="flex items-center justify-between gap-4">
             <!-- data -->
             <div class="w-full">
-                <h3 class="font-bold uppercase">
+                <h3 class="font-bold capitalize">
                     <Link
-                        class="block py-2 group-hover:text-primary"
+                        class="block py-2 text-primary group-hover:text-secondary"
                         :href="route('clases.unidades.show', { clase: data.clase_id, unidad: data.id })">
                         Unidad Número {{ data.numero }} - {{ data.tema }}
                     </Link>

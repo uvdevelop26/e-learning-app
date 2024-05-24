@@ -126,7 +126,7 @@ const deleteAlumno = (id) => {
                     <div
                         class="py-4 px-4 border-b border-primary flex justify-between">
                         <h3 class="text-2xl font-bold text-primary">Alumnos</h3>
-                        <button @click="show = !show" v-if="$page.props.userRole.role.rol !== 'alumno'">
+                        <button @click="show = !show" v-if="$page.props.userRole.role !== 'alumno'">
                             <icon
                                 name="plus"
                                 class="w-5 h-5 fill-primary hover:fill-secondary"
@@ -146,7 +146,7 @@ const deleteAlumno = (id) => {
                             <button
                                 class="p-1"
                                 @click="deleteAlumno(alumno.id)"
-                                v-if="$page.props.userRole.role.rol !== 'alumno'">
+                                v-if="$page.props.userRole.role !== 'alumno'">
                                 <icon
                                     name="trash"
                                     class="w-4 h-4 fill-primary hover:fill-red-500"

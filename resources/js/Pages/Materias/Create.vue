@@ -28,6 +28,15 @@ const form = useForm({
 const semesters = props.semestres;
 
 const filteredSemestres = ref(null);
+const filename = ref("")
+
+const handleFileUpload = (event) =>{
+    const file = event.target.files[0];
+    form.plan_estudio = file;
+    filename.value = file.name;
+    /* form.plan_estudio = event.target.files[0];
+    filename.value = */
+} 
 
 watchEffect(() => {
     let carreraId = parseInt(form.carrera_id);
@@ -109,8 +118,7 @@ const submit = () => {
                                     v-for="semestre in filteredSemestres"
                                     :key="semestre.id"
                                     :value="semestre.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ semestre.nombre }}
                                 </option>
                             </select-input>
@@ -140,33 +148,47 @@ const submit = () => {
                                 id="horas_semanales"
                                 :error="errors.horas_semanales"
                             />
-                            <text-input
+                            <div class="py-2 border-t-3 flex gap-3 items-center">
+                                <label
+                                    for="upload"
+                                    class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100 relative">
+                                    <icon name="upload" class="w-4 h-4 fill-primary" />
+                                    <input
+                                        type="file"
+                                        id="upload"
+                                        class="opacity-0 absolute -z-10"
+                                        accept=".pdf, .jpeg, .jpg, .png, .gif, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
+                                        @input="handleFileUpload($event)"
+                                    />
+                                   <span class="absolute w-28 font-bold -top-8 left-0">Plan de estudio</span>
+                                </label>
+                                <div class="text-sm lowercase">{{ filename }}</div>
+                                <div v-if="errors.plan_estudio">{{ errors.plan_estudio }}</div>
+                            </div>
+                            <!-- <text-input
                                 type="file"
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Plan de Estudio"
-                                @input="form.plan_estudio = $event.target.files[0]"
+                                
                                 id="duracion"
-                                :error="errors.plan_estudio"
-                            />
+                                
+                            /> -->
                             <text-area
                                 id="descripcion"
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Descripción"
                                 v-model="form.descripcion"
-                                :error="errors.descripcion"
-                            >
+                                :error="errors.descripcion">
                             </text-area>
                         </div>
 
                         <div
-                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
-                        >
+                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
-                                type="submit"
-                            >
-                                Crear Carrera
+                                type="submit">
+                                Crear Materia
                             </loading-button>
                         </div>
                     </form>

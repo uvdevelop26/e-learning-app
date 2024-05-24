@@ -12,9 +12,11 @@ use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\EntregaController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\MaterialeController;
+use App\Http\Controllers\MaterialeTareaController;
 use App\Http\Controllers\SemestreController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\UnidadeController;
+use App\Models\MaterialeTarea;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -109,7 +111,7 @@ Route::controller(MateriaController::class)->middleware(['auth:sanctum', 'verifi
     Route::get('materias/{materia}/edit', 'edit')->name('materias.edit');
     Route::put('materias/{materia}', 'update')->name('materias.update');
     Route::delete('materias/{materia}', 'destroy')->name('materias.destroy');
-    Route::get('download/{id}', 'download')->name('materias.download');
+    Route::get('materias/download/{id}', 'download')->name('materias.download');
 });
 
 //clases
@@ -167,7 +169,12 @@ Route::controller(ComentarioController::class)->middleware(['auth:sanctum', 'ver
 
 //materiales
 Route::controller(MaterialeController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('download/{id}', 'download')->name('materiales.download');
+    Route::get('materiales/download/{id}', 'download')->name('materiales.download');
+});
+
+//Materiales Tareas
+Route::controller(MaterialeTareaController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('materialeTareas/download/{id}', 'download')->name('materialeTareas.download');
 });
 
 //tareas

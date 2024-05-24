@@ -202,7 +202,7 @@ onMounted(filterEntregas);
                             accept=".pdf, .jpeg, .jpg, .png, .gif, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
                             @change="getFileData($event.target)"
                         />
-                        <span class="text-sm font-bold italic">
+                        <span class="text-sm font-bold">
                             Añadir Entrega
                         </span>
                     </label>
@@ -251,10 +251,10 @@ onMounted(filterEntregas);
                             class="opacity-0 absolute -z-10"
                             v-model="form.completado"
                         />
-                        <span class="text-sm font-bold italic text-white" v-if="form.completado == 1">
+                        <span class="text-sm font-bold text-white" v-if="form.completado == 1">
                              Completado
                         </span>
-                        <span class="text-sm font-bold italic text-white" v-if="form.completado == 0">
+                        <span class="text-sm font-bold text-white" v-if="form.completado == 0">
                              Marcar Completado
                         </span>
                     </label>
@@ -289,7 +289,7 @@ onMounted(filterEntregas);
                             accept=".pdf, .jpeg, .jpg, .png, .gif, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
                             @change="getFileDataUpdate($event.target)"
                         />
-                        <span class="text-sm font-bold italic">
+                        <span class="text-sm font-bold">
                             Editar Entrega
                         </span>
                     </label>
@@ -351,10 +351,10 @@ onMounted(filterEntregas);
                             class="opacity-0 absolute -z-10"
                             v-model="formEdit.completado"
                         />
-                        <span class="text-sm font-bold italic text-white" v-if="formEdit.completado == 1">
+                        <span class="text-sm font-bold text-white" v-if="formEdit.completado == 1">
                              Completado
                         </span>
-                        <span class="text-sm font-bold italic text-white" v-if="formEdit.completado == 0">
+                        <span class="text-sm font-bold text-white" v-if="formEdit.completado == 0">
                              Marcar Completado
                         </span>
                     </label>

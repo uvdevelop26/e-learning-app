@@ -127,7 +127,7 @@ onMounted(() => {
                     </div>
                     Clase {{ props.clase.codigo }}
                 </div>
-                <button @click="showAddUnidades = !showAddUnidades" class="text-sm text-primary italic hover:text-opacity-90 hover:underline" v-if="$page.props.userRole.role.rol !== 'alumno'">
+                <button @click="showAddUnidades = !showAddUnidades" class="text-sm text-primary italic hover:text-opacity-90 hover:underline" v-if="$page.props.userRole.role !== 'alumno'">
                     + Agregar Unidad
                 </button>
             </h2>
@@ -151,9 +151,9 @@ onMounted(() => {
                 <!-- Option pdf materia -->
                 <div class="flex gap-6 items-center lg:flex-col lg:items-start">
                     <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group">
+                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative cursor-pointer group">
                         <a
-                            :href="`/download/${materia.id}`"
+                            :href="route('materias.download', materia.id)"
                             class="absolute top-0 left-0 right-0 bottom-0"
                             target="_blank"
                             tabindex="-1">
@@ -199,7 +199,7 @@ onMounted(() => {
                         :clase="clase"
                         :errors="errors"
                         @newpost="newpost"
-                        v-if="$page.props.userRole.role.rol !== 'alumno'"
+                        v-if="$page.props.userRole.role !== 'alumno'"
                     />
                     <!-- Unidades links or class anuncios -->
                     <template

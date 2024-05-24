@@ -152,8 +152,10 @@ class DocenteController extends Controller
     {
         $docente = Docente::find($id);
 
-        $docente->delete();
+        $userDocente = User::find($docente->user_id);
 
-        return Redirect::route('docentes.index');
+        $userDocente->delete();
+
+        return Redirect::route('docentes.index')->with('success', 'Docente Eliminado Exitosamente');
     }
 }

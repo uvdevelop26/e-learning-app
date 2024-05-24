@@ -174,7 +174,7 @@ onMounted(() => {
                     ref="dataDescripcion"
                 ></div>
             </div>
-            <dropdown class="self-start" v-if="$page.props.userRole.role.rol !== 'alumno'">
+            <dropdown class="self-start" v-if="$page.props.userRole.role !== 'alumno'">
                 <template #trigger>
                     <div class="text-right">
                         <button
@@ -222,7 +222,7 @@ onMounted(() => {
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
                     v-else-if="getFileType(materiale.nombre) == 'pdf'">
                     <a
-                        :href="route('materiales.download', materiale.id)"
+                       :href="route('materiales.download', materiale.id)"
                         target="_blank"
                         tabindex="-1"
                         class="w-full h-full px-2 flex items-center gap-2 hover:underline">

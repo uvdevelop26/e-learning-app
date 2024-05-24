@@ -90,11 +90,6 @@ class TareaController extends Controller
         ]);
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
     public function update(TareaRequest $request, $id)
     {
         $tarea = Tarea::findOrFail($id);

@@ -86,6 +86,8 @@ const pushDataOnMenu = async () => {
 const hideFlashMessage = () => {
     setTimeout(() => {
         flashMessage.value = "";
+        pageProps.flash.success = "";
+        successMessage.value = "";
     }, 5000);
 };
 
@@ -141,7 +143,7 @@ const logout = () => {
                                     :key="links.id">
                                     <li
                                         class="capitalize"
-                                        v-if="getUserRole($page.props.userRole.role.rol, index)">
+                                        v-if="getUserRole($page.props.userRole.role, index)">
                                         <NavLink
                                             :href="links.href"
                                             v-if="!links.submenu"

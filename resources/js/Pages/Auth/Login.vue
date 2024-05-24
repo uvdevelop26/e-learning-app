@@ -37,8 +37,7 @@ const submit = () => {
         <template #logo>
             <UndrawIcon class="w-64" />
             <span
-                class="block text-center text-xl font-bold text-secondary font-mono lg:text-lg lg:pt-8"
-            >
+                class="block text-center text-xl font-bold text-secondary font-mono lg:text-lg lg:pt-8" >
                 Politécnica Unves E-Learning
             </span>
         </template>

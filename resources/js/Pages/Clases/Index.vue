@@ -94,7 +94,7 @@ onMounted(fetchClases);
             <!-- create button -->
             <div
                 class="flex items-center mb-6"
-                v-if="$page.props.userRole.role.rol === 'docente'">
+                v-if="$page.props.userRole.role === 'docente'">
                 <Link class="btn-indigo" href="/clases/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Clase</span>
@@ -126,7 +126,7 @@ onMounted(fetchClases);
                                 </Link>
                                 <Dropdown
                                     class="self-start"
-                                    v-if="$page.props.userRole.role.rol !== 'alumno'">
+                                    v-if="$page.props.userRole.role !== 'alumno'">
                                     <template #trigger>
                                         <div
                                             class="pt-2 pr-1 pb-1 overflow-hidden flex items-center justify-end">
@@ -145,7 +145,7 @@ onMounted(fetchClases);
                                             <Link
                                                 class="inline-block py-2 font-bold w-full h-full text-primary hover:underline"
                                                 :href="route('clases.edit', clase.id)"
-                                                v-if="$page.props.userRole.role.rol === 'docente'">
+                                                v-if="$page.props.userRole.role === 'docente'">
                                                 Editar
                                             </Link>
                                             <button

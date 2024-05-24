@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Materiale;
+use App\Models\MaterialeTarea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-class MaterialeController extends Controller
+class MaterialeTareaController extends Controller
 {
-
-
     public function download($id)
     {
-        $materiale = Materiale::find($id);
+        $materiale = MaterialeTarea::find($id);
 
         $path = storage_path("app/{$materiale->url}");
 

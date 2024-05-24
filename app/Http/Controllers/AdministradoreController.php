@@ -156,9 +156,11 @@ class AdministradoreController extends Controller
     {
         $administradore = Administradore::find($id);
 
-        $administradore->delete();
+        $userAdministradore = User::find($administradore->user_id);
 
-        return Redirect::route('administradores.index');
+        $userAdministradore->delete();
+
+        return Redirect::route('administradores.index')->with('success', 'Administrador Eliminado Exitosamente');
 
     }
 }

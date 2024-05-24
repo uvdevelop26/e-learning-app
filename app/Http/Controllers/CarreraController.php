@@ -99,6 +99,6 @@ class CarreraController extends Controller
 
         $carrera->delete();
 
-        return Redirect::route('carreras.index');
+        return Redirect::route('carreras.index')->with('success', 'Carrera Eliminada Exitosamente');
     }
 }

@@ -56,11 +56,11 @@ onMounted(filterDevoluciones);
                         :errors="errors"
                         :entregas="entregas"
                         @updatetareas="updatetareas"
-                        v-if="$page.props.userRole.role.rol === 'alumno'"
+                        v-if="$page.props.userRole.role === 'alumno'"
                     />
                     <div
                         class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group"
-                        v-if="$page.props.userRole.role.rol == 'docente'">
+                        v-if="$page.props.userRole.role === 'docente'">
                         <Link
                             :href="
                                 route('clases.unidades.tareas.entregas.show', {
@@ -84,7 +84,61 @@ onMounted(filterDevoluciones);
                         </Link>
                     </div>
                     <!-- devoluciones -->
-                    <div
+                    <template
+                         v-for="(entregaDev, index) in entregasDevoluciones" 
+                         :key="entregaDev.id">
+                         <div 
+                            v-if="entregasDevoluciones.length" 
+                            class="w-full p-4 rounded-xl border shadow bg-white group">
+                            <h3 class="flex items-center flex-wrap">
+                                <span class="text-lg font-bold mr-2">Devolución</span>
+                                <span class="text-xs text-gray-500">{{ entregaDev.created_at }}</span>
+                            </h3>
+                            <div>
+                                <ul class="text-sm">
+                                    <li class="py-2">
+                                        <span class="font-bold underline mr-2">Puntos Logrados:</span>
+                                        {{ entregaDev.puntaje }}
+                                    </li>
+                                    <li class="py-2 flex flex-col">  
+                                        <div v-for="devoluciones in entregaDev.devoluciones" :key="devoluciones.id" 
+                                             class="flex flex-col">
+                                            <span class="font-bold underline mr-2">Estado:</span>
+                                            <span v-if="devoluciones.devuelto == 1">
+                                                 Completado, &nbsp;
+                                            </span>
+                                            <span v-else="devoluciones.devuelto">
+                                                Pendiente, &nbsp;
+                                            </span>
+                                            <span class="font-bold underline mr-2">Recomendaciones:</span>
+                                            <div v-html="devoluciones.recomendacion"></div>
+                                            <span class="font-bold underline mr-2">Material:</span>
+                                            <div  
+                                                v-for="materiales in devoluciones.materiales"
+                                                :key="materiales.id">
+                                                <a class="flex gap-1 cursor-pointer"  
+                                                :href="route('materialeTareas.download', materiales.id)"
+                                                target="_blank">
+                                                    <span
+                                                        class="text-xs lowercase font-bold text-primary hover:underline">
+                                                        {{ materiales.nombre }}
+                                                    </span>
+                                                    <icon
+                                                        :name="getFileType(materiales.nombre)"
+                                                        class="w-4 h-4 fill-primary"
+                                                    />
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                    </li>
+                                </ul>
+                            </div>
+
+                         </div>
+                        
+                    </template>
+                    <!-- <div
                         class="w-full p-4 rounded-xl border shadow bg-white group"
                         v-if="$page.props.userRole.role.rol === 'alumno' ">
                         <h3 class="text-xl font-bold">Devolución</h3>
@@ -100,7 +154,7 @@ onMounted(filterDevoluciones);
                             <div
                                 v-for="devoluciones in entregaDev.devoluciones"
                                 :key="devoluciones.id">
-                                <!-- info -->
+                       
                                 <div>
                                     <span class="font-bold underline">
                                         Estado:
@@ -113,35 +167,20 @@ onMounted(filterDevoluciones);
                                         Pendiente
                                     </span>
                                 </div>
-                                <!-- recomendation -->
-                                <div
-                                    v-html="devoluciones.recomendacion"
-                                    class="py-2">
-                                </div>
-                                <!-- material -->
+                          
+                                
+                             
                                 <div
                                     v-for="materiales in devoluciones.materiales"
                                     :key="materiales.id">
                                     <div
                                         class="flex items-center h-12 w-full border rounded-xl overflow-hidden">
-                                        <div
-                                            class="flex h-full w-full overflow-hidden px-3 justify-between items-center gap-2 border-r">
-                                            <span
-                                                class="text-xs lowercase font-bold text-primary">
-                                                {{ materiales.nombre }}
-                                            </span>
-                                            <icon
-                                                :name="
-                                                    getFileType(materiales.nombre)
-                                                "
-                                                class="w-4 h-4 fill-primary"
-                                            />
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

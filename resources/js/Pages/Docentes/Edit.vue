@@ -1,13 +1,17 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
+import { watchEffect, ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
 import TextInput from "../../Components/TextInput.vue";
 import Icon from "../../Components/Icon.vue";
 import SelectInput from "../../Components/SelectInput.vue";
 import TextArea from "../../Components/TextArea.vue";
-import { useForm } from "@inertiajs/vue3";
 import LoadingButton from "../../Components/LoadingButton.vue";
-import { watchEffect, ref } from "vue";
+import DangerButton from "../../Components/DangerButton.vue"
+import SecondaryButton from "../../Components/SecondaryButton.vue"
+import Modal from "../../Components/Modal.vue"
+
 
 const props = defineProps({
     docente: Object,
@@ -42,6 +46,7 @@ const form = useForm({
 const cities = props.ciudades;
 
 const filteredCities = ref(null);
+const showConfirm = ref(false);
 
 watchEffect(() => {
     const departamentoId = parseInt(form.departamento_id);
@@ -63,7 +68,10 @@ const update = () => {
 
 const deleteUser = ()=>{
     form.delete(route("docentes.destroy", form.id),{
-        preserveScroll: true
+        preserveScroll: true,
+        onSuccess: ()=>{
+            showConfirm.value = false
+        }
     })
 }
 
@@ -87,8 +95,7 @@ const deleteUser = ()=>{
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="update">
                         <div
-                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md">
                             <text-input
                                 type="text"
                                 class="pb-8 pr-6 w-full lg:w-1/2"
@@ -143,15 +150,13 @@ const deleteUser = ()=>{
                                 label="Departamento"
                                 id="departamento"
                                 v-model="form.departamento_id"
-                                :error="errors.departamento"
-                            >
+                                :error="errors.departamento">
                                 <option :value="null" />
                                 <option
                                     v-for="departamento in departamentos"
                                     :key="departamento.id"
                                     :value="departamento.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ departamento.nombre }}
                                 </option>
                             </select-input>
@@ -160,22 +165,19 @@ const deleteUser = ()=>{
                                 label="Ciudad"
                                 v-model="form.ciudade_id"
                                 id="ciudade_id"
-                                :error="errors.ciudade_id"
-                            >
+                                :error="errors.ciudade_id">
                                 <option :value="null" />
                                 <option
                                     v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ ciudade.nombre }}
                                 </option>
                             </select-input>
                         </div>
                         <div
-                            class="bg-white flex flex-wrap mt-12 -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap mt-12 -mb-8 -mr-6 p-8 shadow rounded-md">
                             <text-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Email"
@@ -212,15 +214,13 @@ const deleteUser = ()=>{
                                 label="Estado"
                                 v-model="form.estado_id"
                                 id="ciudade_id"
-                                :error="errors.estado_id"
-                            >
+                                :error="errors.estado_id">
                                 <option :value="null" />
                                 <option
                                     v-for="estado in estados"
                                     :key="estado.id"
                                     :value="estado.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ estado.estado }}
                                 </option>
                             </select-input>
@@ -229,28 +229,24 @@ const deleteUser = ()=>{
                                 label="Rol"
                                 v-model="form.role_id"
                                 id="ciudade_id"
-                                disabled
-                            >
+                                disabled>
                                 <option :value="null" />
                                 <option
                                     v-for="role in roles"
                                     :key="role.id"
                                     :value="role.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ role.rol }}
                                 </option>
                             </select-input>
                         </div>
                         <div
-                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
-                        >
+                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
                             <button
                                 class="text-red-600 hover:underline"
                                 tabindex="-1"
                                 type="button"
-                                @click="deleteUser"
-                            >
+                                @click="showConfirm = !showConfirm">
                                 Eliminar Usuario
                             </button>
                             <loading-button
@@ -259,6 +255,24 @@ const deleteUser = ()=>{
                                 type="submit"
                                 >Actualizar Usuario
                             </loading-button>
+                            <Modal :show="showConfirm" maxWidth="md">
+                                <template #headerModal>
+                                   <h2 class="flex items-center justify-center">
+                                    <span class="font-bold text-lg text-primary mr-2">¿Desea Eliminar este Docente?</span>                         
+                                    <Icon name="trash" class="w-4 h-4 fill-primary" />
+                                   </h2> 
+                                </template>
+                                <template #bodyModal>
+                                    <div class="flex justify-center space-x-8">
+                                        <DangerButton @click="deleteUser">
+                                            Eliminar
+                                        </DangerButton>
+                                        <SecondaryButton @click="showConfirm = !showConfirm">
+                                            Cancelar
+                                        </SecondaryButton>
+                                    </div>
+                                </template>
+                            </Modal>
                         </div>
                     </form>
                 </div>

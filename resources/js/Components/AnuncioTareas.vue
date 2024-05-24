@@ -7,8 +7,11 @@ import { useForm } from "@inertiajs/vue3";
 import { QuillEditor } from "@vueup/vue-quill";
 import TextInput from "./TextInput.vue";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 import { getFileType } from "../data/handleFiles";
+import { usePage } from "@inertiajs/vue3";
+import { format, differenceInCalendarDays  } from "date-fns";
+
 
 const props = defineProps({
     tarea: Object,
@@ -18,6 +21,28 @@ const props = defineProps({
 const open = ref(false);
 const openModal = ref(false);
 const uploadedFiles = ref(props.tarea.materiales.slice());
+const { props: pageProps } = usePage();
+const currentDate = ref(new Date()); 
+const formattedDate = ref(
+    format(new Date(props.tarea.fecha_entrega), "dd-MM-yyyy")
+);
+
+const daysRemaining = computed(() => {
+  return differenceInCalendarDays(new Date(props.tarea.fecha_entrega), currentDate.value);
+});
+
+const updateCurrentDate = () => {
+  currentDate.value = new Date();
+};
+
+setInterval(updateCurrentDate, 24 * 60 * 60 * 1000);
+
+updateCurrentDate();
+
+watch(currentDate, () => {
+  console.log('Fecha actual actualizada:', currentDate.value);
+  console.log('Días restantes:', daysRemaining.value);
+});
 
 const options = {
     placeholder: "Escribe el contenido...",
@@ -122,15 +147,26 @@ const update = () => {
                         class="text-sm leading-6"
                         v-html="tarea.instruccion">
                     </div>
-                    <div class="pt-4 flex justify-between">
-                        <span class="text-sm capitalize italic text-primary font-bold">Fecha limite: {{ tarea.fecha_entrega }}</span>
-                        <span class="text-sm capitalize italic text-primary font-bold">{{ tarea.puntos }} puntos</span>
-                    </div>
+                    <ul class="pt-4 text-xs capitalize font-bold" v-if="$page.props.userRole.role === 'alumno'">
+                        <li class="text-gray-500 flex justify-between">
+                            <span>Fecha limite: {{ formattedDate }},</span>
+                            <span>{{ tarea.hora_entrega }}hs.</span>         
+                        </li>
+                        <li class="text-gray-500 flex justify-between">
+                            <span>{{ tarea.puntos }} puntos.</span>
+                            <span class="text-green-500" v-if="daysRemaining >= 0">
+                                {{ daysRemaining }} días restantes
+                            </span>
+                            <span v-else class="text-red-500">
+                             tienes {{ Math.abs(daysRemaining) }} días de retraso
+                            </span>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <dropdown
                 class="self-start"
-                v-if="$page.props.userRole.role.rol !== 'alumno'">
+                v-if="$page.props.userRole.role !== 'alumno'">
                 <template #trigger>
                     <div class="text-right">
                         <button
@@ -177,7 +213,7 @@ const update = () => {
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
                     v-else-if="getFileType(materiale.nombre) == 'pdf'">
                     <a
-                        :href="route('materiales.download', materiale.id)"
+                        :href="route('materialeTareas.download', materiale.id)"
                         target="_blank"
                         tabindex="-1"
                         class="w-full h-full px-2 flex items-center gap-2 hover:underline">

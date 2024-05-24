@@ -37,7 +37,7 @@ class UnidadeController extends Controller
             'clase_id' => $request->clase_id
         ]);
 
-        return redirect()->back()->with('success', 'Unidad Registrada Exitosamente');
+        return redirect()->back();;
     }
 
 

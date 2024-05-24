@@ -1,13 +1,16 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
+import { watchEffect, ref } from "vue";
+import { useForm } from "@inertiajs/vue3";
 import TextInput from "../../Components/TextInput.vue";
 import Icon from "../../Components/Icon.vue";
 import SelectInput from "../../Components/SelectInput.vue";
-import TextArea from "../../Components/TextArea.vue";
-import { useForm } from "@inertiajs/vue3";
+import DangerButton from "../../Components/DangerButton.vue"
+import SecondaryButton from "../../Components/SecondaryButton.vue"
+import Modal from "../../Components/Modal.vue"
 import LoadingButton from "../../Components/LoadingButton.vue";
-import { watchEffect, ref } from "vue";
+
 
 const props = defineProps({
     errors: Object,
@@ -43,6 +46,7 @@ const form = useForm({
 const cities = props.ciudades;
 
 const filteredCities = ref(null);
+const showConfirm = ref(false);
 
 watchEffect(() => {
     const departamentoId = parseInt(form.departamento_id);
@@ -54,7 +58,6 @@ watchEffect(() => {
             (city) => city.departamento_id === departamentoId
         );
 
-      //  form.ciudade_id = null;
     }
 });
 
@@ -67,6 +70,9 @@ const update = () => {
 const deleteUser = () => {
     form.delete(route("alumnos.destroy", form.id), {
         preserveScroll: true,
+        onSuccess: ()=>{
+            showConfirm.value = false;
+        }
     });
 };
 </script>
@@ -246,15 +252,33 @@ const deleteUser = () => {
                                 class="text-red-600 hover:underline"
                                 tabindex="-1"
                                 type="button"
-                                @click="deleteUser">
+                                @click="showConfirm = !showConfirm">
                                 Eliminar Usuario
                             </button>
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"
-                                type="submit"
-                                >Actualizar Usuario
+                                type="submit">
+                                Actualizar Usuario
                             </loading-button>
+                            <Modal :show="showConfirm" maxWidth="md">
+                                <template #headerModal>
+                                   <h2 class="flex items-center justify-center">
+                                    <span class="font-bold text-lg text-primary mr-2">¿Desea Eliminar este Alumno?</span>                         
+                                    <Icon name="trash" class="w-4 h-4 fill-primary" />
+                                   </h2> 
+                                </template>
+                                <template #bodyModal>
+                                    <div class="flex justify-center space-x-8">
+                                        <DangerButton @click="deleteUser">
+                                            Eliminar
+                                        </DangerButton>
+                                        <SecondaryButton @click="showConfirm = !showConfirm">
+                                            Cancelar
+                                        </SecondaryButton>
+                                    </div>
+                                </template>
+                            </Modal>
                         </div>
                     </form>
                 </div>

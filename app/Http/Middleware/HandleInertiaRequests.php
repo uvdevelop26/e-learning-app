@@ -48,7 +48,7 @@ class HandleInertiaRequests extends Middleware
             'userRole' => function () use ($request) {
                 $user = $request->user();
                 return $user ? array_merge($user->toArray(), [
-                    'role' => $user->role // Acceder a la relación "persona" del usuario
+                    'role' => $user->role->rol // Acceder a la relación "persona" del usuario
                 ]) : null;
             },
         ]);
