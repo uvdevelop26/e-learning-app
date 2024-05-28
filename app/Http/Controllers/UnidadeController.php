@@ -46,7 +46,15 @@ class UnidadeController extends Controller
 
         $unidade = Unidade::findOrFail($unidade);
 
-        $anunciosYtareas = Unidade::with(['anuncios.comentarios.user.alumnos.persona', 'anuncios.materiales', 'tareas'])
+        $anunciosYtareas = Unidade::with(
+            [
+                'anuncios.comentarios.user.alumnos.persona',
+                'anuncios.comentarios.user.docentes.persona',
+                'anuncios.comentarios.user.administradores.persona',
+                'anuncios.materiales',
+                'tareas'
+            ]
+        )
             ->findOrFail($unidade->id);
 
         return Inertia::render('Unidades/Show', [

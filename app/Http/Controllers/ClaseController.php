@@ -204,4 +204,13 @@ class ClaseController extends Controller
 
         $clase->alumnos()->detach($request->alumnos);
     }
+
+    public function acumulativos($id)
+    {
+        $clase = Clase::find($id)
+            ->with(['unidades.tareas.entregas.devoluciones'])
+            ->get();
+
+        return Inertia::render('Clases/Acumulativos', ['clase' => $clase]);
+    }
 }

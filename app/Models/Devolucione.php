@@ -14,6 +14,7 @@ class Devolucione extends Model
     protected $fillable = [
         'recomendacion',
         'devuelto',
+        'puntos',
         'entrega_id'
     ];
 

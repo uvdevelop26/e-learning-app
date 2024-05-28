@@ -14,25 +14,12 @@ use Inertia\Inertia;
 class EntregaController extends Controller
 {
 
-    public function index()
-    {
-        // return Inertia::render('Entregas/')
-    }
-
-
-    public function create()
-    {
-        //
-    }
-
-
     public function store(EntregaRequest $request)
     {
         $materiales = $request->url;
 
         $entrega = Entrega::create([
             'completado' => $request->completado,
-            'puntaje' => $request->puntaje,
             'tarea_id' => $request->tarea_id,
             'user_id' => $request->user_id
         ]);
@@ -70,18 +57,12 @@ class EntregaController extends Controller
     }
 
 
-    public function edit($id)
-    {
-        //
-    }
-
     public function update(EntregaRequest $request, $id)
     {
         $entrega = Entrega::findOrFail($id);
 
         $entrega->update([
             'completado' => $request->completado,
-            'puntaje' => $request->puntaje,
             'tarea_id' => $request->tarea_id,
             'user_id' => $request->user_id
         ]);
@@ -154,16 +135,5 @@ class EntregaController extends Controller
                 ]);
             }
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

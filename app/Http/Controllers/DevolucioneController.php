@@ -12,22 +12,9 @@ use Illuminate\Support\Facades\Storage;
 class DevolucioneController extends Controller
 {
 
-    public function index()
-    {
-        //
-    }
-
-
-    public function create()
-    {
-        //
-    }
-
-
     public function store(DevolucioneRequest $request)
     {
         $materiales = $request->url;
-        $puntaje = $request->puntaje;
         //previous devoluciones needs to be deleted
         $devoluciones = Entrega::find($request->entrega_id)
             ->devoluciones()
@@ -65,6 +52,7 @@ class DevolucioneController extends Controller
         $devolucione = Devolucione::create([
             'recomendacion' => $request->recomendacion,
             'devuelto' => $request->devuelto,
+            'puntos' => $request->puntos,
             'entrega_id' => $request->entrega_id
         ]);
 
@@ -84,45 +72,16 @@ class DevolucioneController extends Controller
                 ]);
             }
         }
-
-        if (!empty($puntaje)) {
-            $entrega = Entrega::find($request->entrega_id);
-            $entrega->update([
-                'puntaje' => $request->puntaje
-            ]);
-        }
-    }
-
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
     }
 
 
     public function destroy($id)
     {
         $devolucione = Devolucione::find($id);
-        $entrega = Entrega::find($devolucione->entrega_id);
 
         $materiales = $devolucione->materiales;
 
         $devolucione->delete();
-
-        $entrega->update([
-            'puntaje' => null
-        ]);
 
         if (!empty($materiales)) {
             foreach ($materiales as $key => $materiale) {

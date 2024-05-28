@@ -17,7 +17,6 @@ class EntregaRequest extends FormRequest
     {
         return [
             'completado' => 'nullable',
-            'puntaje' => 'nullable|numeric',
             'tarea_id' => 'required|numeric',
             'user_id' => 'required|numeric',
             'url' => 'nullable|array',

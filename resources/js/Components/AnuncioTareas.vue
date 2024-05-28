@@ -7,32 +7,35 @@ import { useForm } from "@inertiajs/vue3";
 import { QuillEditor } from "@vueup/vue-quill";
 import TextInput from "./TextInput.vue";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { getFileType } from "../data/handleFiles";
+import { format, differenceInCalendarDays } from "date-fns";
 import { usePage } from "@inertiajs/vue3";
-import { format, differenceInCalendarDays  } from "date-fns";
-
 
 const props = defineProps({
     tarea: Object,
-    errors: Object
+    errors: Object,
 });
 
+const { props: pageProps } = usePage();
 const open = ref(false);
 const openModal = ref(false);
 const uploadedFiles = ref(props.tarea.materiales.slice());
-const { props: pageProps } = usePage();
-const currentDate = ref(new Date()); 
+const currentDate = ref(new Date());
 const formattedDate = ref(
     format(new Date(props.tarea.fecha_entrega), "dd-MM-yyyy")
 );
+const devuelto = ref(null);
 
 const daysRemaining = computed(() => {
-  return differenceInCalendarDays(new Date(props.tarea.fecha_entrega), currentDate.value);
+    return differenceInCalendarDays(
+        new Date(props.tarea.fecha_entrega),
+        currentDate.value
+    );
 });
 
 const updateCurrentDate = () => {
-  currentDate.value = new Date();
+    currentDate.value = new Date();
 };
 
 setInterval(updateCurrentDate, 24 * 60 * 60 * 1000);
@@ -40,8 +43,8 @@ setInterval(updateCurrentDate, 24 * 60 * 60 * 1000);
 updateCurrentDate();
 
 watch(currentDate, () => {
-  console.log('Fecha actual actualizada:', currentDate.value);
-  console.log('Días restantes:', daysRemaining.value);
+    console.log("Fecha actual actualizada:", currentDate.value);
+    console.log("Días restantes:", daysRemaining.value);
 });
 
 const options = {
@@ -53,7 +56,6 @@ const options = {
         ],
     },
 };
-
 
 const form = useForm({
     /* datos de la tarea */
@@ -78,7 +80,6 @@ const deleteFile = (index) => {
 };
 
 const setOpenModal = () => {
-
     form.id = props.tarea.id;
     form.titulo = props.tarea.titulo;
     form.instruccion = props.tarea.instruccion;
@@ -112,7 +113,7 @@ const update = () => {
     const newFiles = uploadedFiles.value.filter((item) => item.name);
     const oldFiles = uploadedFiles.value.filter((item) => item.id);
     const materiableId = props.tarea.id;
-    const materiableType = 'App\\Models\\Tarea';
+    const materiableType = "App\\Models\\Tarea";
 
     form.url = newFiles;
     form.nombre = oldFiles;
@@ -124,15 +125,30 @@ const update = () => {
         forceFormData: true,
         onSuccess: () => {
             cancelOperation();
-           /*  emit("updateanuncios"); */
+            /*  emit("updateanuncios"); */
             uploadedFiles.value = props.tarea.materiales.slice();
         },
     });
-
 };
 
+const handleDevoluciones = () => {
+    if (pageProps.userRole.role === "alumno") {
+        const entregas = props.tarea.entregas;
+        const userId = pageProps.auth.user.id;
 
+        const userEntrega = entregas
+            .filter((item) => item.user_id == userId)
+            .flatMap((item) => item.devoluciones);
 
+        if (userEntrega.length) {
+            devuelto.value = userEntrega[userEntrega.length - 1].devuelto;
+        } else {
+            devuelto.value = 0;
+        }
+    }
+};
+
+onMounted(handleDevoluciones);
 </script>
 <template>
     <div class="w-full p-4 rounded-xl border shadow bg-white group">
@@ -145,20 +161,37 @@ const update = () => {
                     </h3>
                     <div
                         class="text-sm leading-6"
-                        v-html="tarea.instruccion">
-                    </div>
-                    <ul class="pt-4 text-xs capitalize font-bold" v-if="$page.props.userRole.role === 'alumno'">
+                        v-html="tarea.instruccion"
+                    ></div>
+                    <ul
+                        class="pt-4 text-xs capitalize font-bold"
+                        v-if="$page.props.userRole.role === 'alumno'">
                         <li class="text-gray-500 flex justify-between">
                             <span>Fecha limite: {{ formattedDate }},</span>
-                            <span>{{ tarea.hora_entrega }}hs.</span>         
+                            <span>{{ tarea.hora_entrega }}hs.</span>
                         </li>
                         <li class="text-gray-500 flex justify-between">
                             <span>{{ tarea.puntos }} puntos.</span>
-                            <span class="text-green-500" v-if="daysRemaining >= 0">
+                            <span
+                                class="text-green-500"
+                                v-if="daysRemaining >= 0 && devuelto == 0">
                                 {{ daysRemaining }} días restantes
                             </span>
-                            <span v-else class="text-red-500">
-                             tienes {{ Math.abs(daysRemaining) }} días de retraso
+                            <span
+                                class="text-green-500"
+                                v-else-if="daysRemaining >= 0 && devuelto == 1">
+                                {{ daysRemaining }} días restantes
+                            </span>
+                            <span
+                                v-else-if="!daysRemaining >= 0 && devuelto == 0"
+                                class="text-red-500">
+                                tienes {{ Math.abs(daysRemaining) }} días de
+                                retraso
+                            </span>
+                            <span
+                                v-else-if="!daysRemaining >= 0 && devuelto == 1"
+                                class="text-red-500">
+                                Entregado con retraso
                             </span>
                         </li>
                     </ul>
@@ -166,7 +199,8 @@ const update = () => {
             </div>
             <dropdown
                 class="self-start"
-                v-if="$page.props.userRole.role !== 'alumno'">
+                v-if="$page.props.userRole.role !== 'alumno'"
+            >
                 <template #trigger>
                     <div class="text-right">
                         <button
@@ -193,7 +227,6 @@ const update = () => {
         <!-- materiales -->
         <div class="pt-4 flex flex-col gap-4" v-if="tarea.materiales">
             <div v-for="materiale in tarea.materiales" :key="materiale.id">
-                <!-- show images -->
                 <div
                     v-if="getFileType(materiale.nombre) == 'picture'"
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100">
@@ -208,7 +241,7 @@ const update = () => {
                         </span>
                     </a>
                 </div>
-                <!-- show pdf's -->
+
                 <div
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100"
                     v-else-if="getFileType(materiale.nombre) == 'pdf'">
@@ -223,7 +256,7 @@ const update = () => {
                         </span>
                     </a>
                 </div>
-                <!-- show documents -->
+
                 <div
                     v-else-if="getFileType(materiale.nombre) == 'office'"
                     class="h-14 border rounded-2xl overflow-hidden hover:bg-gray-100">
@@ -269,7 +302,7 @@ const update = () => {
                     v-model:content="form.instruccion"
                     :error="errors.instruccion"
                 />
-                <!-- upload elements -->
+
                 <div class="py-2 flex gap-3 items-center">
                     <label
                         for="upload"
@@ -289,7 +322,7 @@ const update = () => {
                         <icon name="link" class="w-4 h-4 fill-primary" />
                     </button>
                 </div>
-                <!-- show uploaded elements -->
+
                 <ul class="flex py-2 flex-wrap gap-3">
                     <li
                         v-for="(files, index) in uploadedFiles"

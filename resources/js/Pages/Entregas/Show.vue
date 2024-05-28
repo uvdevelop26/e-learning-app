@@ -11,6 +11,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { router } from "@inertiajs/vue3";
 import { getFileType } from "../../data/handleFiles";
 
+
 const props = defineProps({
     entregas: Array,
     tareaAsignada: Array,
@@ -24,12 +25,12 @@ const uploadedFiles = ref([]);
 const devolucionState = ref(null)
 
 const form = useForm({
-    /* recomendacion table */
+    /* devolucione table */
     recomendacion: "",
     devuelto: "",
+    puntos: "",
     entrega_id: "",
-    /* update entregas */
-    puntaje: "",
+   
     /* materiales */
     nombre: [],
     url: [],
@@ -111,7 +112,7 @@ const cancelOperation = () => {
             }
         }
         form.devuelto = "";
-        form.puntaje = "";
+        form.puntos = "";
         form.entrega_id = "";
         uploadedFiles.value = [];
         form.url = [];
@@ -141,7 +142,7 @@ const deleteDevolucion = (data) => {
             preserveScroll: true,
         });
     } else {
-        console.log("no");
+        console.log("error");
     }
 };
 
@@ -193,15 +194,15 @@ const deleteDevolucion = (data) => {
                                 </th>
                                 <th
                                     class="pb-4 pt-6 px-6 text-primary underline">
-                                    Puntaje
-                                </th>
-                                <th
-                                    class="pb-4 pt-6 px-6 text-primary underline">
                                     Materiales
                                 </th>
                                 <th
                                     class="pb-4 pt-6 px-6 text-primary underline">
                                     Estado
+                                </th>
+                                <th
+                                    class="pb-4 pt-6 px-6 text-primary underline">
+                                    Puntos Logrados
                                 </th>
                                 <th
                                     class="pb-4 pt-6 px-6 text-primary underline">
@@ -220,16 +221,7 @@ const deleteDevolucion = (data) => {
                                         {{ entrega.user.alumnos[0].persona.apellido }}
                                     </div>
                                 </td>
-                                <td class="border-t py-4">
-                                    <div>
-                                        <span>{{ entrega.puntaje }}</span> /
-                                        &nbsp;
-                                        <span class="text-sm">
-                                            {{ tareaAsignada.puntos }} pts.
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="border-t py-4">
+                                 <td class="border-t py-4">
                                     <div class="flex flex-col gap-2">
                                         <div v-for="materiales in entrega.materiales">
                                             <a
@@ -267,6 +259,18 @@ const deleteDevolucion = (data) => {
                                             class="text-primary font-bold capitalize">
                                             sin devolver
                                         </div>
+                                    </div>
+                                </td>
+                                <td class="border-t py-4">
+                                    <div>
+                                        <span v-if="entrega.devoluciones.length">
+                                            {{ entrega.devoluciones[0].puntos }}
+                                        </span>
+                                        <span v-else> ___</span> /
+                                        &nbsp;
+                                        <span class="text-sm">
+                                            {{ tareaAsignada.puntos }} pts.
+                                        </span>
                                     </div>
                                 </td>
                                 <td class="border-t py-4">
@@ -369,7 +373,7 @@ const deleteDevolucion = (data) => {
                             type="number"
                             placeholder="Puntos logrados"
                             label="Puntaje"
-                            v-model="form.puntaje"
+                            v-model="form.puntos"
                         />
                         <div>
                             <label

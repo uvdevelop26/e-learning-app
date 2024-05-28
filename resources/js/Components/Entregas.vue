@@ -22,7 +22,6 @@ const uploadedFileUpdate = ref(null);
 const form = useForm({
     /* entregas data */
     completado: "",
-    puntaje: "",
     tarea_id: "",
     user_id: "",
     /* materiale_tarea data */
@@ -37,7 +36,6 @@ const formEdit = useForm({
     /* entregas data */
     id: "",
     completado: "",
-    puntaje: "",
     tarea_id: "",
     user_id: "",
     /* materiale_tarea data */
@@ -161,9 +159,6 @@ const update = () => {
             emit("updatetareas");
             setTimeout(() => {
                 filterEntregas();
-                // uploadedFiles.value = [];
-                // form.url = [];
-                //form.completado = "";
             }, 200);
         },
     });
@@ -172,7 +167,7 @@ const update = () => {
 onMounted(filterEntregas);
 </script>
 <template>
-    <div class="w-full p-4 rounded-xl border shadow bg-white group">
+    <div class="w-full max-w-sm p-4 rounded-xl border shadow bg-white group">
         <!-- text info and options -->
         <div class="flex items-center justify-between gap-4">
             <div class="w-full">

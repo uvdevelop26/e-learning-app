@@ -1,15 +1,10 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link, Head } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
-import Card from "../../Components/Card.vue";
-import Dropdown from "../../Components/Dropdown.vue";
-import { ref, watchEffect, onMounted } from "vue";
-import { router } from "@inertiajs/vue3";
+import { ref, watchEffect } from "vue";
 import Modal from "../../Components/Modal.vue";
-import TextInput from "../../Components/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
-import LoadingButton from "../../Components/LoadingButton.vue";
 
 const props = defineProps({
     clase: Array,
@@ -215,7 +210,7 @@ const deleteAlumno = (id) => {
                     }"
                     @click="submit()"
                     :disabled="form.processing">
-                    Enviar
+                    Agregar
                 </button>
             </template>
         </modal>

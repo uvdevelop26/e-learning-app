@@ -76,6 +76,8 @@ class TareaController extends Controller
 
         $tareaYmateriales = Tarea::with([
             'comentarios.user.alumnos.persona',
+            'comentarios.user.docentes.persona',
+            'comentarios.user.administradores.persona',
             'materiales', 'entregas.user',
             'entregas.materiales',
             'entregas.devoluciones.materiales'
@@ -188,12 +190,6 @@ class TareaController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $tarea = Tarea::findOrFail($id);

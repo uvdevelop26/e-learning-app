@@ -62,25 +62,25 @@ class PermissionSeeder extends Seeder
             User::create($usuario);
         }
 
-        $persona_id = Persona::all()->random()->id;
+        /* $persona_id = Persona::all()->random()->id; */
         $carrera_id = Carrera::all()->random()->id;
 
         Administradore::create([
             'cargo' => 'secretario/a',
-            'persona_id' => $persona_id,
+            'persona_id' => 1,
             'user_id' => 1,
             'estado_id' => 1
         ]);
 
         Docente::create([
             'profesion' => 'Ingeniero en Sistemas',
-            'persona_id' => $persona_id,
+            'persona_id' => 2,
             'user_id' => 2,
             'estado_id' => 1
         ]);
 
         Alumno::create([
-            'persona_id' => $persona_id,
+            'persona_id' => 3,
             'carrera_id' => $carrera_id,
             'user_id' => 3,
             'estado_id' => 1

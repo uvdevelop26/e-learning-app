@@ -31,7 +31,7 @@ defineExpose({ focus: () => textArea.value.focus() });
 <template> 
     <div>
         <label :for="id" class="font-bold">{{ label }}</label>
-        <textarea class="p-0 w-full whitespace-normal border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm text-left" 
+        <textarea class="p-2 w-full whitespace-normal border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm text-left" 
          :id="id" 
          cols="30" 
          rows="4"

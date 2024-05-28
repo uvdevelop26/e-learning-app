@@ -12,7 +12,6 @@ return new class extends Migration
         Schema::create('entregas', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('completado')->nullable();
-            $table->integer('puntaje')->nullable();
             $table->unsignedBigInteger('tarea_id');
             $table->unsignedBigInteger('user_id');
 

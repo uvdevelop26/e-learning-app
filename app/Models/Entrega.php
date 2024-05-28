@@ -13,7 +13,6 @@ class Entrega extends Model
 
     protected $fillable = [
         'completado',
-        'puntaje',
         'tarea_id',
         'user_id'
     ];

@@ -126,7 +126,7 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
     Route::get("clases/{clase}/personas", 'showPersonas')->name("clases.showPersonas");
     Route::post('clases/asign-alumnos', 'asignAlumnos')->name('clases.asignAlumnos');
     Route::delete('clases/revoke-alumnos/{clase}', 'revokeAlumno')->name('clases.revokeAlumno');
-
+    Route::get('clases/{clase}/acumulativos', 'acumulativos')->name('clases.acumulativos');
 
 
     Route::prefix('clases/{clase}/unidades')->controller(UnidadeController::class)->group(function () {
