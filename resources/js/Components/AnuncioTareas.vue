@@ -165,7 +165,7 @@ onMounted(handleDevoluciones);
                     ></div>
                     <ul
                         class="pt-4 text-xs capitalize font-bold"
-                        v-if="$page.props.userRole.role === 'alumno'">
+                        v-if="$page.props.userRole.role !== 'administrador'">
                         <li class="text-gray-500 flex justify-between">
                             <span>Fecha limite: {{ formattedDate }},</span>
                             <span>{{ tarea.hora_entrega }}hs.</span>

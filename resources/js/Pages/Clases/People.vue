@@ -162,7 +162,7 @@ const deleteAlumno = (id) => {
                     <div class="relative">
                         <input
                             type="search"
-                            class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm"
+                            class="w-full border-gray-300 focus:border-secondary focus:ring-secondary rounded-md shadow-sm placeholder:text-xs placeholder:italic"
                             :class="{ 'bg-gray-100': inputDisabled }"
                             id="buscar"
                             v-model="data"

@@ -3,7 +3,8 @@ import { ref, getCurrentInstance, computed, watch } from "vue";
 import Dropdown from "./Dropdown.vue";
 import Icon from "./Icon.vue";
 import { Link } from "@inertiajs/vue3";
-import { format, differenceInCalendarDays  } from "date-fns";
+import { format } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import { router } from "@inertiajs/vue3";
 
 
@@ -16,25 +17,10 @@ const props = defineProps({
 
 
 const open = ref(false);
-/* const currentDate = ref(new Date()); */
+/* const utcDate = zonedTimeToUtc(new Date(props.data.fecha_entrega), 'UTC');
 const formattedDate = ref(
-    format(new Date(props.data.fecha_entrega), "dd-MM-yyyy")
-);
-/* 
-const daysRemaining = computed(() => {
-  return differenceInCalendarDays(new Date(props.data.fecha_entrega), currentDate.value);
-}); */
-
-/* const updateCurrentDate = () => {
-  currentDate.value = new Date();
-}; */
-
-/* setInterval(updateCurrentDate, 24 * 60 * 60 * 1000); */
-
-/* watch(currentDate, () => {
-  console.log('Fecha actual actualizada:', currentDate.value);
-  console.log('Días restantes:', daysRemaining.value);
-}); */
+    format(utcDate, "dd-MM-yyyy")
+); */
 
 const { emit } = getCurrentInstance();
 
@@ -61,7 +47,7 @@ const deleteTarea = () => {
                         class="block py-2 group-hover:text-primary">
                         <span>Tarea {{ data.titulo }}</span> &nbsp;
                         <span class="text-sm text-gray-500">
-                           Fecha de Entrega - {{ formattedDate }} - {{ data.hora_entrega }}hs.
+                          <!-- Fecha de Entrega - {{ formattedDate }} - {{ data.hora_entrega }}hs. -->
                           <!--  <span class="text-green-400">quedan {{ daysRemaining }} días restantes</span>  -->
                         </span>
                         

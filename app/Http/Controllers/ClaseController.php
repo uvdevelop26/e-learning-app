@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class ClaseController extends Controller
 {
@@ -207,10 +208,25 @@ class ClaseController extends Controller
 
     public function acumulativos($id)
     {
-        $clase = Clase::find($id)
-            ->with(['unidades.tareas.entregas.devoluciones'])
+        $results = Clase::select(
+            'clases.codigo as clase',
+            'unidades.tema as unidad',
+            'tareas.titulo as actividad',
+            'tareas.puntos as puntos_asig',
+            DB::raw("COALESCE(users.email, 'sin entregar') as alumno"),
+            DB::raw("COALESCE(entregas.completado, 'no entregado') as entregado"),
+            DB::raw("COALESCE(devoluciones.devuelto, 'sin devolver') as corregido"),
+            DB::raw("COALESCE(devoluciones.puntos, 'no entregado') as puntos_logrados")
+        )
+            ->join('unidades', 'clases.id', '=', 'unidades.clase_id')
+            ->join('tareas', 'unidades.id', '=', 'tareas.unidade_id')
+            ->leftJoin('entregas', 'tareas.id', '=', 'entregas.tarea_id')
+            ->leftJoin('users', 'entregas.user_id', '=', 'users.id')
+            ->leftJoin('devoluciones', 'entregas.id', '=', 'devoluciones.entrega_id')
+            ->where('clases.id', $id)
             ->get();
 
-        return Inertia::render('Clases/Acumulativos', ['clase' => $clase]);
+
+        return Inertia::render('Clases/Acumulativos', ['results' => $results]);
     }
 }

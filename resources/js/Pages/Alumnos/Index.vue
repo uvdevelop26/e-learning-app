@@ -169,7 +169,7 @@ const enter = (el, done) => {
                                 No se encuentran resultados
                             </span>
                         </tr>
-                    </transition-group tag="tbody">
+                    </transition-group>
                 </table>
             </div>
             <pagination class="mt-6" :links="alumnos.links" />
