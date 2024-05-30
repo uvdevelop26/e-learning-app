@@ -8,18 +8,23 @@ import { reactive, watchEffect } from "vue";
 import { pickBy } from "lodash";
 import { router } from "@inertiajs/vue3";
 import gsap from "gsap";
+import { onMounted, computed  } from "vue";
 
 const props = defineProps({
     alumnos: Array,
     filters: Object,
 });
 
+
 const form = reactive({
     search: props.filters.search,
+    page: 1
 });
 
 const reset = () => {
     form.search = null;
+    form.page = 1;
+    router.replace(route('alumnos.index', {}));
 };
 
 watchEffect(() => {
@@ -28,6 +33,7 @@ watchEffect(() => {
         route("alumnos.index", Object.keys(query).length ? query : {})
     );
 });
+
 
 /* animation */
 const beforeEnter = (el) => {
@@ -45,6 +51,12 @@ const enter = (el, done) => {
     });
 };
 
+onMounted(() => {
+    if (props.filters.page) {
+        form.page = props.filters.page;
+    }
+});
+
 
 </script>
 
@@ -53,7 +65,7 @@ const enter = (el, done) => {
         <Head title="Alumnos" />
 
         <template #header>
-            <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+            <h2 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                 <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                     <Icon name="user" class="w-2 h-2 fill-white" />
                 </div> 
@@ -172,7 +184,7 @@ const enter = (el, done) => {
                     </transition-group>
                 </table>
             </div>
-            <pagination class="mt-6" :links="alumnos.links" />
+            <pagination class="mt-6" :links="alumnos.links" @change-page="page => form.page = page" />
         </div>
     </AppLayout>
 </template>

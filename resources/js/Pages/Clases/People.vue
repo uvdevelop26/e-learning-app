@@ -100,8 +100,14 @@ const deleteAlumno = (id) => {
 
         <template #header>
             <h2
-                class="font-semibold flex justify-between items-center">
-                <span class="text-xl text-primary capitalize">clase {{ clase.codigo }} / Personas</span> 
+                class="font-semibold text-xl flex justify-between items-center">
+                <div class="text-primary font-mono flex items-center gap-2">
+                    <div
+                    class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                         <Icon name="homework" class="w-2 h-2 fill-white" />
+                    </div>
+                    clase {{ clase.codigo }} / Personas
+                </div>
             </h2>
         </template>
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
@@ -109,13 +115,19 @@ const deleteAlumno = (id) => {
                 <div class="py-4">
                     <div class="py-4 px-4 border-b border-primary">
                         <h3 class="text-2xl font-bold text-primary">
-                            Profesor
+                            Docente
                         </h3>
                     </div>
-                    <div class="py-4 px-4 text-md">
-                        {{ docente.nombre }}
-                        {{ docente.apellido }}
-                    </div>
+                    <ul class="py-4 px-4 text-md">
+                        <li class="py-1">
+                            <span class="font-bold">Prof: </span>
+                            {{ docente.nombre }} {{ docente.apellido }} 
+                        </li>
+                        <li class="py-1">
+                            <span class="font-bold">Teléfono: </span>
+                            {{ docente.telefono }}
+                        </li>
+                    </ul>
                 </div>
                 <div class="py-4">
                     <div
@@ -134,10 +146,13 @@ const deleteAlumno = (id) => {
                             v-for="alumno in alumnos"
                             :key="alumno.id"
                             class="py-2 px-2 rounded-md flex justify-between hover:bg-gray-100">
-                            <span>
+                            <div>
                                 {{ alumno.persona.nombre }}
                                 {{ alumno.persona.apellido }}
-                            </span>
+                                <span class="ml-2 text-sm text-gray-500">
+                                    CI número: {{ alumno.persona.ci_numero }}
+                                </span>                
+                            </div> 
                             <button
                                 class="p-1"
                                 @click="deleteAlumno(alumno.id)"
@@ -189,7 +204,7 @@ const deleteAlumno = (id) => {
                                 @click="selectAlumno(alumnos.alumno_id)"
                                 class="inline-block w-full h-full text-left">
                                 {{ alumnos.nombre_persona
-                                }}{{ alumnos.apellido_persona }}
+                                }} {{ alumnos.apellido_persona }}
                             </button>
                         </li>
                     </ul>

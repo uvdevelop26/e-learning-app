@@ -48,7 +48,8 @@ class EntregaController extends Controller
     {
         $tareaAsignada = Tarea::find($tarea);
         $totalAlumnos = Clase::find($clase)->alumnos()->count();
-        $entregas = Entrega::where('tarea_id', $tarea)->with('user.alumnos.persona', 'materiales', 'devoluciones')->get();
+        $entregas = Entrega::where('tarea_id', $tarea)
+            ->with('user.alumnos.persona', 'materiales', 'devoluciones')->get();
         return Inertia::render('Entregas/Show', [
             'entregas' => $entregas,
             'tareaAsignada' => $tareaAsignada,

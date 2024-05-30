@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import Card from "../Components/Card.vue";
+import Icon from "../Components/Icon.vue"
 import { Head, Link } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 import UndrawTeacher from "../Components/UndrawTeacher.vue";
@@ -19,8 +19,11 @@ const props = defineProps({
         <Head title="Dashboard" />
 
         <template #header>
-            <h2 class="font-semibold text-xl flex justify-between items-center">
-                <span class="mr-3 text-primary">Dashboard</span>
+            <h2 class="font-semibold text-xl text-primary font-mono flex items-center gap-4">
+                <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                    <Icon name="dashboard" class="w-3 h-3 fill-white" />
+                </div> 
+                Dashboard
             </h2>
         </template>
         <!-- body -->
@@ -30,30 +33,30 @@ const props = defineProps({
                 <header
                     class="h-56 w-full p-2 flex flex-col items-center bg-gradient-to-tr from-primary via-secondary to-secondary text-center rounded-2xl overflow-hidden md:h-72 lg:h-80 lg:flex-row lg:justify-center">
                     <div v-if="user.alumnos.length !== 0">
-                        <h1 class="text-2xl font-bold text-white lg:text-4xl">
+                        <h3 class="text-2xl font-bold font-mono text-white lg:text-4xl">
                             Bienvenido {{ user.alumnos[0].persona.nombre }}
-                        </h1>
-                        <p class="font-bold text-white lg:text-xl italic">
+                        </h3>
+                        <p class="font-thin text-white lg:text-xl italic">
                             Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
                             amet.
                         </p>
                     </div>
                     <div v-if="user.docentes.length !== 0">
-                        <h1 class="text-2xl font-bold text-white lg:text-4xl">
+                        <h3 class="text-2xl font-bold font-mono text-white lg:text-4xl">
                             Bienvenido Prof.
                             {{ user.docentes[0].persona.nombre }}
-                        </h1>
-                        <p class="font-bold text-white lg:text-xl italic">
+                        </h3>
+                        <p class="font-thin text-white font-mono lg:text-xl italic">
                             Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
                             amet.
                         </p>
                     </div>
                     <div v-if="user.administradores.length !== 0">
-                        <h1 class="text-2xl font-bold text-white lg:text-4xl">
+                        <h3 class="text-2xl font-bold font-mono text-white lg:text-4xl">
                             Bienvenido Admin.
                             {{ user.administradores[0].persona.nombre }}
-                        </h1>
-                        <p class="font-bold text-white lg:text-xl italic">
+                        </h3>
+                        <p class="text-white font-mono font-thin italic lg:text-xl">
                             Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
                             amet.
                         </p>

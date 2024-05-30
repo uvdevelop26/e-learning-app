@@ -51,6 +51,9 @@ class UnidadeController extends Controller
                 'anuncios.comentarios.user.alumnos.persona',
                 'anuncios.comentarios.user.docentes.persona',
                 'anuncios.comentarios.user.administradores.persona',
+                'anuncios.user.alumnos.persona',
+                'anuncios.user.docentes.persona',
+                'anuncios.user.administradores.persona',
                 'anuncios.materiales',
                 'tareas'
             ]

@@ -19,12 +19,12 @@ class MateriaController extends Controller
 
     public function index(Request $request)
     {
-        $queries = ['search'];
+        $queries = ['search', 'page'];
 
         $materias = Materia::with('semestre.carrera')
             ->orderBy('id', 'desc')
             ->filter($request->only($queries))
-            ->get();
+            ->paginate(6);
 
         return Inertia::render('Materias/Index', [
             'materias' => $materias,

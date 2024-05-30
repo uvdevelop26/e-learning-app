@@ -20,6 +20,10 @@ module.exports = {
                 'primary':'#104284',
                 'secondary':'#6875F5'
 
+            },
+
+            fontSize:{
+                'xxs' : '0.60rem'
             }
         },
     },

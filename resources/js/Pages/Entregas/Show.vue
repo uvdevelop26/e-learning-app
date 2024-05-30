@@ -3,13 +3,14 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
 import Modal from "../../Components/Modal.vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import TextInput from "../../Components/TextInput.vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { router } from "@inertiajs/vue3";
 import { getFileType } from "../../data/handleFiles";
+import moment from 'moment-timezone';
 
 
 const props = defineProps({
@@ -22,7 +23,6 @@ const props = defineProps({
 const openModal = ref(false);
 const editorRef = ref(null);
 const uploadedFiles = ref([]);
-const devolucionState = ref(null)
 
 const form = useForm({
     /* devolucione table */
@@ -159,14 +159,20 @@ const deleteDevolucion = (data) => {
         <div class="py-12 px-4 lg:px-8 max-w-7xl mx-auto">
             <!--  -->
             <div
-                class="w-full p-4 rounded-xl border shadow bg-white group max-w-4xl">
+                class="w-full p-4 rounded-xl border shadow bg-white group max-w-5xl">
                 <div class="w-full">
-                    <div class="flex flex-col py-4 justify-between">
-                        <h3 class="text-xl font-bold">
-                            {{ tareaAsignada.titulo }}
-                        </h3>
+                    <div class="flex flex-col py-4">
+                        <div class="flex flex-col items-center justify-center gap-4">
+                            <h3 class="text-xl text-primary font-bold">
+                                {{ tareaAsignada.titulo }}
+                            </h3>
+                            <div class="text-sm font-bold">
+                                Fecha límite: {{ tareaAsignada.fecha_entrega }} -
+                                {{ tareaAsignada.hora_entrega }}hs.
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex h-14 items-center">
+                    <div class="flex h-14 items-center justify-center">
                         <div
                             class="w-20 h-full flex flex-col items-center justify-end border-r-2">
                             <span class="text-2xl text-primary font-bold">
@@ -198,6 +204,10 @@ const deleteDevolucion = (data) => {
                                 </th>
                                 <th
                                     class="pb-4 pt-6 px-6 text-primary underline">
+                                    Fech de Entrega
+                                </th>
+                                <th
+                                    class="pb-4 pt-6 px-6 text-primary underline">
                                     Estado
                                 </th>
                                 <th
@@ -212,7 +222,7 @@ const deleteDevolucion = (data) => {
                         </thead>
                         <tbody>
                             <tr
-                                v-for="(entrega, index) in entregas"
+                                v-for="(entrega) in entregas"
                                 :key="entrega.id"
                                 class="hover:bg-gray-100 focus-within:bg-gray-100">
                                 <td class="border-t py-4">
@@ -234,6 +244,11 @@ const deleteDevolucion = (data) => {
                                                 {{ materiales.nombre }}
                                             </a>
                                         </div>
+                                    </div>
+                                </td>
+                                <td class="border-t py-4">
+                                    <div>
+                                        {{ moment.tz(entrega.updated_at, 'America/Asuncion').format('DD-MM-YYYY HH:mm:ss')}}
                                     </div>
                                 </td>
                                 <td class="border-t py-4">

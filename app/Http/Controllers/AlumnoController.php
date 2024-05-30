@@ -21,7 +21,7 @@ class AlumnoController extends Controller
 
     public function index(Request $request)
     {
-        $queries = ['search'];
+        $queries = ['search', 'page'];
 
         $alumnos = Alumno::with('persona.ciudade', 'carrera', 'user', 'estado')
             ->orderBy('id', 'desc')

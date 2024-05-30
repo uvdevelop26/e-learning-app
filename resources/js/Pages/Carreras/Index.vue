@@ -51,7 +51,7 @@ const enter = (el, done) => {
 
         <template #header>
             <h2
-                class="font-semibold text-xl text-primary flex items-center gap-4">
+                class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                 <div
                     class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                     <Icon name="homework" class="w-2 h-2 fill-white" />

@@ -7,10 +7,10 @@ import { useForm } from "@inertiajs/vue3";
 import { QuillEditor } from "@vueup/vue-quill";
 import TextInput from "./TextInput.vue";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { getFileType } from "../data/handleFiles";
-import { format, differenceInCalendarDays } from "date-fns";
 import { usePage } from "@inertiajs/vue3";
+import moment from "moment-timezone";
 
 const props = defineProps({
     tarea: Object,
@@ -21,31 +21,25 @@ const { props: pageProps } = usePage();
 const open = ref(false);
 const openModal = ref(false);
 const uploadedFiles = ref(props.tarea.materiales.slice());
-const currentDate = ref(new Date());
-const formattedDate = ref(
-    format(new Date(props.tarea.fecha_entrega), "dd-MM-yyyy")
-);
 const devuelto = ref(null);
 
-const daysRemaining = computed(() => {
-    return differenceInCalendarDays(
-        new Date(props.tarea.fecha_entrega),
-        currentDate.value
-    );
-});
-
-const updateCurrentDate = () => {
-    currentDate.value = new Date();
+const formatFecha = (fecha) => {
+    return moment.tz(fecha, "America/Asuncion").format("DD-MM-YYYY");
 };
 
-setInterval(updateCurrentDate, 24 * 60 * 60 * 1000);
+const calcularDiasRestantes = (fechaLimite) => {
+    const fechaActual = moment.tz("America/Asuncion");
+    const fechaLimiteFormatted = moment.tz(fechaLimite, "America/Asuncion");
+    const diferenciaDias = fechaLimiteFormatted.diff(fechaActual, "days");
 
-updateCurrentDate();
-
-watch(currentDate, () => {
-    console.log("Fecha actual actualizada:", currentDate.value);
-    console.log("Días restantes:", daysRemaining.value);
-});
+    if (diferenciaDias > 0) {
+        return `Faltan ${diferenciaDias} días`;
+    } else if (diferenciaDias === 0) {
+        return `Hoy es el día límite`;
+    } else {
+        return "tiempo superado";
+    }
+};
 
 const options = {
     placeholder: "Escribe el contenido...",
@@ -155,43 +149,31 @@ onMounted(handleDevoluciones);
         <!-- text info and options -->
         <div class="flex items-center justify-between gap-4">
             <div class="w-full">
-                <div class="flex flex-col py-4 justify-between">
-                    <h3 class="text-xl font-bold">
+                <div class="flex flex-col pb-1 pt-3 justify-between">
+                    <h3 class="text-xl font-mono font-bold">
                         {{ tarea.titulo }}
                     </h3>
                     <div
                         class="text-sm leading-6"
-                        v-html="tarea.instruccion"
-                    ></div>
+                        v-html="tarea.instruccion"></div>
                     <ul
                         class="pt-4 text-xs capitalize font-bold"
                         v-if="$page.props.userRole.role !== 'administrador'">
-                        <li class="text-gray-500 flex justify-between">
-                            <span>Fecha limite: {{ formattedDate }},</span>
+                        <li class="py-1 text-gray-500 flex justify-between">
+                            <span
+                                >Fecha limite:
+                                {{ formatFecha(tarea.fecha_entrega) }},
+                            </span>
                             <span>{{ tarea.hora_entrega }}hs.</span>
                         </li>
-                        <li class="text-gray-500 flex justify-between">
-                            <span>{{ tarea.puntos }} puntos.</span>
+                        <li class="py-1 text-gray-500 flex justify-between">
+                            <span>Puntos totales: {{ tarea.puntos }}</span>
                             <span
-                                class="text-green-500"
-                                v-if="daysRemaining >= 0 && devuelto == 0">
-                                {{ daysRemaining }} días restantes
-                            </span>
-                            <span
-                                class="text-green-500"
-                                v-else-if="daysRemaining >= 0 && devuelto == 1">
-                                {{ daysRemaining }} días restantes
-                            </span>
-                            <span
-                                v-else-if="!daysRemaining >= 0 && devuelto == 0"
-                                class="text-red-500">
-                                tienes {{ Math.abs(daysRemaining) }} días de
-                                retraso
-                            </span>
-                            <span
-                                v-else-if="!daysRemaining >= 0 && devuelto == 1"
-                                class="text-red-500">
-                                Entregado con retraso
+                                :class="calcularDiasRestantes(tarea.fecha_entrega)
+                                     === 'tiempo superado'
+                                        ? 'text-red-500'
+                                        : 'text-green-500'">
+                                        {{ calcularDiasRestantes(tarea.fecha_entrega) }}
                             </span>
                         </li>
                     </ul>
@@ -199,8 +181,7 @@ onMounted(handleDevoluciones);
             </div>
             <dropdown
                 class="self-start"
-                v-if="$page.props.userRole.role !== 'alumno'"
-            >
+                v-if="$page.props.userRole.role !== 'alumno'">
                 <template #trigger>
                     <div class="text-right">
                         <button

@@ -5,6 +5,7 @@ import { useForm } from "@inertiajs/vue3";
 import { watchEffect, ref, getCurrentInstance } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { router } from "@inertiajs/vue3";
+import moment from "moment-timezone";
 
 const props = defineProps({
     comentarios: Array,
@@ -137,15 +138,23 @@ const deleteData = (id) => {
                     <p class="pb-1 font-bold text-xs capitalize" v-if="comentario.user.alumnos[0]">
                         {{ comentario.user.alumnos[0].persona.nombre }}
                         {{ comentario.user.alumnos[0].persona.apellido }}
+                        <span class="text-xxs m-2 text-gray-400">
+                            {{  moment.tz(comentario.created_at, "America/Asuncion").format("DD-MM-YYYY") }}
+                        </span>
                     </p>
                     <p class="pb-1 font-bold text-xs capitalize" v-else-if="comentario.user.docentes[0]">
                         {{ comentario.user.docentes[0].persona.nombre }}
                         {{ comentario.user.docentes[0].persona.apellido }}
-
+                        <span class="text-xxs m-2 text-gray-400">
+                            {{  moment.tz(comentario.created_at, "America/Asuncion").format("DD-MM-YYYY") }}
+                        </span>
                     </p>
                     <p class="pb-1 font-bold text-xs capitalize" v-else-if="comentario.user.administradores[0]">
                         {{ comentario.user.administradores[0].persona.nombre }}
                         {{ comentario.user.administradores[0].persona.apellido }}
+                        <span class="text-xxs m-2 text-gray-400">
+                            {{  moment.tz(comentario.created_at, "America/Asuncion").format("DD-MM-YYYY") }}
+                        </span>
                     </p>
                     <p
                         class="text-xs whitespace-normal"

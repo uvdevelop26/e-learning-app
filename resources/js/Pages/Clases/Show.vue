@@ -120,7 +120,7 @@ onMounted(() => {
         <template #header>
             <h2
                 class="font-semibold text-xl flex justify-between items-center">
-                <div class="text-primary flex items-center gap-2">
+                <div class="text-primary font-mono flex items-center gap-2">
                     <div
                     class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                          <Icon name="homework" class="w-2 h-2 fill-white" />
@@ -136,13 +136,13 @@ onMounted(() => {
             <!-- Header class info -->
             <div
                 class="h-56 bg-gradient-to-tr from-primary via-secondary to-primary rounded-2xl flex flex-col items-center justify-center">
-                <h3 class="pt-2 font-bold text-3xl lg:text-5xl text-white">
+                <h3 class="pt-2 font-bold font-mono text-2xl lg:text-5xl text-white">
                     {{ props.materia.nombre }}
                 </h3>
-                <div class="font-bold text-xl lg:text-2xl text-white">
+                <div class="font-bold font-mono italic text-xl lg:text-2xl text-white">
                     Semestre {{ props.semestre.nombre }}
                 </div>
-                <div class="font-bold text-xl lg:text-2xl text-white">
+                <div class="font-bold font-mono italic text-xl lg:text-2xl text-white">
                      {{ props.carrera.nombre}}
                 </div>
             </div>

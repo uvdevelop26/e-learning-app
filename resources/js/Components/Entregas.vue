@@ -18,6 +18,7 @@ const { emit } = getCurrentInstance();
 const completedState = ref(false);
 const entregasFiltered = ref(null);
 const uploadedFileUpdate = ref(null);
+const devuelto = ref(0)
 
 const form = useForm({
     /* entregas data */
@@ -48,7 +49,7 @@ const formEdit = useForm({
 /* handle component state */
 const filterEntregas = () => {
     entregasUser.value = props.entregas;
-
+   
     entregasFiltered.value = props.entregas.filter(
         (item) => item.user_id === auth.user.id
     );
@@ -59,6 +60,11 @@ const filterEntregas = () => {
         uploadedFileUpdate.value = entregasFiltered.value[0].materiales.slice();
 
         formEdit.completado = entregasFiltered.value[0].completado;
+
+        if(entregasFiltered.value[0].devoluciones.length !== 0){
+            const stateDevuelto =  entregasFiltered.value[0].devoluciones[0].devuelto;
+            devuelto.value = stateDevuelto
+        }
     } else {
         completedState.value = false;
     }
@@ -172,7 +178,7 @@ onMounted(filterEntregas);
         <div class="flex items-center justify-between gap-4">
             <div class="w-full">
                 <div class="flex py-4 justify-between items-end">
-                    <h3 class="text-xl font-bold">Tu trabajo</h3>
+                    <h3 class="text-xl font-bold font-mono">Tu trabajo</h3>
                     <div class="text-sm leading-6 font-bold">
                         <span v-if="completedState" class="text-green-500">
                             Entregado
@@ -335,10 +341,11 @@ onMounted(filterEntregas);
                 <div class="h-9 rounded-lg overflow-hidden">
                     <label
                         for="completed"
-                        class="flex justify-center items-center gap-2 w-full h-full border cursor-pointer hover:bg-orange-400 focus:bg-secondary"
+                        class="flex justify-center items-center gap-2 w-full h-full border cursor-pointer"
                         :class="{
-                            'bg-green-400': formEdit.completado == 1,
-                            'bg-secondary': formEdit.completado == 0,
+                            'bg-gray-400' : devuelto == 1,
+                            'bg-green-400': formEdit.completado == 1 && devuelto == 0,
+                            'bg-secondary': formEdit.completado == 0 && devuelto == 0,
                         }">
                         <input
                             type="checkbox"
@@ -360,8 +367,10 @@ onMounted(filterEntregas);
                 <div class="h-9 rounded-lg overflow-hidden">
                     <button
                         class="h-full w-full flex justify-center items-center text-white text-sm font-bold"
-                        :class="{'bg-primary hover:bg-orange-400' : uploadedFileUpdate.length, 'bg-gray-400' : !uploadedFileUpdate.length}"
-                        :disabled="!uploadedFileUpdate.length"
+                        :class="{
+                        'bg-primary' : uploadedFileUpdate.length && devuelto == 0,
+                        'bg-gray-400' : !uploadedFileUpdate.length || devuelto == 1}"
+                        :disabled="!uploadedFileUpdate.length || devuelto == 1"
                         type="submit">
                         Editar
                     </button>

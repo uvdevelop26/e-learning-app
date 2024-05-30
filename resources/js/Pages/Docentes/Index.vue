@@ -7,18 +7,24 @@ import { pickBy } from "lodash";
 import { router } from "@inertiajs/vue3";
 import SearchFilter from "../../Components/SearchFilter.vue";
 import gsap from "gsap";
+import { onMounted, computed  } from "vue";
+import Pagination from "../../Components/Pagination.vue";
 
 const props = defineProps({
     docentes: Array,
     filters: Object
 });
 
+
 const form = reactive({
     search: props.filters.search,
+    page: 1
 });
 
 const reset = () => {
     form.search = null;
+    form.page = 1;
+    router.replace(route('docentes.index', {}));
 };
 
 watchEffect(() => {
@@ -27,6 +33,7 @@ watchEffect(() => {
         route("docentes.index", Object.keys(query).length ? query : {})
     );
 });
+
 
 /* animation */
 const beforeEnter = (el) => {
@@ -44,6 +51,11 @@ const enter = (el, done) => {
     });
 };
 
+onMounted(() => {
+    if (props.filters.page) {
+        form.page = props.filters.page;
+    }
+});
 
 </script>
 
@@ -52,7 +64,7 @@ const enter = (el, done) => {
         <Head title="Docentes" />
 
         <template #header>
-            <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+            <h2 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                 <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                     <Icon name="user" class="w-2 h-2 fill-white" />
                 </div>
@@ -89,7 +101,8 @@ const enter = (el, done) => {
                     </thead>
                     <transition-group tag="tbody" appear @before-enter="beforeEnter" @enter="enter">
                         <tr
-                            v-for="(docente, index) in docentes"
+                            v-for="(docente, index) in docentes.data"
+                            v-if="docentes.data.length"
                             :key="docente.id"
                             :data-index="index"
                             class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -145,8 +158,7 @@ const enter = (el, done) => {
                                 <Link
                                     class="flex items-center px-6 py-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
-                                >
+                                    :href="route('docentes.edit', docente.id)">
                                     <div>{{ docente.estado.estado }}</div>
                                 </Link>
                             </td>
@@ -154,8 +166,7 @@ const enter = (el, done) => {
                                 <Link
                                     class="flex items-center px-4"
                                     tabindex="-1"
-                                    :href="route('docentes.edit', docente.id)"
-                                >
+                                    :href="route('docentes.edit', docente.id)">
                                     <icon
                                         name="cheveron-right"
                                         class="block w-6 h-6 fill-gray-400"
@@ -166,6 +177,7 @@ const enter = (el, done) => {
                     </transition-group>
                 </table>
             </div>
+            <pagination class="mt-6" :links="docentes.links" @change-page="page => form.page = page" />
         </div>
     </AppLayout>
 </template>

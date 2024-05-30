@@ -10,7 +10,7 @@ import { ref, getCurrentInstance, onMounted } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
-import { format } from "date-fns";
+import moment from "moment-timezone";
 import { getFileType, imageUrl } from "../data/handleFiles";
 
 const props = defineProps({
@@ -27,8 +27,9 @@ const { emit } = getCurrentInstance();
 const { auth } = usePage().props;
 const uploadedFiles = ref(props.data.materiales.slice());
 const dataDescripcion = ref(null);
+
 const formattedDate = ref(
-    format(new Date(props.data.created_at), "dd-MM-yyyy")
+    moment.tz(props.data.created_at, "America/Asuncion").format("DD-MM-YYYY HH:mm:ss")
 );
 
 const form = useForm({
@@ -160,12 +161,26 @@ onMounted(() => {
         <!-- Text info and options -->
         <div class="flex items-center justify-between gap-4">
             <div class="w-full">
-                <div class="flex py-4 justify-between">
-                    <h3 class="text-xl font-bold">
+                <div class="flex pb-1 pt-3 justify-between">
+                    <h3 class="text-xl font-mono font-bold">
                         {{ data.titulo }}
                     </h3>
                     <div class="text-xs text-gray-400 italic">
-                        {{ formattedDate }}
+                        <div v-if="data.user.docentes[0]" >
+                            Prof. {{ data.user.docentes[0].persona.nombre }}
+                            {{ data.user.docentes[0].persona.apellido }},
+                            {{ formattedDate }} 
+                        </div>
+                        <div v-else-if="data.user.alumnos[0]" >
+                            {{ data.user.alumnos[0].persona.nombre }}
+                            {{ data.user.alumnos[0].persona.apellido }},
+                            {{ formattedDate }} 
+                        </div>
+                        <div v-else-if="data.user.administradores[0]" >
+                            {{ data.user.administradores[0].persona.nombre }}
+                            {{ data.user.administradores[0].persona.apellido }},
+                            {{ formattedDate }} 
+                        </div>         
                     </div>
                 </div>
                 <div

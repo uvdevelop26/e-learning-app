@@ -20,12 +20,12 @@ class DocenteController extends Controller
 
     public function index(Request $request)
     {
-        $queries = ['search'];
+        $queries = ['search', 'page'];
 
         $docentes = Docente::with('persona.ciudade', 'user', 'estado')
             ->orderBy('id', 'desc')
             ->filter($request->only($queries))
-            ->get();
+            ->paginate(6);
         return Inertia::render('Docentes/Index', [
             'docentes' => $docentes,
             'filters' => $request->all($queries)

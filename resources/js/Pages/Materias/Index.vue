@@ -3,10 +3,12 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
 import SearchFilter from "../../Components/SearchFilter.vue";
+import Pagination from "../../Components/Pagination.vue";
 import { reactive, watchEffect } from "vue";
 import { pickBy } from "lodash";
 import { router } from "@inertiajs/vue3";
 import gsap from "gsap";
+import { onMounted  } from "vue";
 
 const props = defineProps({
     materias: Array,
@@ -15,10 +17,13 @@ const props = defineProps({
 
 const form = reactive({
     search: props.filters.search,
+    page: 1
 });
 
 const reset = () => {
     form.search = null;
+    form.page = 1;
+    router.replace(route('materias.index', {}));
 };
 
 watchEffect(() => {
@@ -44,6 +49,12 @@ const enter = (el, done) => {
     });
 };
 
+onMounted(() => {
+    if (props.filters.page) {
+        form.page = props.filters.page;
+    }
+});
+
 </script>
 
 <template>
@@ -51,7 +62,7 @@ const enter = (el, done) => {
         <Head title="Carreras" />
 
         <template #header>
-            <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+            <h2 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                 <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                     <Icon name="homework" class="w-2 h-2 fill-white" />
                 </div>
@@ -86,7 +97,8 @@ const enter = (el, done) => {
                     </thead>
                     <transition-group tag="tbody" appear @before-enter="beforeEnter" @enter="enter">
                         <tr
-                            v-for="(materia, index) in materias"
+                            v-for="(materia, index) in materias.data"
+                            v-if="materias.data.length"
                             :key="materia.id"
                             :data-index="index"
                             class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -160,9 +172,17 @@ const enter = (el, done) => {
                                 </Link>
                             </td>
                         </tr>
-                    </transition-group tag="tbody" appear @before-enter="beforeEnter" @enter="enter">
+                        <tr
+                            class="hover:bg-gray-100 focus-within:bg-gray-100"
+                            v-else>
+                            <span class="inline-block pl-8 py-5">
+                                No se encuentran resultados
+                            </span>
+                        </tr>
+                    </transition-group>
                 </table>
             </div>
+            <pagination class="mt-6" :links="materias.links" @change-page="page => form.page = page" />
         </div>
     </AppLayout>
 </template>

@@ -166,7 +166,7 @@ onMounted(() => {
         <Head :title="`Unidad ${anunciosYtareas.numero}`" />
 
         <template #header>
-            <h2 class="font-semibold flex justify-between items-center">
+            <h2 class="font-semibold font-mono flex justify-between items-center">
                 <span class="text-xl text-primary">
                     Unidad Número {{ anunciosYtareas.numero }} -
                     {{ anunciosYtareas.tema }}
@@ -181,28 +181,6 @@ onMounted(() => {
         <div class="py-9 px-4 lg:px-8 max-w-7xl">
             <!-- content -->
             <div class="mt-6 flex flex-col gap-6 lg:flex-row max-w-6xl mx-auto">
-                <!-- options  -->
-                <!-- <div class="flex gap-6 items-center lg:flex-col lg:items-start">
-                    <div
-                        class="w-36 h-32 bg-white shadow py-4 border rounded-xl text-sm relative group">
-                        <Link
-                            class="absolute top-0 left-0 right-0 bottom-0 cursor-pointer"
-                            target="_blank"
-                            tabindex="-1">
-                            <div
-                                class="font-bold w-full text-center absolute top-1/2 -translate-y-1/2">
-                                <span
-                                    class="block pb-3 group-hover:text-primary">
-                                    Tareas
-                                </span>
-                                <icon
-                                    name="homework"
-                                    class="w-6 h-6 mx-auto fill-black group-hover:fill-primary"
-                                />
-                            </div>
-                        </Link>
-                    </div>
-                </div> -->
                 <div class="w-full flex flex-col gap-6">
                     <editor-wrapper
                         :title="$page.props.userRole.role === 'alumno' 

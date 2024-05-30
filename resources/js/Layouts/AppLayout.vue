@@ -16,7 +16,6 @@ const props = defineProps({
 
 const { props: pageProps } = usePage();
 
-
 const isMobile = ref(null);
 let mql = null;
 const flashMessage = ref("");
@@ -102,6 +101,7 @@ onMounted(() => {
     if (successMessage.value) {
         flashMessage.value = successMessage.value;
         hideFlashMessage();
+
     }
 });
 
@@ -124,9 +124,14 @@ const logout = () => {
                 <nav class="lg:flex-shrink-0 lg:w-56 lg:h-screen lg:shadow-lg">
                     <!-- navbar header -->
                     <div class="bg-primary px-4 py-4 flex justify-between">
-                        <Link :href="route('dashboard')">
-                            <ApplicationMark class="block h-9 w-auto" />
-                        </Link>
+                        <div class="flex items-center gap-4">
+                            <Link :href="route('dashboard')">
+                                <ApplicationMark class="block h-9 w-auto" />
+                            </Link>
+                            <span class="text-xs font-bold italic font-mono text-white">
+                                Universidad Politécnica UNVES
+                            </span>
+                        </div>
                         <button
                             class="cursor-pointer lg:hidden"
                             @click="isMobile = !isMobile">
@@ -137,12 +142,12 @@ const logout = () => {
                     <MenuNav :showDropdown="isMobile">
                         <!-- content -->
                         <template #content>
-                            <ul class="pt-2">
+                            <ul class="pt-2 px-2">
                                 <template
                                     v-for="(links, index) in menu"
                                     :key="links.id">
                                     <li
-                                        class="capitalize"
+                                        class="capitalize mb-2"
                                         v-if="getUserRole($page.props.userRole.role, index)">
                                         <NavLink
                                             :href="links.href"
@@ -151,7 +156,7 @@ const logout = () => {
                                                 'bg-secondary text-white hover:bg-secondary': $page.url == links.href,}">
                                             <Icon
                                                 :name="links.icon"
-                                                class="w-4 h-4 fill-primary"
+                                                class="w-4 h-4 fill-primary group-hover:fill-white"
                                                 :class="{'fill-white': $page.url == links.href,}"
                                             />
                                             {{ links.name }}
@@ -162,9 +167,9 @@ const logout = () => {
                                             class="flex gap-2 capitalize w-full"
                                             @click="handleSubmenu(index)">
                                             <span
-                                                class="flex w-4 h-4 items-center justify-center rounded-full bg-primary">
+                                                class="flex w-4 h-4 items-center justify-center rounded-full bg-primary group-hover:bg-white">
                                                 <Icon
-                                                    class="h-2 w-2 fill-white"
+                                                    class="h-2 w-2 fill-white group-hover:fill-primary"
                                                     :name="links.toggle_submenu ? 'cheveron-up' : 'cheveron-down' "/>
                                             </span>
                                             {{ links.name }}
@@ -172,10 +177,10 @@ const logout = () => {
                                         <transition name="submenu-slice">
                                             <ul
                                                 v-if="links.submenu && links.toggle_submenu"
-                                                class="pl-3 bg-white">
+                                                class="pl-1">
                                                 <li
                                                     v-for="submenu in links.submenu"
-                                                    class="capitalize border-l-2">
+                                                    class="capitalize mb-1">
                                                     <NavLink
                                                         :href="submenu.href"
                                                         class="text-sm"

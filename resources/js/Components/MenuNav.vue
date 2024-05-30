@@ -5,7 +5,7 @@ defineProps({
 </script>
 <template>
     <transition name="slice">
-        <div class="border-b shadow-md lg:h-[90vh] bg-white" v-if="showDropdown">
+        <div class="border-b shadow-xl lg:h-[90vh] bg-white" v-if="showDropdown">
             <div class="lg:h-[82%] overflow-y-auto">
                 <slot name="content" />
             </div>

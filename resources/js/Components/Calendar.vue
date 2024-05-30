@@ -1,9 +1,11 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import moment from 'moment-timezone';
+
 
 const props = defineProps({
     tareas: Array,
@@ -91,18 +93,18 @@ const handleWeekendsToggle = () => {
 </script>
 <template>
     <div
-        class="flex flex-col gap-4 min-h-full text-sm lg:flex-row-reverse lg:text-base">
+        class="flex flex-col gap-4 min-h-full text-sm lg:flex-row lg:text-base">
         <div class="p-8 lg:flex-grow bg-white rounded-2xl shadow-md">
             <FullCalendar class="demo-app-calendar" :options="calendarOptions">
                 <template v-slot:eventContent="arg">
-                    <span class="text-xs italic">{{ arg.event.title }}</span>
+                    <span class="text-xs">{{ arg.event.title }}</span>
                 </template>
             </FullCalendar>
         </div>
         <div
-            class="px-4 pt-14 leading-6 bg-gradient-to-tr from-primary via-secondary to-secondary text-white rounded-2xl lg:w-[28%]">
-            <section class="pb-14 text-sm">
-                <h2 class="font-bold underline">Instrucciones</h2>
+            class="px-4 flex flex-col gap-4 leading-6 lg:w-[28%]">
+            <section class="text-sm bg-secondary text-white font-bold p-4 rounded-2xl shadow-md">
+                <h2 class="underline font-mono pb-2">Instrucciones</h2>
                 <ul>
                     <li>
                         * Selecciona fechas y se te pedirá que crees un nuevo
@@ -114,24 +116,27 @@ const handleWeekendsToggle = () => {
                     <li>* Click en el evento para eliminar.</li>
                 </ul>
             </section>
-            <section class="pb-14 text-sm">
-                <label class="font-bold underline">
+            <section class="text-sm bg-secondary text-white font-bold p-4 rounded-2xl shadow-md">
+                <label class="font-bold font-mono">
                     <input
                         type="checkbox"
                         :checked="calendarOptions.weekends"
                         @change="handleWeekendsToggle"
+                        class="rounded-md checked:bg-primary shadow"
                     />
                     Alternar fines de semana.
                 </label>
             </section>
-            <section class="pb-14 text-sm">
-                <h2 class="font-bold underline">
+            <section class="text-sm bg-secondary text-white font-bold p-4 rounded-2xl shadow-sm">
+                <h2 class="underline font-mono pb-2">
                     Todos los Eventos ({{ currentEvents.length }})
                 </h2>
                 <ul class="list-disc list-inside">
                     <li v-for="event in currentEvents" :key="event.id">
                         <span class="inline-block mr-2">{{ event.title }}</span>
-                        <span class="inline-block">{{ event.startStr }}</span>
+                        <span class="inline-block">
+                            {{  moment.tz(event.startStr, 'America/Asuncion').format('DD-MM-YYYY HH:mm:ss') }}
+                        </span>
                     </li>
                 </ul>
             </section>

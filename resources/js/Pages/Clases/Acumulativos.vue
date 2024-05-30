@@ -3,8 +3,6 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
 import { onMounted, ref } from "vue";
-import Modal from "../../Components/Modal.vue";
-import { useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
@@ -33,13 +31,6 @@ const filterResult = () => {
         });
     }else{
         resultsNew.value = props.results;
-        /* resultsNew.value.forEach((item) => {
-            puntosTotales.value += parseInt(item.puntos_asig);
-
-            if (!isNaN(item.puntos_logrados)) {
-                puntosLogrados.value += parseInt(item.puntos_logrados);
-            }
-        }); */
     }
 };
 
@@ -50,10 +41,14 @@ onMounted(filterResult);
         <Head title="Acumulativos" />
 
         <template #header>
-            <h2 class="font-semibold flex justify-between items-center">
-                <span class="text-xl text-primary capitalize">
-                    Puntajes Acumulados
-                </span>
+            <h2 class="font-semibold text-xl flex justify-between items-center">
+                <div class="text-primary font-mono flex items-center gap-2">
+                    <div
+                    class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                         <Icon name="chart" class="w-2 h-2 fill-white" />
+                    </div>
+                    Punajes Acumulados
+                </div>
             </h2>
         </template>
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
@@ -152,11 +147,11 @@ onMounted(filterResult);
             </div>
             <div class="py-4 mt-4">
                 <ul
-                    class="bg-white border py-4 flex justify-center gap-2 shadow-lg rounded-lg max-w-xs">
-                    <li class="p-2 text-sm">
+                    class="w-48 bg-secondary text-white border py-4 shadow-lg rounded-lg ">
+                    <li class="p-2 text-sm font-bold font-mono">
                         Puntos totales: {{ puntosTotales }}
                     </li>
-                    <li class="p-2 text-sm">
+                    <li class="p-2 text-sm font-bold font-mono">
                         Puntos Logrados: {{ puntosLogrados }}
                     </li>
                 </ul>

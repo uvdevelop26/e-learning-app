@@ -82,7 +82,7 @@ onMounted(fetchClases);
 
         <template #header>
             <h2
-                class="font-semibold text-xl text-primary flex items-center gap-4">
+                class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                 <div
                     class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                     <Icon name="clases" class="w-3 h-3 fill-white" />

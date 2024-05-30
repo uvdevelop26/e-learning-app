@@ -3,10 +3,12 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
 import SearchFilter from "../../Components/SearchFilter.vue";
+import Pagination from "../../Components/Pagination.vue";
 import { reactive, watchEffect } from "vue";
 import { pickBy } from "lodash";
 import { router } from "@inertiajs/vue3";
 import gsap from "gsap";
+import { onMounted  } from "vue";
 
 const props = defineProps({
     semestres: Array,
@@ -15,10 +17,13 @@ const props = defineProps({
 
 const form = reactive({
     search: props.filters.search,
+    page: 1
 });
 
 const reset = () => {
     form.search = null;
+    form.page = 1;
+    router.replace(route('semestres.index', {}));
 };
 
 watchEffect(() => {
@@ -27,6 +32,7 @@ watchEffect(() => {
         route("semestres.index", Object.keys(query).length ? query : {})
     );
 });
+
 
 /* animation */
 const beforeEnter = (el) => {
@@ -44,6 +50,12 @@ const enter = (el, done) => {
     });
 };
 
+onMounted(() => {
+    if (props.filters.page) {
+        form.page = props.filters.page;
+    }
+});
+
 
 </script>
 
@@ -52,7 +64,7 @@ const enter = (el, done) => {
         <Head title="Semestres" />
 
         <template #header>
-            <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+            <h2 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                 <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                     <Icon name="homework" class="w-2 h-2 fill-white" />
                 </div>
@@ -87,7 +99,8 @@ const enter = (el, done) => {
                     </thead>
                     <transition-group tag="tbody" appear @before-enter="beforeEnter" @enter="enter">
                         <tr
-                            v-for="(semestre, index) in semestres"
+                            v-for="(semestre, index) in semestres.data"
+                            v-if="semestres.data.length"
                             :key="semestre.id"
                             :data-index="index"
                             class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -142,9 +155,17 @@ const enter = (el, done) => {
                                 </Link>
                             </td>
                         </tr>
-                    </transition-group appear @before-enter="beforeEnter" @enter="enter">
+                        <tr
+                            class="hover:bg-gray-100 focus-within:bg-gray-100"
+                            v-else>
+                            <span class="inline-block pl-8 py-5">
+                                No se encuentran resultados
+                            </span>
+                        </tr>
+                    </transition-group>
                 </table>
             </div>
+            <pagination class="mt-6" :links="semestres.links" @change-page="page => form.page = page" />
         </div>
     </AppLayout>
 </template>

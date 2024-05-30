@@ -13,12 +13,12 @@ class SemestreController extends Controller
 
     public function index(Request $request)
     {
-        $queries = ['search'];
+        $queries = ['search', 'page'];
 
         $semestres = Semestre::with('carrera')
             ->orderBy('carrera_id', 'desc')
             ->filter($request->only($queries))
-            ->get();
+            ->paginate(6);
 
         return Inertia::render('Semestres/Index', [
             'semestres' => $semestres,

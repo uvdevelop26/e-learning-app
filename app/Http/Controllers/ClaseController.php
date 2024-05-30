@@ -85,7 +85,10 @@ class ClaseController extends Controller
             'anuncios.comentarios.user.alumnos.persona',
             'anuncios.comentarios.user.docentes.persona',
             'anuncios.comentarios.user.administradores.persona',
-            'anuncios.materiales', 'unidades'
+            'anuncios.materiales', 'unidades',
+            'anuncios.user.alumnos.persona',
+            'anuncios.user.docentes.persona',
+            'anuncios.user.administradores.persona'
         ])->findOrFail($clase->id);
 
         return Inertia::render('Clases/Show', [

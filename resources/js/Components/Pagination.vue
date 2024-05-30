@@ -1,21 +1,42 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
+import { defineProps, getCurrentInstance } from "vue";
 
 const props = defineProps({
-    links: Array
-})
+    links: Array,
+});
 
+const { emit } = getCurrentInstance();
+
+const changePage = (page) => {
+    emit('change-page', page);
+};
+
+function getPageFromUrl(url) {
+    const urlParams = new URLSearchParams(url.split('?')[1]);
+    return urlParams.get('page') ? Number(urlParams.get('page')) : 1;
+}
 </script>
 <template>
     <div v-if="links.length > 3">
-      <div class="flex flex-wrap -mb-1">
-        <template v-for="(link, key) in links">
-          <div v-if="link.url === null" :key="key" class="mb-1 mr-1 px-4 py-3 text-gray-400 text-sm leading-4 border rounded" v-html="link.label" />
-          <Link v-else :key="`link-${key}`" class="mb-1 mr-1 px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded" :class="{ 'bg-white': link.active }" :href="link.url" v-html="link.label" />
-        </template>
-      </div>
+        <div class="flex flex-wrap -mb-1">
+            <template v-for="(link, key) in links">
+                <div
+                    v-if="link.url === null"
+                    :key="key"
+                    class="mb-1 mr-1 px-4 py-3 text-gray-400 text-sm leading-4 border rounded"
+                    v-html="link.label"
+                />
+                <Link
+                    v-else
+                    :key="`link-${key}`"
+                    class="mb-1 mr-1 px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded"
+                    :class="{ 'bg-white': link.active }"
+                    :href="link.url"
+                    v-html="link.label"
+                    @click.prevent="changePage(getPageFromUrl(link.url))"
+                />
+            </template>
+        </div>
     </div>
-  </template>
-  
- 
-  
+</template>
