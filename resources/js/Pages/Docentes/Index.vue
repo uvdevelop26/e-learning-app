@@ -174,6 +174,13 @@ onMounted(() => {
                                 </Link>
                             </td>
                         </tr>
+                        <tr
+                            class="hover:bg-gray-100 focus-within:bg-gray-100"
+                            v-else>
+                            <span class="inline-block pl-8 py-5">
+                                No se encuentran resultados
+                            </span>
+                        </tr>
                     </transition-group>
                 </table>
             </div>

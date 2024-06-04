@@ -87,12 +87,16 @@ class AdministradoreController extends Controller
     
     public function edit(Administradore $administradore)
     {
+
+       // return $administradore;
+
+
         $departamentos = Departamento::all();
         $currentDpto = Ciudade::find($administradore->persona->ciudade_id)->departamento->id;
         $ciudades = Ciudade::all();
         $estados = Estado::all();
         $roles = Role::all();
-        $currentRole = User::find($administradore->user->role_id)->id;
+        $currentRole = User::find($administradore->user_id)->role->id;
 
         return Inertia::render('Administradores/Edit', [
             'administradore' => [

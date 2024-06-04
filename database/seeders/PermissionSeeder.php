@@ -23,9 +23,9 @@ class PermissionSeeder extends Seeder
 
         $usuarios = [
             [
-                'email' => 'guillermo@gmail.com',
+                'email' => 'administrador@gmail.com',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password'), // password
+                'password' => bcrypt('password'),
                 'two_factor_secret' => null,
                 'two_factor_recovery_codes' => null,
                 'remember_token' => Str::random(10),
@@ -34,9 +34,9 @@ class PermissionSeeder extends Seeder
                 'role_id' => 3,
             ],
             [
-                'email' => 'juanalberto@gmail.com',
+                'email' => 'docente@gmail.com',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password'), // password
+                'password' => bcrypt('password'),
                 'two_factor_secret' => null,
                 'two_factor_recovery_codes' => null,
                 'remember_token' => Str::random(10),
@@ -45,9 +45,9 @@ class PermissionSeeder extends Seeder
                 'role_id' => 2,
             ],
             [
-                'email' => 'mariabaez@gmail.com',
+                'email' => 'alumno@gmail.com',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password'), // password
+                'password' => bcrypt('password'),
                 'two_factor_secret' => null,
                 'two_factor_recovery_codes' => null,
                 'remember_token' => Str::random(10),
@@ -73,7 +73,7 @@ class PermissionSeeder extends Seeder
         ]);
 
         Docente::create([
-            'profesion' => 'Ingeniero en Sistemas',
+            'profesion' => 'Ingeniero en Sistemas', 
             'persona_id' => 2,
             'user_id' => 2,
             'estado_id' => 1

@@ -173,6 +173,7 @@ onMounted(() => {
                 </span>
                 <button
                     @click="showAddTareas = !showAddTareas"
+                    v-if="$page.props.userRole.role == 'docente'"
                     class="text-sm text-primary italic hover:text-opacity-90 hover:underline">
                     + Agregar Tarea
                 </button>

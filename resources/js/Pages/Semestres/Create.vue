@@ -64,7 +64,7 @@ const submit = () => {
             <Head title="Semestres" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                <h2 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                     <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                         <Icon name="plus" class="w-2 h-2 fill-white" />
                     </div> 

@@ -78,11 +78,11 @@ const deleteUser = () => {
 </script>
 <template>
     <div>
-        <AppLayout title="Alumnos/edit">
-            <Head title="Alumnos/edit" />
+        <AppLayout>
+            <Head title="Editar" />
 
             <template #header>
-                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                <h2 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                     <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                         <Icon name="edit" class="w-3 h-3 fill-white" />
                     </div>

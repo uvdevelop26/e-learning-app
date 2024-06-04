@@ -40,15 +40,15 @@ class HandleInertiaRequests extends Middleware
             /* flash message */
             'flash' => function () use ($request) {
                 return [
-                    'success' => $request->session()->get('success'),
-                    'error' => $request->session()->get('error'),
+                    'success' => fn () => $request->session()->get('success'),
+                    'error' => fn () => $request->session()->get('error')
                 ];
             },
             /* user role */
             'userRole' => function () use ($request) {
                 $user = $request->user();
                 return $user ? array_merge($user->toArray(), [
-                    'role' => $user->role->rol // Acceder a la relación "persona" del usuario
+                    'role' => $user->role->rol
                 ]) : null;
             },
         ]);

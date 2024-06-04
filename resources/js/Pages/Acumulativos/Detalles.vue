@@ -1,0 +1,124 @@
+<script setup>
+import AppLayout from "@/Layouts/AppLayout.vue";
+import {  Head } from "@inertiajs/vue3";
+import Icon from "../../Components/Icon.vue";
+import { usePage } from "@inertiajs/vue3";
+import { onMounted, ref } from "vue";
+
+const props = defineProps({
+    detalles: Array,
+});
+
+const { props: pageProps } = usePage();
+const filteredDetalles = ref(null)
+
+onMounted(() =>{
+    const email = pageProps.auth.user.email;
+
+    filteredDetalles.value = props.detalles.filter((item) => item.email === email);
+
+})
+
+</script>
+<template>
+    <AppLayout>
+        <Head title="Acumulativos" />
+
+        <template #header>
+            <h2 class="font-semibold text-xl flex justify-between items-center">
+                <div class="text-primary font-mono flex items-center gap-2">
+                    <div
+                        class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="chart" class="w-2 h-2 fill-white" />
+                    </div>
+                    Detalles
+                </div>
+            </h2>
+        </template>
+        <div class="py-12 px-4 lg:px-8 max-w-5xl">
+            <div class="w-full bg-white overflow-x-auto rounded-md shadow">
+                <table
+                    class="w-full whitespace-nowrap text-sm rounded-md shadow-md">
+                    <thead>
+                        <tr class="text-left font-bold">
+                            <th class="pb-4 pt-6 px-6">N°</th>
+                            <th class="pb-4 pt-6 px-6">Alumno</th>
+                            <th class="pb-4 pt-6 px-6">Unidad</th>
+                            <th class="pb-4 pt-6 px-6">Tarea</th>
+                            <th class="pb-4 pt-6 px-6">Puntos Asignados</th>
+                            <th class="pb-4 pt-6 px-6">Entregado</th>
+                            <th class="pb-4 pt-6 px-6">Corregido</th>
+                            <th class="pb-4 pt-6 px-6">Puntos Logrados</th>
+                        </tr>
+                    </thead>
+                    <transition-group tag="tbody" appear>
+                        <tr
+                            v-for="(detalle, index) in filteredDetalles"
+                            :key="index"
+                            class="hover:bg-gray-100 focus-within:bg-gray-100">
+                            <td class="border-t">
+                                <div
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500">
+                                    {{ index + 1 }}
+                                </div>
+                            </td>
+                            <td class="border-t">
+                                <div
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500">
+                                    {{ detalle.email }}
+                                </div>
+                            </td>
+                            <td class="border-t">
+                                <div
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500">
+                                    {{ detalle.unidad }}
+                                </div>
+                            </td>
+                            <td class="border-t">
+                                <div
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    tabindex="-1">
+                                    {{ detalle.titulo }}
+                                </div>
+                            </td>
+                            <td class="border-t">
+                                <div
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    tabindex="-1">
+                                    {{ detalle.puntos_asig }}
+                                </div>
+                            </td>
+                            <td class="border-t max-w-80">
+                                <div
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    tabindex="-1">
+                                    <span v-if="detalle.completado == 1">Sí</span>
+                                    <span v-else>No</span>
+                                </div>
+                            </td>
+                            <td class="border-t max-w-80">
+                                <div
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    tabindex="-1">
+                                    <span v-if="detalle.devuelto == 1">Sí</span>
+                                    <span v-else>No</span>
+                                </div>
+                            </td>
+                            <td class="border-t max-w-80">
+                                <div
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    tabindex="-1">
+                                <span v-if="detalle.puntos_devolucion">
+                                    {{ detalle.puntos_devolucion }}
+                                </span>
+                                <span v-else>sin corregir</span>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                    </transition-group>
+                </table>
+            </div>
+        </div>
+    </AppLayout>
+</template>

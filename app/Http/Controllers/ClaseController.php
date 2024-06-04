@@ -70,7 +70,7 @@ class ClaseController extends Controller
             'estado_id' => $request->estado_id
         ]);
 
-        return Redirect::route("clases.index")->with('success', 'Clase creada Exitosamente');
+        return Redirect::route("clases.index");
     }
 
 
@@ -171,7 +171,7 @@ class ClaseController extends Controller
 
         $clase->delete();
 
-        return redirect()->back()->with('success', 'Clase Eliminada Exitosamente');
+        return redirect()->back()->with(['success' => 'Clase Eliminada Exitosamente']);
     }
 
     public function showPersonas(Clase $clase)
@@ -211,25 +211,22 @@ class ClaseController extends Controller
 
     public function acumulativos($id)
     {
-        $results = Clase::select(
-            'clases.codigo as clase',
-            'unidades.tema as unidad',
-            'tareas.titulo as actividad',
-            'tareas.puntos as puntos_asig',
-            DB::raw("COALESCE(users.email, 'sin entregar') as alumno"),
-            DB::raw("COALESCE(entregas.completado, 'no entregado') as entregado"),
-            DB::raw("COALESCE(devoluciones.devuelto, 'sin devolver') as corregido"),
-            DB::raw("COALESCE(devoluciones.puntos, 'no entregado') as puntos_logrados")
-        )
-            ->join('unidades', 'clases.id', '=', 'unidades.clase_id')
-            ->join('tareas', 'unidades.id', '=', 'tareas.unidade_id')
-            ->leftJoin('entregas', 'tareas.id', '=', 'entregas.tarea_id')
-            ->leftJoin('users', 'entregas.user_id', '=', 'users.id')
-            ->leftJoin('devoluciones', 'entregas.id', '=', 'devoluciones.entrega_id')
+        $results = Clase::join('unidades', 'unidades.clase_id', '=', 'clases.id')
+            ->leftJoin('tareas', 'tareas.unidade_id', '=', 'unidades.id')
+            ->select(
+                'clases.codigo as codigo',
+                'unidades.id as unidade_id',
+                'unidades.tema as tema',
+                DB::raw('COUNT(tareas.id) as tareas'),
+                DB::raw('SUM(tareas.puntos) as puntos_totales')
+            )
             ->where('clases.id', $id)
+            ->groupBy('clases.codigo', 'unidades.id', 'unidades.tema')
             ->get();
 
-
-        return Inertia::render('Clases/Acumulativos', ['results' => $results]);
+        return Inertia::render('Acumulativos/Acumulativos', [
+            'results' => $results,
+            'clase_id' => $id
+        ]);
     }
 }

@@ -151,8 +151,11 @@ const deleteDevolucion = (data) => {
     <AppLayout>
         <Head title="tarea" />
         <template #header>
-            <h2 class="font-semibold text-xl flex justify-between items-center">
-                <span class="text-primary"> Entregas </span>
+            <h2 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
+                <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        <Icon name="homework" class="w-3 h-3 fill-white" />
+                    </div>
+                 Entregas 
             </h2>
         </template>
         <!-- body -->

@@ -90,7 +90,7 @@ const submit = () => {
         <AppLayout title="Clases/create">
             <Head title="Clases/create" />
             <template #header>
-                <h2 class="font-semibold text-xl text-primary flex items-center gap-4">
+                <h2 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
                     <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                         <Icon name="user_plus" class="w-3 h-3 fill-white" />
                     </div>           

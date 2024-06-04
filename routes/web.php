@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcumulativoController;
 use App\Http\Controllers\AdministradoreController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\AnuncioController;
@@ -139,6 +140,10 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
 
     Route::prefix('clases/{clase}/unidades/{unidad}/tareas/{tarea}')->controller(EntregaController::class)->group(function () {
         Route::get('entregas', 'show')->name('clases.unidades.tareas.entregas.show');
+    });
+
+    Route::prefix('clases/{clase}/acumulativos')->controller(AcumulativoController::class)->group(function () {
+        Route::get('{unidad}', 'index')->name('clases.unidades.acumulativos.index');
     });
 });
 
