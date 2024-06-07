@@ -14,6 +14,7 @@ use App\Http\Controllers\EntregaController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\MaterialeController;
 use App\Http\Controllers\MaterialeTareaController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SemestreController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\UnidadeController;
@@ -37,14 +38,11 @@ Route::get('/', function () {
     return Inertia::render('Auth/Login');
 });
 
-/* Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-}); */
+Route::controller(ProfileController::class)->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/user/profile', 'show')->name('profile.show');
+    Route::put('/profile', 'update' )->name('profile.update');
+});
+
 
 Route::controller(DashboardController::class)
     ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])

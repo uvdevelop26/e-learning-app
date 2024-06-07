@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'profile_photo_path'
     ];
 
 
@@ -36,11 +37,6 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
-    }
-
-    public function persona()
-    {
-        return $this->belongsTo(Persona::class);
     }
 
     public function docentes()

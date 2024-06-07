@@ -9,6 +9,7 @@ import MenuNav from "../Components/MenuNav.vue";
 import { usePage } from "@inertiajs/vue3";
 import menu from "../data/menu.js";
 import FlashMessage from "../Components/FlashMessage.vue";
+import { imageUrl } from "../data/handleFiles.js";
 
 const props = defineProps({
     title: String,
@@ -207,9 +208,15 @@ const logout = () => {
                                         <div class="pt-2 w-fit">
                                             <button
                                                 class="flex items-center justify-evenly rounded-2xl bg-primary w-56 h-12 group hover:bg-white hover:border-primary hover:border lg:w-52">
-                                                <img
+                                                <img 
+                                                    v-if="$page.props.auth.user.profile_photo_path"
                                                     class="h-9 w-9 rounded-full object-cover lg:h-8 lg:w-8"
-                                                    :src="$page.props.auth.user.profile_photo_url"
+                                                    :src="imageUrl($page.props.auth.user.profile_photo_path)" 
+                                                    :alt="$page.props.auth.user.email">
+                                                <img
+                                                    v-else
+                                                    class="h-9 w-9 rounded-full object-cover lg:h-8 lg:w-8"
+                                                     src="https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
                                                     :alt="$page.props.auth.user.email"
                                                 />
                                                 <span

@@ -14,10 +14,9 @@ const filteredDetalles = ref(null)
 
 onMounted(() =>{
     const email = pageProps.auth.user.email;
-
     filteredDetalles.value = props.detalles.filter((item) => item.email === email);
 
-})
+});
 
 </script>
 <template>

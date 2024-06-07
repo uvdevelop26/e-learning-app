@@ -6,6 +6,7 @@ import { watchEffect, ref, getCurrentInstance } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { router } from "@inertiajs/vue3";
 import moment from "moment-timezone";
+import { imageUrl } from "../data/handleFiles";
 
 const props = defineProps({
     comentarios: Array,
@@ -120,21 +121,28 @@ const deleteData = (id) => {
         <!-- Comment lists -->
         <ul class="pt-2 flex flex-col gap-3">
             <li
-                class="flex items-center gap-2"
+                class="flex w-full items-center gap-2"
                 v-for="(comentario, index) in comentarios"
                 :key="comentario.id"
                 ref="commentsList"
                 :class="{ hidden: index < 4 && hiddeComments }">
                 <!-- Profile picture -->
-                <div class="w-12 h-12 rounded-full self-start">
+                 <div class="w-10 h-10 rounded-full border border-gray-400 overflow-hidden">
+                    <img 
+                        v-if="$page.props.auth.user.profile_photo_path"
+                        :src="imageUrl($page.props.auth.user.profile_photo_path)" 
+                        :alt="$page.props.auth.user.email"
+                        class="w-full h-full object-cover">
                     <img
+                        v-else
                         src="https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
                         alt="profilePicture"
-                        class="w-full object-cover"
+                        class="w-full h-full object-cover"
                     />
-                </div>
+
+                 </div>
                 <!-- Name and Comment content -->
-                <div class="mr-auto w-full whitespace-normal">
+                <div class=" whitespace-normal">
                     <p class="pb-1 font-bold text-xs capitalize" v-if="comentario.user.alumnos[0]">
                         {{ comentario.user.alumnos[0].persona.nombre }}
                         {{ comentario.user.alumnos[0].persona.apellido }}
@@ -190,7 +198,7 @@ const deleteData = (id) => {
                     </form>
                 </div>
                 <!-- Dropdowm options -->
-                <dropdown class="self-start" :width="'40'">
+                <dropdown class="ml-auto" :width="'40'">
                     <template #trigger>
                         <div class="text-right">
                             <button
