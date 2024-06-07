@@ -129,16 +129,17 @@ const deleteData = (id) => {
                 <!-- Profile picture -->
                  <div class="w-10 h-10 rounded-full border border-gray-400 overflow-hidden">
                     <img 
-                        v-if="$page.props.auth.user.profile_photo_path"
-                        :src="imageUrl($page.props.auth.user.profile_photo_path)" 
-                        :alt="$page.props.auth.user.email"
-                        class="w-full h-full object-cover">
+                        v-if="comentario.user.profile_photo_path"
+                        :src="imageUrl(comentario.user.profile_photo_path)"
+                        :alt="comentario.user.email"
+                        class="w-full h-full object-cover"
+                    />
                     <img
                         v-else
                         src="https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
                         alt="profilePicture"
                         class="w-full h-full object-cover"
-                    />
+                    />  
 
                  </div>
                 <!-- Name and Comment content -->

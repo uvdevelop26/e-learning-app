@@ -36,30 +36,18 @@ const props = defineProps({
                         <h3 class="text-2xl font-bold font-mono text-white lg:text-4xl">
                             Bienvenido {{ user.alumnos[0].persona.nombre }}
                         </h3>
-                        <p class="font-thin text-white lg:text-xl italic">
-                            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-                            amet.
-                        </p>
                     </div>
                     <div v-if="user.docentes.length !== 0">
                         <h3 class="text-2xl font-bold font-mono text-white lg:text-4xl">
                             Bienvenido Prof.
                             {{ user.docentes[0].persona.nombre }}
                         </h3>
-                        <p class="font-thin text-white font-mono lg:text-xl italic">
-                            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-                            amet.
-                        </p>
                     </div>
                     <div v-if="user.administradores.length !== 0">
                         <h3 class="text-2xl font-bold font-mono text-white lg:text-4xl">
                             Bienvenido Admin.
                             {{ user.administradores[0].persona.nombre }}
                         </h3>
-                        <p class="text-white font-mono font-thin italic lg:text-xl">
-                            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-                            amet.
-                        </p>
                     </div>
                     <UndrawTeacher class="w-40 h-32 lg:w-56 lg:h-60" />
                 </header>

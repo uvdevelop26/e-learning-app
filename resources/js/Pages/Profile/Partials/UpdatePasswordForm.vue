@@ -88,13 +88,9 @@ const updatePassword = () => {
         </template>
 
         <template #actions>
-            <ActionMessage :on="form.recentlySuccessful" class="mr-3">
+            <button class="mr-3 btn-indigo">
                 Guardado
-            </ActionMessage>
-
-            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Guardado
-            </PrimaryButton>
+            </button>
         </template>
     </FormSection>
 </template>
