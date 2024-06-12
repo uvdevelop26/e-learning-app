@@ -16,7 +16,6 @@ const props = defineProps({
 
 const hiddeComments = ref(true);
 const buttonDisabled = ref(true);
-const buttonEditDisabled = ref(false);
 const { auth } = usePage().props;
 const { emit } = getCurrentInstance();
 const editing = ref(false);
@@ -143,7 +142,7 @@ const deleteData = (id) => {
 
                  </div>
                 <!-- Name and Comment content -->
-                <div class=" whitespace-normal">
+                <div class="whitespace-normal w-full">
                     <p class="pb-1 font-bold text-xs capitalize" v-if="comentario.user.alumnos[0]">
                         {{ comentario.user.alumnos[0].persona.nombre }}
                         {{ comentario.user.alumnos[0].persona.apellido }}
@@ -166,16 +165,16 @@ const deleteData = (id) => {
                         </span>
                     </p>
                     <p
-                        class="text-xs whitespace-normal"
+                        class="text-xs w-full whitespace-normal"
                         v-if="!editing || comentIndex !== index">
                         {{ comentario.contenido }}
                     </p>
                     <form
                         @submit.prevent="update"
-                        v-if="editing && comentIndex == index">
+                        v-if="editing && comentIndex == index" class="flex">
                         <textarea
                             id="editcontenido"
-                            class="p-1 m-0 h-11 overflow-y-auto whitespace-normal border-gray-200 outline-0 focus:outline-0 w-full text-xs rounded-lg resize-none focus:border-gray-500 focus:right-0"
+                            class="p-1 m-0 h-11 overflow-y-auto whitespace-normal border-gray-200 outline-0 focus:outline-0 text-xs rounded-lg resize-none focus:border-gray-500 focus:right-0 w-full"
                             v-model="formEdit.contenido">
                         </textarea>
                         <div class="py-2 flex justify-between items-center">
@@ -199,7 +198,7 @@ const deleteData = (id) => {
                     </form>
                 </div>
                 <!-- Dropdowm options -->
-                <dropdown class="ml-auto" :width="'40'">
+                <dropdown class="ml-auto" :width="'40'" v-if="comentario.user.email === $page.props.auth.user.email">
                     <template #trigger>
                         <div class="text-right">
                             <button

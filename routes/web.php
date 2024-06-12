@@ -159,8 +159,6 @@ Route::controller(UnidadeController::class)->middleware(['auth:sanctum', 'verifi
     Route::get('unidades/{unidad}/edit', 'edit')->name('unidades.edit');
     Route::put('unidades/{unidad}', 'update')->name('unidades.update');
     Route::delete('unidades/{unidad}', 'destroy')->name('unidades.destroy');
-    //Route::get("unidades/{unidad}", 'show')->name("unidades.show");
-    /*  Route::get("unidades/{unidad}/tareas", "tareas")->name("unidades.tareas"); */
 });
 
 //comentarios

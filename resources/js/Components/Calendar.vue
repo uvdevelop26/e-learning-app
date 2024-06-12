@@ -79,8 +79,6 @@ const calendarOptions = ref({
     selectMirror: true,
     dayMaxEvents: true,
     weekends: true,
-    /* select: handleDateSelect, */
-    /* eventClick: handleEventClick, */
     eventsSet: handleEvents,
     events: convertirTareasAEventos(),
 });

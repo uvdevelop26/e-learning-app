@@ -211,17 +211,21 @@ class ClaseController extends Controller
 
     public function acumulativos($id)
     {
-        $results = Clase::join('unidades', 'unidades.clase_id', '=', 'clases.id')
+        $results = DB::table('clases')
+            ->join('unidades', 'clases.id', '=', 'unidades.clase_id')
             ->leftJoin('tareas', 'tareas.unidade_id', '=', 'unidades.id')
+            ->leftJoin('entregas', 'tareas.id', '=', 'entregas.tarea_id')
+            ->leftJoin('devoluciones', 'entregas.id', '=', 'devoluciones.entrega_id')
             ->select(
                 'clases.codigo as codigo',
                 'unidades.id as unidade_id',
                 'unidades.tema as tema',
                 DB::raw('COUNT(tareas.id) as tareas'),
-                DB::raw('SUM(tareas.puntos) as puntos_totales')
+                DB::raw('COALESCE(SUM(tareas.puntos), 0) as puntos_totales'),
+                DB::raw('COALESCE(SUM(devoluciones.puntos), 0) as puntos_logrados')
             )
+            ->groupBy('clases.codigo', 'unidades.id', 'unidades.tema') 
             ->where('clases.id', $id)
-            ->groupBy('clases.codigo', 'unidades.id', 'unidades.tema')
             ->get();
 
         return Inertia::render('Acumulativos/Acumulativos', [

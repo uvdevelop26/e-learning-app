@@ -13,8 +13,14 @@ const { props: pageProps } = usePage();
 const filteredDetalles = ref(null)
 
 onMounted(() =>{
-    const email = pageProps.auth.user.email;
-    filteredDetalles.value = props.detalles.filter((item) => item.email === email);
+    const userRole = pageProps.userRole.role;
+
+    if(userRole === "alumno"){
+        const email = pageProps.auth.user.email;
+        filteredDetalles.value = props.detalles.filter((item) => item.email === email);
+    }else {
+        filteredDetalles.value = props.detalles;
+    }   
 
 });
 
@@ -34,7 +40,7 @@ onMounted(() =>{
                 </div>
             </h2>
         </template>
-        <div class="py-12 px-4 lg:px-8 max-w-5xl">
+        <div class="py-12 px-4 lg:px-8 max-w-6xl">
             <div class="w-full bg-white overflow-x-auto rounded-md shadow">
                 <table
                     class="w-full whitespace-nowrap text-sm rounded-md shadow-md">
@@ -42,7 +48,6 @@ onMounted(() =>{
                         <tr class="text-left font-bold">
                             <th class="pb-4 pt-6 px-6">N°</th>
                             <th class="pb-4 pt-6 px-6">Alumno</th>
-                            <th class="pb-4 pt-6 px-6">Unidad</th>
                             <th class="pb-4 pt-6 px-6">Tarea</th>
                             <th class="pb-4 pt-6 px-6">Puntos Asignados</th>
                             <th class="pb-4 pt-6 px-6">Entregado</th>
@@ -51,70 +56,63 @@ onMounted(() =>{
                         </tr>
                     </thead>
                     <transition-group tag="tbody" appear>
-                        <tr
-                            v-for="(detalle, index) in filteredDetalles"
-                            :key="index"
-                            class="hover:bg-gray-100 focus-within:bg-gray-100">
-                            <td class="border-t">
-                                <div
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500">
-                                    {{ index + 1 }}
-                                </div>
-                            </td>
-                            <td class="border-t">
-                                <div
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500">
-                                    {{ detalle.email }}
-                                </div>
-                            </td>
-                            <td class="border-t">
-                                <div
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500">
-                                    {{ detalle.unidad }}
-                                </div>
-                            </td>
-                            <td class="border-t">
-                                <div
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                    {{ detalle.titulo }}
-                                </div>
-                            </td>
-                            <td class="border-t">
-                                <div
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                    {{ detalle.puntos_asig }}
-                                </div>
-                            </td>
-                            <td class="border-t max-w-80">
-                                <div
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                    <span v-if="detalle.completado == 1">Sí</span>
-                                    <span v-else>No</span>
-                                </div>
-                            </td>
-                            <td class="border-t max-w-80">
-                                <div
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                    <span v-if="detalle.devuelto == 1">Sí</span>
-                                    <span v-else>No</span>
-                                </div>
-                            </td>
-                            <td class="border-t max-w-80">
-                                <div
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                <span v-if="detalle.puntos_devolucion">
-                                    {{ detalle.puntos_devolucion }}
-                                </span>
-                                <span v-else>sin corregir</span>
-                                    
-                                </div>
-                            </td>
-                        </tr>
+                        <template  v-for="(detalle, index) in filteredDetalles" :key="index">
+                            <tr class="hover:bg-gray-100 focus-within:bg-gray-100" v-if="detalle.email">
+                                <td class="border-t">
+                                    <div
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500">
+                                        {{ index + 1 }}
+                                    </div>
+                                </td>
+                                <td class="border-t">
+                                    <div
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500">
+                                        {{ detalle.email }}
+                                    </div>
+                                </td>
+                                <td class="border-t">
+                                    <div
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                        {{ detalle.titulo }}
+                                    </div>
+                                </td>
+                                <td class="border-t">
+                                    <div
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                        {{ detalle.puntos_asig }}
+                                    </div>
+                                </td>
+                                <td class="border-t max-w-80">
+                                    <div
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                        <span v-if="detalle.completado == 1">Sí</span>
+                                        <span v-else>No</span>
+                                    </div>
+                                </td>
+                                <td class="border-t max-w-80">
+                                    <div
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                        <span v-if="detalle.devuelto == 1">Sí</span>
+                                        <span v-else>No</span>
+                                    </div>
+                                </td>
+                                <td class="border-t max-w-80">
+                                    <div
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                    <span v-if="detalle.puntos_devolucion">
+                                        {{ detalle.puntos_devolucion }}
+                                    </span>
+                                    <span v-else>sin devolver</span>
+                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
                     </transition-group>
                 </table>
             </div>

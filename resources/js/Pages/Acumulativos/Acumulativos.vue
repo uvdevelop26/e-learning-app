@@ -10,6 +10,11 @@ const props = defineProps({
     clase_id: Number,
 });
 
+const { props: pageProps } = usePage();
+
+
+
+
 </script>
 <template>
     <AppLayout>
@@ -37,6 +42,10 @@ const props = defineProps({
                             <th class="pb-4 pt-6 px-6">Unidad</th>
                             <th class="pb-4 pt-6 px-6">Tareas</th>
                             <th class="pb-4 pt-6 px-6">Puntos Totales</th>
+                            <th class="pb-4 pt-6 px-6" 
+                                v-if="$page.props.userRole.role === 'alumno'">
+                                Puntos Logrados
+                            </th>
                         </tr>
                     </thead>
                     <transition-group tag="tbody" appear>
@@ -85,6 +94,15 @@ const props = defineProps({
                                     class="flex items-center px-6 py-4 focus:text-indigo-500"
                                     tabindex="-1">
                                     {{ result.puntos_totales }}
+                                </Link>
+                            </td>
+                            <td class="border-t max-w-80" v-if="$page.props.userRole.role === 'alumno'">
+                                <Link
+                                    :href="route('clases.unidades.acumulativos.index',
+                                        {clase: clase_id, unidad: result.unidade_id,})"
+                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                    tabindex="-1">
+                                    {{ result.puntos_logrados }}
                                 </Link>
                             </td>
                             <td class="w-px border-t">

@@ -1,7 +1,7 @@
 <script setup>
 import Icon from "./Icon.vue";
 import { useForm } from "@inertiajs/vue3";
-import { ref, onMounted, computed, getCurrentInstance } from "vue";
+import { ref, onMounted, getCurrentInstance } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { getFileType } from "../data/handleFiles";
 

@@ -52,7 +52,7 @@ onMounted(filterDevoluciones);
                 <AnuncioTareas :tarea="tareaYmateriales" :errors="errors" />
 
                 <!-- entrega component and show entregas link -->
-                <div class="flex flex-col items-start gap-6 lg:w-2/5">
+                <div class="flex flex-col items-start gap-6 lg:w-[28%]">
                     <Entregas
                         :tarea_id="tareaYmateriales.id"
                         :errors="errors"

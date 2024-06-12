@@ -8,7 +8,7 @@ import { QuillEditor } from "@vueup/vue-quill";
 import TextInput from "./TextInput.vue";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { ref, onMounted } from "vue";
-import { getFileType } from "../data/handleFiles";
+import { getFileType, deleteFile, getFileData } from "../data/handleFiles";
 import { usePage } from "@inertiajs/vue3";
 import moment from "moment-timezone";
 
@@ -68,10 +68,10 @@ const form = useForm({
     materiable_type: "",
 });
 
-const deleteFile = (index) => {
-    uploadedFiles.value.splice(index, 1);
-    // form.url.splice(index, 1);
-};
+const deleteFileHandler = (index) =>{
+    deleteFile(uploadedFiles, index);
+}
+
 
 const setOpenModal = () => {
     form.id = props.tarea.id;
@@ -98,10 +98,10 @@ const cancelOperation = () => {
     form.url = [];
 };
 
-const getFileData = (myFile) => {
-    const file = myFile.files[0];
-    uploadedFiles.value.push(file);
-};
+const addFileHandler = (myFile) =>{
+    getFileData(uploadedFiles, myFile);
+} 
+
 
 const update = () => {
     const newFiles = uploadedFiles.value.filter((item) => item.name);
@@ -294,7 +294,7 @@ onMounted(handleDevoluciones);
                             id="upload"
                             class="opacity-0 absolute -z-10"
                             accept=".pdf, .jpeg, .jpg, .png, .gif, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
-                            @change="getFileData($event.target)"
+                            @change="addFileHandler($event.target)"
                         />
                     </label>
                     <button
@@ -338,7 +338,7 @@ onMounted(handleDevoluciones);
                             <button
                                 class="h-full w-full flex justify-center items-center hover:bg-gray-100"
                                 type="button"
-                                @click="deleteFile(index)">
+                                @click="deleteFileHandler(index)">
                                 <icon name="close" class="w-2 fill-primary" />
                             </button>
                         </div>

@@ -89,7 +89,7 @@ const updatePassword = () => {
 
         <template #actions>
             <button class="mr-3 btn-indigo">
-                Guardado
+                Guardar
             </button>
         </template>
     </FormSection>

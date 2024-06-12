@@ -11,7 +11,7 @@ import { router } from "@inertiajs/vue3";
 import { useForm } from "@inertiajs/vue3";
 import { usePage } from "@inertiajs/vue3";
 import moment from "moment-timezone";
-import { getFileType, imageUrl } from "../data/handleFiles";
+import { getFileType, imageUrl, deleteFile, getFileData } from "../data/handleFiles";
 
 const props = defineProps({
     data: Object,
@@ -25,7 +25,8 @@ const open = ref(false);
 const openModal = ref(false);
 const { emit } = getCurrentInstance();
 const { auth } = usePage().props;
-const uploadedFiles = ref(props.data.materiales.slice());
+const { props: pageProps } = usePage();
+const uploadedFiles = ref((props.data?.materiales || []).slice());
 const dataDescripcion = ref(null);
 
 const formattedDate = ref(
@@ -40,6 +41,7 @@ const form = useForm({
     user_id: auth.user.id,
     anunciable_id: props.clase_id,
     anunciable_type: "",
+    /* materiales */
     nombre: [],
     url: [],
 });
@@ -56,7 +58,7 @@ const options = {
     },
 };
 
-//handle open and close modal
+
 const setOpenModal = () => {
     form.id = props.data.id;
     form.titulo = props.data.titulo;
@@ -64,9 +66,7 @@ const setOpenModal = () => {
     form.user_id = auth.user.id;
     form.anunciable_id = props.clase_id;
     uploadedFiles.value = props.data.materiales.slice();
-    /* anunciable type */
-    /* nombre */
-    /* url*/
+
     setTimeout(() => {
         openModal.value = true;
     }, 300);
@@ -98,17 +98,14 @@ const cancelProcess = () => {
     form.url = [];
 };
 
-//handle files
+const deleteFileHandler = (index)=>{
+    deleteFile(uploadedFiles, index);
+}
 
-const deleteFile = (index) => {
-    uploadedFiles.value.splice(index, 1);
-    // form.url.splice(index, 1);
-};
+const addFileHandler = (myFile) =>{
+    getFileData(uploadedFiles, myFile);
+}
 
-const getFileData = (myFile) => {
-    const file = myFile.files[0];
-    uploadedFiles.value.push(file);
-};
 
 //Update and delete Anuncios
 
@@ -146,15 +143,13 @@ const deleteAnuncio = () => {
     });
 };
 
-//emitting custom events
+
 const updateanuncios = () => {
     emit("updateanuncios");
 };
 
-//onMounted function
-onMounted(() => {
-    sortMateriales();
-});
+
+onMounted(sortMateriales);
 </script>
 <template>
     <div class="w-full p-4 rounded-xl border shadow bg-white group">
@@ -166,21 +161,21 @@ onMounted(() => {
                         {{ data.titulo }}
                     </h3>
                     <div class="text-xs text-gray-400 italic">
-                        <div v-if="data.user.docentes[0]" >
-                            Prof. {{ data.user.docentes[0].persona.nombre }}
-                            {{ data.user.docentes[0].persona.apellido }},
-                            {{ formattedDate }} 
+                        <div v-if="data.user.docentes[0]">
+                           {{ data.user.docentes[0].persona.nombre }}
+                           {{ data.user.docentes[0].persona.apellido }}
+                           {{ formattedDate }}
                         </div>
-                        <div v-else-if="data.user.alumnos[0]" >
-                            {{ data.user.alumnos[0].persona.nombre }}
-                            {{ data.user.alumnos[0].persona.apellido }},
-                            {{ formattedDate }} 
-                        </div>
-                        <div v-else-if="data.user.administradores[0]" >
-                            {{ data.user.administradores[0].persona.nombre }}
-                            {{ data.user.administradores[0].persona.apellido }},
-                            {{ formattedDate }} 
-                        </div>         
+                        <div v-else-if="data.user.alumnos[0]">
+                           {{ data.user.alumnos[0].persona.nombre }}
+                           {{ data.user.alumnos[0].persona.apellido }}
+                           {{ formattedDate }}
+                        </div>  
+                        <div v-else-if="data.user.administradores[0]">
+                           {{ data.user.administradores[0].persona.nombre }}
+                           {{ data.user.administradores[0].persona.apellido }}
+                           {{ formattedDate }}
+                        </div>  
                     </div>
                 </div>
                 <div
@@ -305,7 +300,7 @@ onMounted(() => {
                             id="upload"
                             class="opacity-0 absolute -z-10"
                             accept=".pdf, .jpeg, .jpg, .png, .gif, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
-                            @change="getFileData($event.target)"
+                            @change="addFileHandler($event.target)"
                         />
                     </label>
                 </div>
@@ -343,7 +338,7 @@ onMounted(() => {
                             <button
                                 class="h-full w-full flex justify-center items-center hover:bg-gray-100"
                                 type="button"
-                                @click="deleteFile(index)">
+                                @click="deleteFileHandler(index)">
                                 <icon name="close" class="w-2 fill-primary" />
                             </button>
                         </div>
