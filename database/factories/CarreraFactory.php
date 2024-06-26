@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CarreraFactory extends Factory
 {
-    
+
     public function definition()
     {
         $carreras = array("Ingeniería en Electricidad", "Ingeniería en Informática");

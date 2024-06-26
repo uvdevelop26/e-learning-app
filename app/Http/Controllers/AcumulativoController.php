@@ -26,6 +26,7 @@ class AcumulativoController extends Controller
                 'devoluciones.puntos as puntos_devolucion'
             )
             ->where('unidades.id', $unidad)
+            ->whereNotNull('users.email')
             ->get();
 
         return Inertia::render('Acumulativos/Detalles', ['detalles' => $detalles]);

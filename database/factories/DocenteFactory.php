@@ -15,15 +15,29 @@ class DocenteFactory extends Factory
 
     public function definition()
     {
-        $persona_id = Persona::all()->random()->id;
-        $user_ids = User::where("role_id", 2)->pluck('id')->toArray();
-        $estado_id = Estado::all()->random()->id;
+        static $usedPersonaIds = [];
+
+        // obtener los IDs de Personas que aún no se han usado
+        $personaIds = Persona::pluck('id')->diff($usedPersonaIds)->toArray();
+
+        $userIds = User::where("role_id", 2)->pluck('id')->toArray();
+
+        if (empty($personaIds)) {
+            throw new \Exception("No hay más 'persona_id' únicos disponibles");
+        }
+
+        // ID de persona único
+        $personaId = $this->faker->randomElement($personaIds);
+        $usedPersonaIds[] = $personaId;
+
+        $estadoId = Estado::pluck('id')->random();
 
         return [
             'profesion' => $this->faker->jobTitle(),
-            'persona_id' => $persona_id,
-            'user_id' => $this->faker->randomElement(array_unique($user_ids)),
-            'estado_id' => $estado_id
+            'persona_id' => $personaId,  
+            'user_id' => $this->faker->randomElement(array_unique($userIds)),
+            'estado_id' => $estadoId
         ];
+        
     }
 }

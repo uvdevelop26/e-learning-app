@@ -126,7 +126,7 @@ const deleteData = (id) => {
                 ref="commentsList"
                 :class="{ hidden: index < 4 && hiddeComments }">
                 <!-- Profile picture -->
-                 <div class="w-10 h-10 rounded-full border border-gray-400 overflow-hidden">
+                 <div class="w-10 h-10 rounded-full border-gray-400 overflow-hidden">
                     <img 
                         v-if="comentario.user.profile_photo_path"
                         :src="imageUrl(comentario.user.profile_photo_path)"
@@ -198,7 +198,9 @@ const deleteData = (id) => {
                     </form>
                 </div>
                 <!-- Dropdowm options -->
-                <dropdown class="ml-auto" :width="'40'" v-if="comentario.user.email === $page.props.auth.user.email">
+                <dropdown class="ml-auto" 
+                    :width="'40'" 
+                    v-if="comentario.user.email === $page.props.auth.user.email">
                     <template #trigger>
                         <div class="text-right">
                             <button

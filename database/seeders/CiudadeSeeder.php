@@ -3,47 +3,43 @@
 namespace Database\Seeders;
 
 use App\Models\Ciudade;
+use Exception;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 
 class CiudadeSeeder extends Seeder
 {
-    
+
     public function run()
     {
 
-        $ciudades = array(
-            array('id' =>136, 'dpto_id' => 5, 'distrito' => 'Borja'),
-            array('id' =>137, 'dpto_id' => 5, 'distrito' => 'Colonia Independencia'),
-            array('id' =>138, 'dpto_id' => 5, 'distrito' => 'Coronel Martínez'),
-            array('id' =>139, 'dpto_id' => 5, 'distrito' => 'Dr. Bottrell'),
-            array('id' =>140, 'dpto_id' => 5, 'distrito' => 'Fassardi'),
-            array('id' =>141, 'dpto_id' => 5, 'distrito' => 'Félix Pérez Cardozo'),
-            array('id' =>142, 'dpto_id' => 5, 'distrito' => 'Garay'),
-            array('id' =>143, 'dpto_id' => 5, 'distrito' => 'Itapé'),
-            array('id' =>144, 'dpto_id' => 5, 'distrito' => 'Iturbe'),
-            array('id' =>145, 'dpto_id' => 5, 'distrito' => 'Mbocayaty'),
-            array('id' =>146, 'dpto_id' => 5, 'distrito' => 'Natalicio Talavera'),
-            array('id' =>147, 'dpto_id' => 5, 'distrito' => 'Ñumí'),
-            array('id' =>148, 'dpto_id' => 5, 'distrito' => 'Paso Yobái'),
-            array('id' =>149, 'dpto_id' => 5, 'distrito' => 'San Salvador'),
-            array('id' =>150, 'dpto_id' => 5, 'distrito' => 'Tebicuary'),
-            array('id' =>151, 'dpto_id' => 5, 'distrito' => 'Troche'),
-            array('id' =>152, 'dpto_id' => 5, 'distrito' => 'Villarrica'),
-            array('id' =>153, 'dpto_id' => 5, 'distrito' => 'Yataity')
-        );
+        $url = storage_path('JSON/Distritos_Paraguay_Codigos_DGEEC.json');
 
-        foreach ($ciudades as $ciudad) {
+        try {
+            $json = File::get($url);
 
-            Ciudade::create([
+            $json = mb_convert_encoding($json, 'UTF-8', 'UTF-8');
 
-                'id' => $ciudad['id'],
-                'nombre' => $ciudad['distrito'],
-                'departamento_id' => $ciudad['dpto_id']
-            ]);
+            $json = preg_replace('/[[:^print:]]/', '', $json);
 
+            $distritos = json_decode($json, true);
+
+            // Verificar errores en json_decode
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("Error al decodificar el JSON: " . json_last_error_msg());
+            }
+
+
+            foreach ($distritos as $distrito) {
+
+                Ciudade::create([
+                    'nombre' => $distrito['Descripcin de Distrito'],
+                    'departamento_id' => $distrito['Cdigo de Departamento']
+                ]);
+            }
+        } catch (Exception $e) {
+            echo "Excepción atrapada: " . $e->getMessage();
         }
-        
-        
     }
 }

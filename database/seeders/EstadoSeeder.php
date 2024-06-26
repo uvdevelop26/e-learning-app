@@ -8,15 +8,14 @@ use Illuminate\Database\Seeder;
 
 class EstadoSeeder extends Seeder
 {
-    
+
     public function run()
     {
-        $estados = array("activo", "inactivo");
+        $estados = [
+            ['estado' => 'activo'],
+            ['estado' => 'inactivo']
+        ];
 
-        foreach ($estados as $estado) {
-            Estado::create([
-                'estado' => $estado
-            ]);
-        }
+        Estado::insert($estados);
     }
 }

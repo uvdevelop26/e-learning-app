@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const { props: pageProps } = usePage();
-const filteredDetalles = ref(null)
+const filteredDetalles = ref([])
 
 onMounted(() =>{
     const userRole = pageProps.userRole.role;
@@ -56,8 +56,9 @@ onMounted(() =>{
                         </tr>
                     </thead>
                     <transition-group tag="tbody" appear>
-                        <template  v-for="(detalle, index) in filteredDetalles" :key="index">
-                            <tr class="hover:bg-gray-100 focus-within:bg-gray-100" v-if="detalle.email">
+                        <template v-if="filteredDetalles && filteredDetalles.length > 0">
+                            <tr class="hover:bg-gray-100 focus-within:bg-gray-100" 
+                                v-for="(detalle, index) in filteredDetalles" :key="index">
                                 <td class="border-t">
                                     <div
                                         class="flex items-center px-6 py-4 focus:text-indigo-500">
@@ -112,7 +113,13 @@ onMounted(() =>{
                                     </div>
                                 </td>
                             </tr>
+                            
                         </template>
+                        <tr v-else class="focus-within:bg-gray-100">
+                            <td colspan="7" class="inline-block pl-8 py-5">
+                                No se encontraron detalles de entregas
+                            </td>   
+                        </tr>
                     </transition-group>
                 </table>
             </div>

@@ -10,17 +10,22 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SemestreFactory extends Factory
 {
-    
+
     public function definition()
     {
-        $nombres = array("I", "II", "III", "IV", "V","VI", "VII", "VIII", "IX", "X", "XI", "XII");
-        $carrera_id = Carrera::all()->random()->id;
+        $nombres = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+
+        $carreras = Carrera::select('id', 'codigo')->get();
+
+        $carrera = $carreras->random();
+
+        $nombreSemestre = $this->faker->randomElement($nombres);
 
         return [
-            'nombre' => $this->faker->randomElement($nombres),
-            'codigo' => $this->faker->word(),
+            'nombre' => $nombreSemestre,
+            'codigo' => $carrera->codigo . '-' . $nombreSemestre,
             'descripcion' => $this->faker->sentence(5),
-            'carrera_id' => $carrera_id
+            'carrera_id' => $carrera->id 
         ];
     }
 }

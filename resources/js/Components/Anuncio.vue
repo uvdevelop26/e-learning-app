@@ -28,6 +28,7 @@ const { auth } = usePage().props;
 const { props: pageProps } = usePage();
 const uploadedFiles = ref((props.data?.materiales || []).slice());
 const dataDescripcion = ref(null);
+const docentes = ref(props.data.user.docentes[0])
 
 const formattedDate = ref(
     moment.tz(props.data.created_at, "America/Asuncion").format("DD-MM-YYYY HH:mm:ss")
@@ -161,7 +162,8 @@ onMounted(sortMateriales);
                         {{ data.titulo }}
                     </h3>
                     <div class="text-xs text-gray-400 italic">
-                        <div v-if="data.user.docentes[0]">
+                        <div v-if="docentes">{{ docentes }}</div>
+                        <!-- <div v-if="data.user.docentes[0]">
                            {{ data.user.docentes[0].persona.nombre }}
                            {{ data.user.docentes[0].persona.apellido }}
                            {{ formattedDate }}
@@ -175,7 +177,7 @@ onMounted(sortMateriales);
                            {{ data.user.administradores[0].persona.nombre }}
                            {{ data.user.administradores[0].persona.apellido }}
                            {{ formattedDate }}
-                        </div>  
+                        </div> -->  
                     </div>
                 </div>
                 <div

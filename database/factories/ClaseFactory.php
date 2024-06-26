@@ -15,15 +15,17 @@ class ClaseFactory extends Factory
 
     public function definition()
     {
-        $materia_id = Materia::all()->random()->id;
-        $docente_id = Docente::all()->random()->id;
-        $estado_id = Estado::all()->random()->id;
+        $materias = Materia::select('id', 'codigo')->get();
+        $docenteId = Docente::pluck('id')->random();
+        $estadoId = Estado::pluck('id')->random();
+        $materia = $materias->random();
 
         return [
-            'codigo' => $this->faker->word(),
-            'materia_id' => $materia_id,
-            'docente_id' => $docente_id,
-            'estado_id' => $estado_id
+            'codigo' => $materia->codigo . $this->faker->numberBetween(1, 99),
+            'materia_id' => $materia->id,
+            'docente_id' => $docenteId,
+            'estado_id' => $estadoId
         ];
+      
     }
 }

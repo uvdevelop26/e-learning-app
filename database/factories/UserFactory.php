@@ -12,21 +12,12 @@ use Laravel\Jetstream\Features;
 
 class UserFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    
     public function definition(): array
     {
-        $role_id = Role::all()->random()->id;
+        $role_id = Role::pluck('id')->random();
 
         return [
             'email' => $this->faker->unique()->safeEmail(),

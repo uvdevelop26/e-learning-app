@@ -13,19 +13,30 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AlumnoFactory extends Factory
 {
-    
+
     public function definition()
     {
-        $persona_id = Persona::all()->random()->id;
-        $carrera_id = Carrera::all()->random()->id;
-        $user_ids = User::where("role_id", 1)->pluck('id')->toArray();
-        $estado_id = Estado::all()->random()->id;
+        static $usedPersonaIds = [];
+
+        $personaIds = Persona::pluck('id')->diff($usedPersonaIds)->toArray();
+
+        $userIds = User::where("role_id", 1)->pluck('id')->toArray();
+        $carreraId = Carrera::pluck('id')->random();
+
+        if (empty($personaIds)) {
+            throw new \Exception("No hay más 'persona_id' únicos disponibles");
+        }
+
+        $personaId = $this->faker->randomElement($personaIds);
+        $usedPersonaIds[] = $personaId;
+
+        $estadoId = Estado::pluck('id')->random();
 
         return [
-            'persona_id' => $persona_id,
-            'carrera_id' => $carrera_id,
-            'user_id' => $this->faker->randomElement(array_unique($user_ids)),
-            'estado_id' => $estado_id
+            'persona_id' => $personaId, 
+            'carrera_id' => $carreraId,
+            'user_id' => $this->faker->randomElement(array_unique($userIds)),
+            'estado_id' => $estadoId
         ];
     }
 }

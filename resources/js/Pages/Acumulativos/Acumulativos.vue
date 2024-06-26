@@ -11,10 +11,6 @@ const props = defineProps({
 });
 
 const { props: pageProps } = usePage();
-
-
-
-
 </script>
 <template>
     <AppLayout>
@@ -42,82 +38,86 @@ const { props: pageProps } = usePage();
                             <th class="pb-4 pt-6 px-6">Unidad</th>
                             <th class="pb-4 pt-6 px-6">Tareas</th>
                             <th class="pb-4 pt-6 px-6">Puntos Totales</th>
-                            <th class="pb-4 pt-6 px-6" 
+                            <th class="pb-4 pt-6 px-6"
                                 v-if="$page.props.userRole.role === 'alumno'">
                                 Puntos Logrados
                             </th>
                         </tr>
                     </thead>
                     <transition-group tag="tbody" appear>
-                        <tr
-                            v-for="(result, index) in results"
-                            :key="index"
-                            class="hover:bg-gray-100 focus-within:bg-gray-100">
-                            <td class="border-t">
-                                <Link
-                                    :href="route('clases.unidades.acumulativos.index',
-                                            {clase: clase_id, unidad: result.unidade_id,})"
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500">
-                                    {{ index + 1 }}
-                                </Link>
+                        <template v-if="results.length > 0">
+                            <tr class="hover:bg-gray-100 focus-within:bg-gray-100" 
+                                v-for="(result, index) in results" :key="index" >
+                                <td class="border-t">
+                                    <Link :href="route('clases.unidades.acumulativos.index',
+                                                {clase: clase_id, unidad: result.unidade_id,})"
+                                            class="flex items-center px-6 py-4 focus:text-indigo-500">
+                                        {{ index + 1 }}
+                                    </Link>
+                                </td>
+                                <td class="border-t">
+                                    <Link :href="route('clases.unidades.acumulativos.index',
+                                                {clase: clase_id, unidad: result.unidade_id,})"
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500">
+                                        {{ result.codigo }}
+                                    </Link>
+                                </td>
+                                <td class="border-t">
+                                    <Link :href="route('clases.unidades.acumulativos.index',
+                                                {clase: clase_id, unidad: result.unidade_id,})"
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                        {{ result.tema }}
+                                    </Link>
+                                </td>
+                                <td class="border-t">
+                                    <Link
+                                        :href="route('clases.unidades.acumulativos.index',
+                                                {clase: clase_id, unidad: result.unidade_id,})"
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                        {{ result.tareas }}
+                                    </Link>
+                                </td>
+                                <td class="border-t max-w-80">
+                                    <Link :href="route('clases.unidades.acumulativos.index',
+                                                {clase: clase_id, unidad: result.unidade_id,})"
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                        {{ result.puntos_totales }}
+                                    </Link>
+                                </td>
+                                <td
+                                    class="border-t max-w-80"
+                                    v-if="$page.props.userRole.role === 'alumno'">
+                                    <Link
+                                        :href="route('clases.unidades.acumulativos.index',
+                                                {clase: clase_id, unidad: result.unidade_id,})"
+                                        class="flex items-center px-6 py-4 focus:text-indigo-500"
+                                        tabindex="-1">
+                                        {{ result.puntos_logrados }}
+                                    </Link>
+                                </td>
+                                <td class="w-px border-t">
+                                    <Link
+                                        :href="route('clases.unidades.acumulativos.index',
+                                                {clase: clase_id, unidad: result.unidade_id,})"
+                                        class="flex items-center px-4"
+                                        tabindex="-1">
+                                        <icon
+                                            name="cheveron-right"
+                                            class="block w-6 h-6 fill-gray-400"
+                                        />
+                                    </Link>
+                                </td>
+                            </tr>   
+                        </template>
+                        <tr v-else 
+                            class="focus-within:bg-gray-100">
+                            <td colspan="6" class="inline-block pl-8 py-5">
+                                 No se encuentran resultados
                             </td>
-                            <td class="border-t">
-                                <Link
-                                    :href="route('clases.unidades.acumulativos.index',
-                                            {clase: clase_id, unidad: result.unidade_id,})"
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500">
-                                    {{ result.codigo }}
-                                </Link>
-                            </td>
-                            <td class="border-t">
-                                <Link
-                                    :href="route('clases.unidades.acumulativos.index',
-                                            {clase: clase_id, unidad: result.unidade_id,})"
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                    {{ result.tema }}
-                                </Link>
-                            </td>
-                            <td class="border-t">
-                                <Link
-                                    :href="route('clases.unidades.acumulativos.index',
-                                            {clase: clase_id, unidad: result.unidade_id,})"
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                    {{ result.tareas }}
-                                </Link>
-                            </td>
-                            <td class="border-t max-w-80">
-                                <Link
-                                    :href="route('clases.unidades.acumulativos.index',
-                                        {clase: clase_id, unidad: result.unidade_id,})"
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                    {{ result.puntos_totales }}
-                                </Link>
-                            </td>
-                            <td class="border-t max-w-80" v-if="$page.props.userRole.role === 'alumno'">
-                                <Link
-                                    :href="route('clases.unidades.acumulativos.index',
-                                        {clase: clase_id, unidad: result.unidade_id,})"
-                                    class="flex items-center px-6 py-4 focus:text-indigo-500"
-                                    tabindex="-1">
-                                    {{ result.puntos_logrados }}
-                                </Link>
-                            </td>
-                            <td class="w-px border-t">
-                                <Link
-                                    :href="route('clases.unidades.acumulativos.index',
-                                            {clase: clase_id, unidad: result.unidade_id,})"
-                                    class="flex items-center px-4"
-                                    tabindex="-1">
-                                    <icon
-                                        name="cheveron-right"
-                                        class="block w-6 h-6 fill-gray-400"
-                                    />
-                                </Link>
-                            </td>
-                        </tr>
+                        </tr>   
                     </transition-group>
                 </table>
             </div>

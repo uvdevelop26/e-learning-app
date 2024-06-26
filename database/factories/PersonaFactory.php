@@ -15,17 +15,16 @@ class PersonaFactory extends Factory
     {
         $sexos = array("femenino", "masculino");
 
-        $ciudade_id = Ciudade::all()->random()->id;
+        $ciudade_id = Ciudade::pluck('id')->random();
 
         return [
             'nombre' => $this->faker->name(),
             'apellido' => $this->faker->lastName(),
-            'ci_numero' =>$this->faker->numberBetween(1000000, 5000000),
+            'ci_numero' => $this->faker->unique()->numberBetween(1000000, 5000000),
             'sexo' => $this->faker->randomElement($sexos),
             'telefono' => $this->faker->phoneNumber(),
             'direccion' => $this->faker->sentence(5),
             'ciudade_id' => $ciudade_id
-
         ];
     }
 }

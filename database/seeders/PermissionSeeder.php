@@ -7,6 +7,8 @@ use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Docente;
 use App\Models\Persona;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,72 +20,67 @@ class PermissionSeeder extends Seeder
 
     public function run()
     {
-
-
-
         $usuarios = [
             [
                 'email' => 'administrador@gmail.com',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'two_factor_secret' => null,
-                'two_factor_recovery_codes' => null,
+                'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
-                'profile_photo_path' => null,
-                'current_team_id' => null,
                 'role_id' => 3,
             ],
             [
                 'email' => 'docente@gmail.com',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'two_factor_secret' => null,
-                'two_factor_recovery_codes' => null,
+                'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
-                'profile_photo_path' => null,
-                'current_team_id' => null,
                 'role_id' => 2,
             ],
             [
                 'email' => 'alumno@gmail.com',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'two_factor_secret' => null,
-                'two_factor_recovery_codes' => null,
+                'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
-                'profile_photo_path' => null,
-                'current_team_id' => null,
                 'role_id' => 1,
             ],
         ];
 
-        // Iterar sobre los datos y crear los usuarios
-        foreach ($usuarios as $usuario) {
-            User::create($usuario);
-        }
+        // transacciones para asegurar la integridad de los datos
+        DB::transaction(function () use ($usuarios) {
+            
+            foreach ($usuarios as $index => $usuarioData) {
+                
+                $usuario = User::create($usuarioData);
 
-        /* $persona_id = Persona::all()->random()->id; */
-        $carrera_id = Carrera::all()->random()->id;
+                switch ($usuarioData['role_id']) {
+                    case 3: // Administrador
+                        Administradore::create([
+                            'cargo' => 'secretario/a',
+                            'persona_id' => $index + 1,
+                            'user_id' => $usuario->id,
+                            'estado_id' => 1,
+                        ]);
+                        break;
 
-        Administradore::create([
-            'cargo' => 'secretario/a',
-            'persona_id' => 1,
-            'user_id' => 1,
-            'estado_id' => 1
-        ]);
+                    case 2: 
+                        Docente::create([
+                            'profesion' => 'Ingeniero en Sistemas',
+                            'persona_id' => $index + 1, 
+                            'user_id' => $usuario->id,
+                            'estado_id' => 1,
+                        ]);
+                        break;
 
-        Docente::create([
-            'profesion' => 'Ingeniero en Sistemas', 
-            'persona_id' => 2,
-            'user_id' => 2,
-            'estado_id' => 1
-        ]);
-
-        Alumno::create([
-            'persona_id' => 3,
-            'carrera_id' => $carrera_id,
-            'user_id' => 3,
-            'estado_id' => 1
-        ]);
+                    case 1: 
+                        $carreraId = Carrera::pluck('id')->random();
+                        Alumno::create([
+                            'persona_id' => $index + 1,
+                            'carrera_id' => $carreraId,
+                            'user_id' => $usuario->id,
+                            'estado_id' => 1,
+                        ]);
+                        break;
+                }
+            }
+        });
     }
 }
