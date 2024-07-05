@@ -170,8 +170,8 @@ const submit = () => {
                             </label>
                             <button
                                 type="button"
-                                class="flex justify-center items-center w-11 h-11 border rounded-full cursor-pointer hover:bg-indigo-100 focus:bg-indigo-100"
-                                @click="openModal = true">
+                                disabled="true"
+                                class="flex justify-center items-center w-11 h-11 border rounded-full">
                                 <icon
                                     name="link"
                                     class="w-4 h-4 fill-primary"
@@ -235,23 +235,6 @@ const submit = () => {
             </transition>
         </div>
     </div>
-    <Modal :show="openModal">
-        <!-- <template #headerModal>
-            <h3 class="text-lg">Agregar Materiales</h3>
-        </template>
-        <template #bodyModal>
-            <div class="h-40 flex justify-center items-center gap-3">
-                <label for="file" class="flex items-center gap-2 bg-primary justify-center w-32 h-9 rounded-lg cursor-pointer hover:bg-orange-400  relative">
-                    <span class="text-white font-bold">Examinar</span>
-                    <input type="file" id="file" class="absolute opacity-0 -z-20" @change="getFileData($event.target)">
-                    <icon name="upload" class="w-4 h-4 fill-white"  />
-                </label>
-                <div>
-                    <span class="font-bold text-primary">{{ dataFilename }}</span>
-                </div>
-            </div>
-        </template> -->
-    </Modal>
 </template>
 <style scoped>
 /* transition show form */

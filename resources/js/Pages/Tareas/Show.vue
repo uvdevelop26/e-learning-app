@@ -44,7 +44,7 @@ onMounted(filterDevoluciones);
             </h2>
         </template>
         <!-- body -->
-        <div class="py-12 px-4 lg:px-8 max-w-7xl mx-auto">
+        <div class="py-12 px-4 lg:px-8 max-w-7xl">
             <!-- header class info -->
             <div
                 class="mt-6 h-full flex flex-col gap-6 lg:flex-row md:items-start">

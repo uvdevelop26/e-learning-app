@@ -34,12 +34,12 @@ class AdministradoreController extends Controller
         ]);
     }
 
-    
+
     public function create()
     {
-        $departamentos = Departamento::all();
-        $ciudades = Ciudade::all();
-        $estados = Estado::all();
+        $departamentos = Departamento::select('id', 'nombre')->get();
+        $ciudades = Ciudade::select('id', 'nombre', 'departamento_id')->get();
+        $estados = Estado::select('id', 'estado')->get();
         $rol = Role::where('rol', 'administrador')->get();
 
         return Inertia::render('Administradores/Create', [
@@ -78,23 +78,20 @@ class AdministradoreController extends Controller
         return Redirect::route('administradores.index')->with('success', 'Administrador Registrado Exitosamente');
     }
 
-    
+
     public function show($id)
     {
         //
     }
 
-    
+
     public function edit(Administradore $administradore)
     {
 
-       // return $administradore;
-
-
-        $departamentos = Departamento::all();
+        $departamentos = Departamento::select('id', 'nombre')->get();
         $currentDpto = Ciudade::find($administradore->persona->ciudade_id)->departamento->id;
-        $ciudades = Ciudade::all();
-        $estados = Estado::all();
+        $ciudades = Ciudade::select('id', 'nombre', 'departamento_id')->get();
+        $estados = Estado::select('id', 'estado')->get();
         $roles = Role::all();
         $currentRole = User::find($administradore->user_id)->role->id;
 
@@ -123,7 +120,7 @@ class AdministradoreController extends Controller
         ]);
     }
 
-   
+
     public function update(AdministradoreRequest $request, Administradore $administradore)
     {
         $persona = Persona::find($administradore->persona_id);
@@ -155,7 +152,7 @@ class AdministradoreController extends Controller
         return Redirect::route('administradores.index')->with('success', 'Administrador Actualizado Exitosamente');
     }
 
-    
+
     public function destroy($id)
     {
         $administradore = Administradore::find($id);
@@ -165,6 +162,5 @@ class AdministradoreController extends Controller
         $userAdministradore->delete();
 
         return Redirect::route('administradores.index')->with('success', 'Administrador Eliminado Exitosamente');
-
     }
 }

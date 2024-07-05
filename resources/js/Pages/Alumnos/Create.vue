@@ -79,8 +79,7 @@ const submit = () => {
                 <div class="w-full overflow-hidden">
                     <form @submit.prevent="submit">
                         <div
-                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap -mb-8 -mr-6 p-8 shadow rounded-md">
                             <text-input
                                 type="text"
                                 class="pb-8 pr-6 w-full lg:w-1/2"
@@ -110,8 +109,7 @@ const submit = () => {
                                 label="Sexo"
                                 v-model="form.sexo"
                                 id="sexo"
-                                :error="errors.sexo"
-                            >
+                                :error="errors.sexo">
                                 <option :value="null" />
                                 <option value="femenino">Femenino</option>
                                 <option value="masculino">Masculino</option>
@@ -135,15 +133,13 @@ const submit = () => {
                                 label="Departamento"
                                 id="departamento"
                                 v-model="form.departamento_id"
-                                :error="errors.departamento_id"
-                            >
+                                :error="errors.departamento_id">
                                 <option :value="null" />
                                 <option
                                     v-for="departamento in departamentos"
                                     :key="departamento.id"
                                     :value="departamento.id"
-                                    class="capitalize"
-                                >
+                                    class="lowercase">
                                     {{ departamento.nombre }}
                                 </option>
                             </select-input>
@@ -153,22 +149,19 @@ const submit = () => {
                                 v-model="form.ciudade_id"
                                 id="ciudade_id"
                                 :error="errors.ciudade_id"
-                                ref="selectInputChild"
-                            >
+                                ref="selectInputChild">
                                 <option :value="null" />
                                 <option
                                     v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
-                                    class="capitalize"
-                                >
+                                    class="lowercase">
                                     {{ ciudade.nombre }}
                                 </option>
                             </select-input>
                         </div>
                         <div
-                            class="bg-white flex flex-wrap mt-12 -mb-8 -mr-6 p-8 shadow rounded-md"
-                        >
+                            class="bg-white flex flex-wrap mt-12 -mb-8 -mr-6 p-8 shadow rounded-md">
                             <text-input
                                 class="pb-8 pr-6 w-full lg:w-1/2"
                                 label="Email"
@@ -182,15 +175,13 @@ const submit = () => {
                                 label="Carrera"
                                 v-model="form.carrera_id"
                                 id="carrera_id"
-                                :error="errors.carrera_id"
-                            >
+                                :error="errors.carrera_id">
                                 <option :value="null" />
                                 <option
                                     v-for="carrera in carreras"
                                     :key="carrera.id"
                                     :value="carrera.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ carrera.nombre }}
                                 </option>
                             </select-input>
@@ -216,15 +207,13 @@ const submit = () => {
                                 label="Estado"
                                 v-model="form.estado_id"
                                 id="ciudade_id"
-                                :error="errors.estado_id"
-                            >
+                                :error="errors.estado_id">
                                 <option :value="null" />
                                 <option
                                     v-for="estado in estados"
                                     :key="estado.id"
                                     :value="estado.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ estado.estado }}
                                 </option>
                             </select-input>
@@ -233,22 +222,19 @@ const submit = () => {
                                 label="Rol"
                                 v-model="form.role_id"
                                 id="role_id"
-                                disabled
-                            >
+                                disabled>
                                 <option :value="null" />
                                 <option
                                     v-for="ro in rol"
                                     :key="ro.id"
                                     :value="ro.id"
-                                    class="capitalize"
-                                >
+                                    class="capitalize">
                                     {{ ro.rol }}
                                 </option>
                             </select-input>
                         </div>
                         <div
-                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100"
-                        >
+                            class="flex items-center px-8 py-4 bg-gray-50 border-t border-gray-100">
                             <loading-button
                                 :loading="form.processing"
                                 class="btn-indigo ml-auto"

@@ -162,7 +162,7 @@ onMounted(sortMateriales);
                         {{ data.titulo }}
                     </h3>
                     <div class="text-xs text-gray-400 italic">
-                        <div v-if="docentes">{{ docentes }}</div>
+                        <!-- <div v-if="docentes">{{ docentes }}</div> -->
                         <!-- <div v-if="data.user.docentes[0]">
                            {{ data.user.docentes[0].persona.nombre }}
                            {{ data.user.docentes[0].persona.apellido }}

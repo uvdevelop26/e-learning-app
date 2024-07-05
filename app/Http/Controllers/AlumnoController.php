@@ -38,9 +38,9 @@ class AlumnoController extends Controller
 
     public function create()
     {
-        $departamentos = Departamento::all();
-        $ciudades = Ciudade::all();
-        $estados = Estado::all();
+        $departamentos = Departamento::select('id', 'nombre')->get();
+        $ciudades = Ciudade::select('id', 'nombre', 'departamento_id')->get();
+        $estados = Estado::select('id', 'estado')->get();
         $rol = Role::where('rol', 'alumno')->get();
         $carreras = Carrera::all();
 
@@ -91,10 +91,10 @@ class AlumnoController extends Controller
 
     public function edit(Alumno $alumno)
     {
-        $departamentos = Departamento::all();
+        $departamentos = Departamento::select('id', 'nombre')->get();
         $currentDpto = Ciudade::find($alumno->persona->ciudade_id)->departamento->id;
-        $ciudades = Ciudade::all();
-        $estados = Estado::all();
+        $ciudades = Ciudade::select('id', 'nombre', 'departamento_id')->get();
+        $estados = Estado::select('id', 'estado')->get();
         $roles = Role::all();
         $currentRole = User::find($alumno->user->role_id)->id;
         $carreras = Carrera::all();

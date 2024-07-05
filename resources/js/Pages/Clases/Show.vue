@@ -127,7 +127,7 @@ onMounted(() => {
                     </div>
                     Clase {{ props.clase.codigo }}
                 </div>
-                <button @click="showAddUnidades = !showAddUnidades" class="text-sm text-primary italic hover:text-opacity-90 hover:underline" v-if="$page.props.userRole.role !== 'alumno'">
+                <button @click="showAddUnidades = !showAddUnidades" class="text-sm text-primary italic hover:text-opacity-90 hover:underline" v-if="$page.props.userRole.role === 'docente'">
                     + Agregar Unidad
                 </button>
             </h2>

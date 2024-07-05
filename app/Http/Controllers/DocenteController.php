@@ -34,9 +34,9 @@ class DocenteController extends Controller
 
     public function create()
     {
-        $departamentos = Departamento::all();
-        $ciudades = Ciudade::all();
-        $estados = Estado::all();
+        $departamentos = Departamento::select('id', 'nombre')->get();
+        $ciudades = Ciudade::select('id', 'nombre', 'departamento_id')->get();
+        $estados = Estado::select('id', 'estado')->get();
         $rol = Role::where('rol', 'docente')->get();
 
         return Inertia::render('Docentes/Create', [
@@ -83,10 +83,10 @@ class DocenteController extends Controller
 
     public function edit(Docente $docente)
     {
-        $departamentos = Departamento::all();
+        $departamentos = Departamento::select('id', 'nombre')->get();
         $currentDpto = Ciudade::find($docente->persona->ciudade_id)->departamento->id;
-        $ciudades = Ciudade::all();
-        $estados = Estado::all();
+        $ciudades = Ciudade::select('id', 'nombre', 'departamento_id')->get();
+        $estados = Estado::select('id', 'estado')->get();
         $roles = Role::all();
         $currentRole = User::find($docente->user->role_id)->id;
 
@@ -147,7 +147,7 @@ class DocenteController extends Controller
         return Redirect::route('docentes.index')->with('success', 'Docente Actualizado Exitosamente');
     }
 
-    
+
     public function destroy($id)
     {
         $docente = Docente::find($id);
