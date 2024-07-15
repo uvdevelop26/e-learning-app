@@ -10,10 +10,13 @@ use App\Models\Estado;
 use App\Models\Persona;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Redis;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
 
 class AdministradoreController extends Controller
@@ -162,5 +165,21 @@ class AdministradoreController extends Controller
         $userAdministradore->delete();
 
         return Redirect::route('administradores.index')->with('success', 'Administrador Eliminado Exitosamente');
+    }
+
+    public function pdf()
+    {
+        $administradores = Administradore::with(['persona.ciudade', 'user'])
+            ->select('id', 'cargo', 'persona_id', 'user_id')
+            ->get();
+
+
+        $currentDate = Carbon::now()->format('d/m/Y');
+
+        $userEmail = Auth::user()->email;
+
+        $pdf = Pdf::loadView('pdf.administradores', compact('administradores', 'currentDate', 'userEmail'));
+
+        return $pdf->stream('lista_administradores.pdf');
     }
 }

@@ -240,8 +240,11 @@ onMounted(() => {
                         ref="editorRef"
                         contentType="html"
                         v-model:content="form.instruccion"
-                        :error="errors.instruccion"
+                        
                     />
+                    <div v-if="errors.instruccion" class="text-sm text-red-500">
+                        {{ errors.instruccion }}
+                    </div>
                     <!-- upload materiales -->
                     <div class="py-2 flex gap-3 items-center">
                         <label

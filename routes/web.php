@@ -60,6 +60,7 @@ Route::controller(DocenteController::class)->middleware(['auth:sanctum', 'verifi
     Route::get('docentes/{docente}/edit', 'edit')->name('docentes.edit');
     Route::put('docentes/{docente}', 'update')->name('docentes.update');
     Route::delete('docentes/{docente}', 'destroy')->name('docentes.destroy');
+    Route::get('docentes/pdf', 'pdf')->name('docentes.pdf');
 });
 
 //alumnos
@@ -80,6 +81,7 @@ Route::controller(AdministradoreController::class)->middleware(['auth:sanctum', 
     Route::get('administradores/{administradore}/edit', 'edit')->name('administradores.edit');
     Route::put('administradores/{administradore}', 'update')->name('administradores.update');
     Route::delete('administradores/{administradore}', 'destroy')->name('administradores.destroy');
+    Route::get('administradores/pdf', 'pdf')->name('administradores.pdf');
 });
 
 //Carreras

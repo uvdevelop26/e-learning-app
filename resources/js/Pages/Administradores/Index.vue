@@ -60,12 +60,20 @@ const enter = (el, done) => {
         <!-- -->
         <div class="py-12 px-4 lg:px-8 max-w-7xl">
             <div class="flex items-center justify-between mb-6">
-                <search-filter
-                v-model="form.search"
-                class="mr-4 w-full max-w-md"
-                @reset="reset">
-              
-               </search-filter> 
+                <div class="w-full h-10 flex items-center gap-4">
+                    <div class="h-full w-20 bg-white border-2 shadow-md flex rounded-md">
+                        <a :href="route('administradores.pdf')"
+                        target="_blank" 
+                        class="h-full w-full text-sm font-bold flex items-center justify-center border-r hover:bg-gray-100">PDF</a>
+                        <a href="" 
+                        class="h-full w-full text-sm font-bold flex items-center justify-center hover:bg-gray-100">XLS</a>
+                    </div>  
+                    <search-filter
+                        v-model="form.search"
+                        class="mr-4 w-full max-w-md"
+                        @reset="reset">
+                  </search-filter> 
+                </div>
                 <Link class="btn-indigo" href="/administradores/create">
                     <span>Crear</span>
                     <span class="hidden md:inline">&nbsp;Administrador</span>

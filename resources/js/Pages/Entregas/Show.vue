@@ -170,8 +170,7 @@ const deleteDevolucion = (data) => {
                                 {{ tareaAsignada.titulo }}
                             </h3>
                             <div class="text-sm font-bold">
-                                Fecha límite: {{ tareaAsignada.fecha_entrega }} -
-                                {{ tareaAsignada.hora_entrega }}hs.
+                                Fecha límite: {{ moment.tz(tareaAsignada.fecha_entrega, 'America/Asuncion').format('DD-MM-YYYY HH:mm:ss') }} - {{ tareaAsignada.hora_entrega }}hs.
                             </div>
                         </div>
                     </div>

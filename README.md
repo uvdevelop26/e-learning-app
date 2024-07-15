@@ -53,7 +53,7 @@ Abrir un nuevo servidor para explorar el sistema
 ```
 Ingresa al Sistema utilizando los siguientes usuarios 
 
- ## administrador@gmail.com
+ ## user: administrador@gmail.com; contraseña: password
 
   - En la sección "Todas las Clases" explora las clases creadas por los profesores.
     - Puedes Eliminar una clase
@@ -69,7 +69,7 @@ Ingresa al Sistema utilizando los siguientes usuarios
     - Selecciona "Semestres", puedes buscar semestres, crear y editar semestre.
     - Selecciona "Materias", puedes buscar materias, crear editar y eliminar materia.
 
- ## docente@gmail.com
+ ## user: docente@gmail.com; contraseña: password
  - En la sección "Todas las Clases" puedes crear, editar y eliminar clases.
     - Al explorar una clase, puedes crear, editar y eliminar anuncios.
     - Puedes dejar comentarios en los anuncios
@@ -82,7 +82,7 @@ Ingresa al Sistema utilizando los siguientes usuarios
    - Puedes devolver la tarea agregando puntajes y observaciones.
    - Puedes deshacer la devolución y editar.
 
- ## alumno@gmail.com
+ ## user: alumno@gmail.com; contraseña: password
  - En la sección "Todas las Clases" puedes ver las clases en las que estás inscripto.
   - Al explorar la clase puedes ver los anuncios y comentar.
 - Al explorar la clase puedes ver las unidades y hacer click para explorar

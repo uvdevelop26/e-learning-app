@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AsignAlumnosRequest;
 use App\Models\Alumno;
 use App\Models\Carrera;
 use App\Models\Clase;
@@ -190,12 +191,8 @@ class ClaseController extends Controller
         ]);
     }
 
-    public function asignAlumnos(Request $request)
+    public function asignAlumnos(AsignAlumnosRequest $request)
     {
-
-        $request->validate([
-            'alumnos' => 'required'
-        ]);
 
         $clase = Clase::find($request->clase);
 
@@ -224,7 +221,7 @@ class ClaseController extends Controller
                 DB::raw('COALESCE(SUM(tareas.puntos), 0) as puntos_totales'),
                 DB::raw('COALESCE(SUM(devoluciones.puntos), 0) as puntos_logrados')
             )
-            ->groupBy('clases.codigo', 'unidades.id', 'unidades.tema') 
+            ->groupBy('clases.codigo', 'unidades.id', 'unidades.tema')
             ->where('clases.id', $id)
             ->get();
 

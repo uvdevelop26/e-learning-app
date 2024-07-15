@@ -17,7 +17,7 @@ class TareaRequest extends FormRequest
     {
         return [
             'titulo' => 'required',
-            'instruccion' => 'nullable',
+            'instruccion' => 'required',
             'fecha_entrega' => 'required',
             'hora_entrega' => 'required',
             'puntos' => 'nullable|numeric',

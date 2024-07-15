@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class DocenteController extends Controller
 {
@@ -157,5 +160,21 @@ class DocenteController extends Controller
         $userDocente->delete();
 
         return Redirect::route('docentes.index')->with('success', 'Docente Eliminado Exitosamente');
+    }
+
+    public function pdf()
+    {
+        $docentes = Docente::with(['persona.ciudade', 'user'])
+            ->select('id', 'profesion', 'persona_id', 'user_id')
+            ->get();
+
+
+        $currentDate = Carbon::now()->format('d/m/Y');
+
+        $userEmail = Auth::user()->email;
+
+        $pdf = Pdf::loadView('pdf.docentes', compact('docentes', 'currentDate', 'userEmail'));
+
+        return $pdf->stream('lista_docentes.pdf');
     }
 }
