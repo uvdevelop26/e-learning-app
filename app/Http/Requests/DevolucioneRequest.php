@@ -16,9 +16,9 @@ class DevolucioneRequest extends FormRequest
     public function rules()
     {
         return [
-            'recomendacion' => 'nullable',
-            'devuelto' => 'nullable',
-            'puntos' => 'nullable',
+            'recomendacion' => 'nullable|string',
+            'devuelto' => 'required|integer|min:0|max:1',
+            'puntos' => 'nullable|integer|min:0',
             'entrega_id' => 'required|numeric',       
             'nombre' => 'nullable|array',
             'url' => 'nullable|array',

@@ -102,6 +102,7 @@ Route::controller(SemestreController::class)->middleware(['auth:sanctum', 'verif
     Route::get('semestres/{semestre}/edit', 'edit')->name('semestres.edit');
     Route::put('semestres/{semestre}', 'update')->name('semestres.update');
     Route::delete('semestres/{semestre}', 'destroy')->name('semestres.destroy');
+    Route::get('semestres/pdf', 'pdf')->name('semestres.pdf');
 });
 
 //materias
@@ -113,6 +114,7 @@ Route::controller(MateriaController::class)->middleware(['auth:sanctum', 'verifi
     Route::put('materias/{materia}', 'update')->name('materias.update');
     Route::delete('materias/{materia}', 'destroy')->name('materias.destroy');
     Route::get('materias/download/{id}', 'download')->name('materias.download');
+    Route::get('materias/pdf', 'pdf')->name('materias.pdf');
 });
 
 //clases
@@ -128,6 +130,7 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
     Route::post('clases/asign-alumnos', 'asignAlumnos')->name('clases.asignAlumnos');
     Route::delete('clases/revoke-alumnos/{clase}', 'revokeAlumno')->name('clases.revokeAlumno');
     Route::get('clases/{clase}/acumulativos', 'acumulativos')->name('clases.acumulativos');
+    Route::get('clases/{clase}/pdf', 'pdf')->name('clases.pdf');
 
 
     Route::prefix('clases/{clase}/unidades')->controller(UnidadeController::class)->group(function () {

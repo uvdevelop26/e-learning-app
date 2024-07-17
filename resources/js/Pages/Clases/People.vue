@@ -133,12 +133,20 @@ const deleteAlumno = (id) => {
                     <div
                         class="py-4 px-4 border-b border-primary flex justify-between">
                         <h3 class="text-2xl font-bold text-primary">Alumnos</h3>
-                        <button @click="show = !show" v-if="$page.props.userRole.role !== 'alumno'">
-                            <icon
-                                name="plus"
-                                class="w-5 h-5 fill-primary hover:fill-secondary"
-                            />
-                        </button>
+                        <div class="flex justify-center items-center gap-3">
+                            <a :href="route('clases.pdf', clase.id)"
+                               class="w-11 h-10 rounded-md shadow-md bg-gray-100 flex items-center justify-center hover:bg-gray-200"
+                               target="_blank"
+                               v-if="$page.props.userRole.role !== 'alumnoñ'">
+                            <span class="font-bold text-sm">PDF</span> 
+                            </a>
+                            <button @click="show = !show" v-if="$page.props.userRole.role !== 'alumno'">
+                                <icon
+                                    name="plus"
+                                    class="w-5 h-5 fill-primary hover:fill-secondary"
+                                />
+                            </button>
+                        </div>
                     </div>
 
                     <ul class="px-4 text-md">

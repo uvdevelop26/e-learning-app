@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class MateriaController extends Controller
@@ -50,7 +53,7 @@ class MateriaController extends Controller
 
         if ($request->hasFile('plan_estudio')) {
             $file = $request->file('plan_estudio');
-            
+
             $extension = $file->getClientOriginalExtension();
 
             $filename = time() . '.' . $extension;
@@ -159,5 +162,22 @@ class MateriaController extends Controller
         }
 
         return response()->download($path, 'plan_estudio_' . $materia->nombre);
+    }
+
+    public function pdf(Request $request)
+    {
+        $queries = ['search'];
+
+        $materias = Materia::with('semestre.carrera')
+            ->orderBy('semestre_id', 'desc')
+            ->filter($request->only($queries))
+            ->get();
+        $currentDate = Carbon::now()->format('d/m/Y');
+
+        $userEmail = Auth::user()->email;
+
+        $pdf = Pdf::loadView('pdf.materias', compact('materias', 'currentDate', 'userEmail'));
+
+        return $pdf->stream('lista_materias.pdf');
     }
 }

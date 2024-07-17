@@ -168,7 +168,6 @@ class DocenteController extends Controller
             ->select('id', 'profesion', 'persona_id', 'user_id')
             ->get();
 
-
         $currentDate = Carbon::now()->format('d/m/Y');
 
         $userEmail = Auth::user()->email;

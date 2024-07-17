@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 class ClaseController extends Controller
@@ -229,5 +231,19 @@ class ClaseController extends Controller
             'results' => $results,
             'clase_id' => $id
         ]);
+    }
+
+    public function pdf($id)
+    {
+        $alumnos = Clase::with('alumnos.persona.ciudade', 'alumnos.user')
+            ->findOrFail($id);
+
+        $currentDate = Carbon::now()->format('d/m/Y');
+
+        $userEmail = Auth::user()->email;
+
+        $pdf = Pdf::loadView('pdf.alumnos', compact('alumnos', 'currentDate', 'userEmail'));
+
+        return $pdf->stream('lista_alumnos.pdf');
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 200);
             $table->string('apellido', 200);
-            $table->string('ci_numero', 100);
+            $table->string('ci_numero', 100)->unique();
             $table->string('sexo');
             $table->string('telefono');
             $table->string('direccion');

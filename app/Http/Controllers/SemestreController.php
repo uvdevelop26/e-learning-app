@@ -7,6 +7,9 @@ use App\Models\Semestre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class SemestreController extends Controller
 {
@@ -83,7 +86,7 @@ class SemestreController extends Controller
         $request->validate([
             'nombre' => 'required',
             'codigo' => 'required',
-            'descripcion' => 'required',      
+            'descripcion' => 'required',
             'carrera_id' => 'required'
         ]);
 
@@ -97,7 +100,7 @@ class SemestreController extends Controller
         return Redirect::route("semestres.index")->with('success', 'Semestre Actualizado Exitosamente');
     }
 
-    
+
     public function destroy($id)
     {
         $semestre = Semestre::find($id);
@@ -105,6 +108,23 @@ class SemestreController extends Controller
         $semestre->delete();
 
         return Redirect::route("semestres.index");
+    }
 
+    public function pdf(Request $request)
+    {
+        $queries = ['search'];
+
+        $semestres = Semestre::with('carrera')
+            ->orderBy('carrera_id', 'desc')
+            ->filter($request->only($queries))
+            ->get();
+
+        $currentDate = Carbon::now()->format('d/m/Y');
+
+        $userEmail = Auth::user()->email;
+
+        $pdf = Pdf::loadView('pdf.semestres', compact('semestres', 'currentDate', 'userEmail'));
+
+        return $pdf->stream('lista_semestres.pdf');
     }
 }
