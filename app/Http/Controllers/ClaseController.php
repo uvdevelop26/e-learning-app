@@ -235,7 +235,7 @@ class ClaseController extends Controller
 
     public function pdf($id)
     {
-        $alumnos = Clase::with('alumnos.persona.ciudade', 'alumnos.user')
+        $alumnos = Clase::with('materia', 'alumnos.persona.ciudade', 'alumnos.user', 'docente.persona')
             ->findOrFail($id);
 
         $currentDate = Carbon::now()->format('d/m/Y');

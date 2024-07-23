@@ -20,26 +20,32 @@
                     <thead>
                         <th class="headerDatosh titulos">Universidad Politécnica - UNVES</th>
                     </thead>
+                     @if (!empty($detalles) && isset($detalles[0]->codigo))
+                        <tr>
+                            <td>
+                                <p>CLASE: <span>{{ $detalles[0]->codigo }}</span> </p>
+                            </td>
+                        </tr>
+                        @else
+                        <tr>
+                            <td>
+                                <p>CLASE: <span>no se encontró</span> </p>
+                            </td>
+                        </tr>
+                        @endif
+                   @if (!empty($detalles) && isset($detalles[0]->unidad))
                     <tr>
                         <td>
-                            <p>
-                                MATERIA: <span>{{ $alumnos->materia->nombre }}</span>
-                            </p>
+                            <p>UNIDAD: <span>{{ $detalles[0]->unidad }}</span> </p>
                         </td>
                     </tr>
+                    @else
                     <tr>
                         <td>
-                            <p>CLASE: <span>{{ $alumnos->codigo}}</span> </p>
+                            <p>UNIDAD: <span>no se encontró</span> </p>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <p>PROFESOR/A: <span>
-                            {{ $alumnos->docente->persona->nombre}} 
-                            {{ $alumnos->docente->persona->apellido}}
-                            </span> </p>
-                        </td>
-                    </tr>
+                    @endif
                      <tr>
                         <td>
                             <p>FECHA: <span>{{ $currentDate }}</span> </p>
@@ -56,21 +62,23 @@
             <tr>
                 <td>Número</td>
                 <td>Alumno</td>
-                <td>Cédula</td>
-                <td>Correo</td>
-                <td>Teléfono</td>
-                <td>Dirección</td>
+                <td>Tarea</td>
+                <td>Puntos Asignados</td>
+                <td>Estado de Entrega</td>
+                <td>Corregido</td>
+                <td>Puntos Logrados</td>
             </tr>
         </thead>
         <tbody>
-            @foreach ($alumnos->alumnos as $index => $alumno)
+            @foreach ($detalles as $index => $detalle)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $alumno->persona->nombre }} {{ $alumno->persona->apellido }}</td> 
-                <td>{{ $alumno->persona->ci_numero }}</td> 
-                <td>{{ $alumno->user->email }}</td> 
-                <td>{{ $alumno->persona->telefono }}</td> 
-                <td>{{ $alumno->persona->ciudade->nombre }}</td> 
+                <td>{{ $detalle->email }}</td> 
+                <td>{{ $detalle->titulo }}</td> 
+                <td>{{ $detalle->puntos_asig }}</td> 
+                <td>{{ $detalle->completado ? 'Entregado' : 'No Entregado' }}</td> 
+                <td>{{ $detalle->devuelto ? 'Corregido' : 'Sin Corregir' }}</td>  
+                <td>{{ $detalle->puntos_devolucion ? $detalle->puntos_devolucion : 'Sin Calificar' }}</td> 
             </tr>
         @endforeach
         </tbody>

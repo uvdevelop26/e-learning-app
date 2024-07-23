@@ -147,6 +147,7 @@ Route::controller(ClaseController::class)->middleware(['auth:sanctum', 'verified
 
     Route::prefix('clases/{clase}/acumulativos')->controller(AcumulativoController::class)->group(function () {
         Route::get('{unidad}', 'index')->name('clases.unidades.acumulativos.index');
+        Route::get('{unidad}/pdf', 'pdf')->name('clases.unidades.acumulativos.pdf');
     });
 });
 

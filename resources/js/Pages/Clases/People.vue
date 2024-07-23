@@ -137,7 +137,7 @@ const deleteAlumno = (id) => {
                             <a :href="route('clases.pdf', clase.id)"
                                class="w-11 h-10 rounded-md shadow-md bg-gray-100 flex items-center justify-center hover:bg-gray-200"
                                target="_blank"
-                               v-if="$page.props.userRole.role !== 'alumnoñ'">
+                               v-if="$page.props.userRole.role !== 'alumno'">
                             <span class="font-bold text-sm">PDF</span> 
                             </a>
                             <button @click="show = !show" v-if="$page.props.userRole.role !== 'alumno'">

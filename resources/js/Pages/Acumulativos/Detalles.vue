@@ -1,29 +1,31 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import {  Head } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
 import Icon from "../../Components/Icon.vue";
 import { usePage } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 
 const props = defineProps({
     detalles: Array,
+    clase: Number,
+    unidad: Number
 });
 
 const { props: pageProps } = usePage();
-const filteredDetalles = ref([])
+const filteredDetalles = ref([]);
 
-onMounted(() =>{
+onMounted(() => {
     const userRole = pageProps.userRole.role;
 
-    if(userRole === "alumno"){
+    if (userRole === "alumno") {
         const email = pageProps.auth.user.email;
-        filteredDetalles.value = props.detalles.filter((item) => item.email === email);
-    }else {
+        filteredDetalles.value = props.detalles.filter(
+            (item) => item.email === email
+        );
+    } else {
         filteredDetalles.value = props.detalles;
-    }   
-
+    }
 });
-
 </script>
 <template>
     <AppLayout>
@@ -33,7 +35,8 @@ onMounted(() =>{
             <h2 class="font-semibold text-xl flex justify-between items-center">
                 <div class="text-primary font-mono flex items-center gap-2">
                     <div
-                        class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                        class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md"
+                    >
                         <Icon name="chart" class="w-2 h-2 fill-white" />
                     </div>
                     Detalles
@@ -56,9 +59,12 @@ onMounted(() =>{
                         </tr>
                     </thead>
                     <transition-group tag="tbody" appear>
-                        <template v-if="filteredDetalles && filteredDetalles.length > 0">
-                            <tr class="hover:bg-gray-100 focus-within:bg-gray-100" 
-                                v-for="(detalle, index) in filteredDetalles" :key="index">
+                        <template
+                            v-if="filteredDetalles && filteredDetalles.length > 0">
+                            <tr
+                                class="hover:bg-gray-100 focus-within:bg-gray-100"
+                                v-for="(detalle, index) in filteredDetalles"
+                                :key="index">
                                 <td class="border-t">
                                     <div
                                         class="flex items-center px-6 py-4 focus:text-indigo-500">
@@ -105,23 +111,30 @@ onMounted(() =>{
                                     <div
                                         class="flex items-center px-6 py-4 focus:text-indigo-500"
                                         tabindex="-1">
-                                    <span v-if="detalle.puntos_devolucion">
-                                        {{ detalle.puntos_devolucion }}
-                                    </span>
-                                    <span v-else>sin devolver</span>
-                                        
+                                        <span v-if="detalle.puntos_devolucion">
+                                            {{ detalle.puntos_devolucion }}
+                                        </span>
+                                        <span v-else>sin devolver</span>
                                     </div>
                                 </td>
                             </tr>
-                            
                         </template>
                         <tr v-else class="focus-within:bg-gray-100">
                             <td colspan="7" class="inline-block pl-8 py-5">
                                 No se encontraron detalles de entregas
-                            </td>   
+                            </td>
                         </tr>
                     </transition-group>
                 </table>
+            </div>
+            <div class="flex items-center gap-3 mt-4">
+                <a
+                    :href="route('clases.unidades.acumulativos.pdf',
+                           {clase: clase, unidad: unidad,})"
+                    class="h-10 w-32 rounded-md shadow-md bg-gray-100 flex items-center justify-center hover:bg-gray-200 cursor-pointer"
+                    target="_blank">
+                    <span class="font-bold text-sm">Exportar PDF</span>
+                </a>
             </div>
         </div>
     </AppLayout>

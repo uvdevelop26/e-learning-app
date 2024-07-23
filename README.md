@@ -59,7 +59,7 @@ Ingresa al Sistema utilizando los siguientes usuarios
     - Puedes Eliminar una clase
     - Crea un anuncio, puedes editar y eliminar anuncios.
     - Puedes dejar comentario en el anuncio.
-    - En la sección "Personas" puedes agregar alumnos ingresando, también puedes eliminar alumnos.
+    - En la sección "Personas" puedes agregar alumnos ingresando su número de cédula, también puedes eliminar alumnos.
   - En la Sección Usuarios
     - Selecciona "Alumnos", puedes buscar alumnos, crear, editar y eliminar alumno.
     - Selecciona "Docentes", puedes buscar docentes, crear, editar y eliminar docente.
