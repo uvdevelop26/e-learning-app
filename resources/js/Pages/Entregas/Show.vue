@@ -206,7 +206,7 @@ const deleteDevolucion = (data) => {
                                 </th>
                                 <th
                                     class="pb-4 pt-6 px-6 text-primary underline">
-                                    Fech de Entrega
+                                    Fecha de Entrega
                                 </th>
                                 <th
                                     class="pb-4 pt-6 px-6 text-primary underline">
@@ -391,6 +391,7 @@ const deleteDevolucion = (data) => {
                             placeholder="Puntos logrados"
                             label="Puntaje"
                             v-model="form.puntos"
+                            :error="errors.puntos"
                         />
                         <div>
                             <label
