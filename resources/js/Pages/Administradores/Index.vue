@@ -65,8 +65,8 @@ const enter = (el, done) => {
                         <a :href="route('administradores.pdf')"
                         target="_blank" 
                         class="h-full w-full text-sm font-bold flex items-center justify-center border-r hover:bg-gray-100">PDF</a>
-                        <a href="" 
-                        class="h-full w-full text-sm font-bold flex items-center justify-center hover:bg-gray-100">XLS</a>
+                        <!-- <a href="" 
+                        class="h-full w-full text-sm font-bold flex items-center justify-center hover:bg-gray-100">XLS</a> -->
                     </div>  
                     <search-filter
                         v-model="form.search"

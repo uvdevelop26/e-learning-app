@@ -176,4 +176,9 @@ class DocenteController extends Controller
 
         return $pdf->stream('lista_docentes.pdf');
     }
+
+    public function xlsx()
+    {
+        
+    }
 }
