@@ -61,7 +61,6 @@ Route::controller(DocenteController::class)->middleware(['auth:sanctum', 'verifi
     Route::put('docentes/{docente}', 'update')->name('docentes.update');
     Route::delete('docentes/{docente}', 'destroy')->name('docentes.destroy');
     Route::get('docentes/pdf', 'pdf')->name('docentes.pdf');
-    Route::get('docentes/xlsx', 'xlsx')->name('docentes.xlsx');
 });
 
 //alumnos
