@@ -27,12 +27,10 @@ class DepartamentoSeeder extends Seeder
 
             $departamentos = json_decode($json, true);
 
-            // Verificar errores en json_decode
-            if (json_last_error() !== JSON_ERROR_NONE) {
+             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new Exception("Error al decodificar el JSON: " . json_last_error_msg());
             }
 
-            // Utilizando print_r() para mostrar el contenido del array
             foreach ($departamentos as $departamento) {
 
                 Departamento::create([

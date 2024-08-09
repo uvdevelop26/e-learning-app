@@ -38,7 +38,7 @@ const form = useForm({
     departamento_id: props.currentDpto,
     email: props.administradore.user[0].email,
     password: props.administradore.user[0].password,
-    password_confirmation: props.administradore.user.password,
+    password_confirmation: props.administradore.user[0].password,
     role_id: props.currentRole,
 });
 

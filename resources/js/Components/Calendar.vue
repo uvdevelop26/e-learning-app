@@ -101,7 +101,7 @@ const handleWeekendsToggle = () => {
         </div>
         <div
             class="px-4 flex flex-col gap-4 leading-6 lg:w-[28%]">
-            <section class="text-sm bg-secondary text-white font-bold p-4 rounded-2xl shadow-md">
+            <!-- <section class="text-sm bg-secondary text-white font-bold p-4 rounded-2xl shadow-md">
                 <h2 class="underline font-mono pb-2">Instrucciones</h2>
                 <ul>
                     <li>
@@ -113,7 +113,7 @@ const handleWeekendsToggle = () => {
                     </li>
                     <li>* Click en el evento para eliminar.</li>
                 </ul>
-            </section>
+            </section> -->
             <section class="text-sm bg-secondary text-white font-bold p-4 rounded-2xl shadow-md">
                 <label class="font-bold font-mono">
                     <input

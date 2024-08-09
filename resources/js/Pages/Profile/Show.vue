@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import  Icon  from "../../Components/Icon.vue";
+import Icon from "../../Components/Icon.vue";
 import { Link, Head } from "@inertiajs/vue3";
 import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
 import LogoutOtherBrowserSessionsForm from "@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue";
@@ -14,7 +14,6 @@ const props = defineProps({
     sessions: Array,
     user: Array,
 });
-
 </script>
 
 <template>
@@ -24,7 +23,8 @@ const props = defineProps({
         <template #header>
             <h2
                 class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
-                <div class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                <div
+                    class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
                     <Icon name="user" class="w-2 h-2 fill-white" />
                 </div>
                 Perfil
@@ -41,35 +41,6 @@ const props = defineProps({
 
                 <SectionBorder />
             </div>
-            <!--   <LogoutOtherBrowserSessionsForm
-                :sessions="sessions"
-                class="mt-10 sm:mt-0"
-            />
-
-            <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
-                <SectionBorder />
-
-                <DeleteUserForm class="mt-10 sm:mt-0" />
-            </template> -->
         </div>
-
-        <!--  <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                
-
-                
-
-                <div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
-                    <TwoFactorAuthenticationForm
-                        :requires-confirmation="confirmsTwoFactorAuthentication"
-                        class="mt-10 sm:mt-0"
-                    />
-
-                    <SectionBorder />
-                </div>
-
-               
-            </div>
-        </div> -->
     </AppLayout>
 </template>

@@ -127,7 +127,7 @@ onMounted(() => {
                     </transition-group>
                 </table>
             </div>
-            <div class="flex items-center gap-3 mt-4">
+            <div class="flex items-center gap-3 mt-4" v-if="$page.props.userRole.role !== 'alumno'">
                 <a
                     :href="route('clases.unidades.acumulativos.pdf',
                            {clase: clase, unidad: unidad,})"
