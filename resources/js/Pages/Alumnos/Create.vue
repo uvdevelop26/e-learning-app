@@ -139,7 +139,7 @@ const submit = () => {
                                     v-for="departamento in departamentos"
                                     :key="departamento.id"
                                     :value="departamento.id"
-                                    class="lowercase">
+                                    class="capitalize">
                                     {{ departamento.nombre }}
                                 </option>
                             </select-input>
@@ -155,7 +155,7 @@ const submit = () => {
                                     v-for="ciudade in filteredCities"
                                     :key="ciudade.id"
                                     :value="ciudade.id"
-                                    class="lowercase">
+                                    class="capitalize">
                                     {{ ciudade.nombre }}
                                 </option>
                             </select-input>

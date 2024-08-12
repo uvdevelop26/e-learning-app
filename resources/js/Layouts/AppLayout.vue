@@ -58,13 +58,15 @@ const pushDataOnMenu = async () => {
         if (menuData.role == "alumno") {
             if (menuData.clases.length) {
                 menuData.clases.forEach((item) => {
-                    submenu.push({
-                        id: `${item.id}`,
-                        name: `${item.codigo} ${item.materia.nombre}`,
-                        href: `/clases/${item.id}`,
-                    });
-                    menu[3].submenu = submenu;
+                    if (item.estado_id === 1) {
+                        submenu.push({
+                            id: `${item.id}`,
+                            name: `${item.codigo} ${item.materia.nombre}`,
+                            href: `/clases/${item.id}`,
+                        });
+                    }
                 });
+                menu[3].submenu = submenu; // Asigna el submenu filtrado
             }
         } else if (menuData.role == "docente") {
             if (menuData.clases.length) {
@@ -102,7 +104,6 @@ onMounted(() => {
     if (successMessage.value) {
         flashMessage.value = successMessage.value;
         hideFlashMessage();
-
     }
 });
 
@@ -129,7 +130,8 @@ const logout = () => {
                             <Link :href="route('dashboard')">
                                 <ApplicationMark class="block h-9 w-auto" />
                             </Link>
-                            <span class="text-xs font-bold italic font-mono text-white">
+                            <span
+                                class="text-xs font-bold italic font-mono text-white">
                                 Universidad Politécnica UNVES
                             </span>
                         </div>
@@ -154,7 +156,8 @@ const logout = () => {
                                             :href="links.href"
                                             v-if="!links.submenu"
                                             :class="{
-                                                'bg-secondary text-white hover:bg-secondary': $page.url == links.href,}">
+                                                'bg-secondary text-white hover:bg-secondary':
+                                                    $page.url == links.href,}">
                                             <Icon
                                                 :name="links.icon"
                                                 class="w-4 h-4 fill-primary group-hover:fill-white"
@@ -171,13 +174,18 @@ const logout = () => {
                                                 class="flex w-4 h-4 items-center justify-center rounded-full bg-primary group-hover:bg-white">
                                                 <Icon
                                                     class="h-2 w-2 fill-white group-hover:fill-primary"
-                                                    :name="links.toggle_submenu ? 'cheveron-up' : 'cheveron-down' "/>
+                                                    :name="
+                                                        links.toggle_submenu
+                                                            ? 'cheveron-up'
+                                                            : 'cheveron-down'"/>
                                             </span>
                                             {{ links.name }}
                                         </NavLink>
                                         <transition name="submenu-slice">
                                             <ul
-                                                v-if="links.submenu && links.toggle_submenu"
+                                                v-if="
+                                                    links.submenu &&
+                                                    links.toggle_submenu"
                                                 class="pl-1">
                                                 <li
                                                     v-for="submenu in links.submenu"
@@ -208,15 +216,16 @@ const logout = () => {
                                         <div class="pt-2 w-fit">
                                             <button
                                                 class="flex items-center justify-evenly rounded-2xl bg-primary w-56 h-12 group hover:bg-white hover:border-primary hover:border lg:w-52">
-                                                <img 
+                                                <img
                                                     v-if="$page.props.auth.user.profile_photo_path"
                                                     class="h-9 w-9 rounded-full object-cover lg:h-8 lg:w-8"
-                                                    :src="imageUrl($page.props.auth.user.profile_photo_path)" 
-                                                    :alt="$page.props.auth.user.email">
+                                                    :src="imageUrl($page.props.auth.user.profile_photo_path)"
+                                                    :alt="$page.props.auth.user.email"
+                                                />
                                                 <img
                                                     v-else
                                                     class="h-9 w-9 rounded-full object-cover lg:h-8 lg:w-8"
-                                                     src="https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
+                                                    src="https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg"
                                                     :alt="$page.props.auth.user.email"
                                                 />
                                                 <span

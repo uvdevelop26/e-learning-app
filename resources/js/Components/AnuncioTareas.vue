@@ -28,14 +28,14 @@ const formatFecha = (fecha) => {
 };
 
 const calcularDiasRestantes = (fechaLimite) => {
-    const fechaActual = moment.tz("America/Asuncion");
-    const fechaLimiteFormatted = moment.tz(fechaLimite, "America/Asuncion");
+    const fechaActual = moment.tz("America/Asuncion").startOf('day');
+    const fechaLimiteFormatted = moment.tz(fechaLimite, "America/Asuncion").startOf('day');
     const diferenciaDias = fechaLimiteFormatted.diff(fechaActual, "days");
 
     if (diferenciaDias > 0) {
         return `Faltan ${diferenciaDias} días`;
     } else if (diferenciaDias === 0) {
-        return `Hoy es el día límite`;
+        return "Hoy es el día límite";
     } else {
         return "tiempo superado";
     }

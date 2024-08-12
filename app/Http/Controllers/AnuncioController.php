@@ -13,15 +13,6 @@ use Illuminate\Http\UploadedFile;
 class AnuncioController extends Controller
 {
 
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
 
     public function store(AnuncioRequest $request)
     {

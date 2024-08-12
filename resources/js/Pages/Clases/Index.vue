@@ -37,8 +37,11 @@ const fetchClases = async () => {
                 (item) => item.docente_id == data.id
             );
         } else if (data.role == "alumno") {
-            showClases.value = props.clases.filter((clase) =>
-                clase.alumnos.some((alumno) => alumno.id == data.id)
+
+            showClases.value = props.clases.filter(
+                (clase) =>
+                    clase.estado.estado === "activo" && 
+                    clase.alumnos.some((alumno) => alumno.id == data.id) 
             );
         } else if (data.role == "administrador") {
             showClases.value = props.clases;
@@ -68,10 +71,9 @@ const enter = (el, done) => {
         y: 0,
         opacity: 1,
         onComplete: done,
-        delay: el.dataset.index * 0.2
+        delay: el.dataset.index * 0.2,
     });
 };
-
 
 onMounted(fetchClases);
 </script>
@@ -82,9 +84,11 @@ onMounted(fetchClases);
 
         <template #header>
             <h2
-                class="font-semibold font-mono text-xl text-primary flex items-center gap-4">
+                class="font-semibold font-mono text-xl text-primary flex items-center gap-4"
+            >
                 <div
-                    class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md">
+                    class="w-7 h-7 flex items-center justify-center rounded-full bg-primary border shadow-md"
+                >
                     <Icon name="clases" class="w-3 h-3 fill-white" />
                 </div>
                 Todas las Clases
@@ -109,7 +113,9 @@ onMounted(fetchClases);
                     @before-enter="beforeEnter"
                     @enter="enter"
                     class="py-4 px-4 flex flex-wrap items-center justify-center md:justify-start gap-6">
-                    <template v-for="(clase, index) in showClases" :key="clase.id" >
+                    <template
+                        v-for="(clase, index) in showClases"
+                        :key="clase.id">
                         <card :data-index="index">
                             <template #cardHeader>
                                 <Link
@@ -126,7 +132,8 @@ onMounted(fetchClases);
                                 </Link>
                                 <Dropdown
                                     class="self-start"
-                                    v-if="$page.props.userRole.role !== 'alumno'">
+                                    v-if="
+                                        $page.props.userRole.role !== 'alumno'">
                                     <template #trigger>
                                         <div
                                             class="pt-2 pr-1 pb-1 overflow-hidden flex items-center justify-end">
@@ -178,4 +185,3 @@ onMounted(fetchClases);
         </div>
     </AppLayout>
 </template>
-
