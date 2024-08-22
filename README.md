@@ -1,13 +1,13 @@
-## Tecnologías
+## Instalar
 
-- Xampp
+- Xampp (últimas versiones)
 - Visual Studio Code
 
 
 ## Pasos a Seguir
 En la carpeta "Htdoc" de Xampp abrir la terminal de comandos y ejecutar
 
-```git
+```
     git pull https://github.com/uvdevelop26/e-learning-app.git
 
 ```
@@ -45,7 +45,18 @@ php artisan db:seed
 
 
 ```
-Abrir un nuevo servidor para explorar el sistema
+
+Habilita ruta a la carpeta "Storage"
+
+```
+
+php artisan storage:link
+
+
+```
+
+Levanta el servidor para explorar el sistema
+
 ```
     npm run dev
     php artisan serve
